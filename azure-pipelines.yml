@@ -1,0 +1,80 @@
+jobs:
+
+- job: System_LAPACK
+  pool:
+    vmImage: ubuntu-latest
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.6'
+      addToPath: true
+  - script: |
+      sudo apt update -q
+      sudo apt install -yq --no-install-recommends gfortran liblapack-dev libopenmpi-dev
+    displayName: 'Install Linux prereqs'
+  - script: |
+      python -m pip install meson
+      curl -Ls https://github.com/ninja-build/ninja/releases/download/v1.9.0/ninja-linux.zip -o ninja-linux.zip
+      sudo unzip ninja-linux.zip -d /usr/local/bin/
+    displayName: 'install Meson'
+  - script: meson setup build
+    env:
+      FC: gfortran
+    displayName: 'Meson Configure and Generate'
+  - script: meson test -C build
+    displayName: 'Meson build and test'
+  - publish: build/meson-logs/testlog.txt
+    condition: succeededOrFailed()
+    artifact: TestLog_System_Lapack
+
+- job: Own_LAPACK
+  pool:
+    vmImage: ubuntu-latest
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.6'
+      addToPath: true
+  - script: |
+      sudo apt update -q
+      sudo apt install -yq --no-install-recommends gfortran libopenmpi-dev
+    displayName: 'Install Linux prereqs'
+  - script: |
+      python -m pip install meson
+      curl -Ls https://github.com/ninja-build/ninja/releases/download/v1.9.0/ninja-linux.zip -o ninja-linux.zip
+      sudo unzip ninja-linux.zip -d /usr/local/bin/
+    displayName: 'install Meson'
+  - script: meson setup build
+    env:
+      FC: gfortran
+    displayName: 'Meson Configure and Generate'
+  - script: meson test -C build
+    displayName: 'Meson build and test'
+  - publish: build/meson-logs/testlog.txt
+    condition: succeededOrFailed()
+    artifact: TestLog_Own_Lapack
+
+- job: MacOS_Meson
+  pool:
+    vmImage: macOS-latest
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.6'
+      addToPath: true
+  - script: |
+      brew install gcc lapack ninja open-mpi
+      python -m pip install meson
+    displayName: 'Install Prereqs'
+  - script: meson setup build
+    env:
+      FC: gfortran
+    displayName: 'Meson Configure and Generate'
+  - script: meson test -C build
+    displayName: 'Meson build and test'
+  - publish: build/meson-logs/testlog.txt
+    condition: succeededOrFailed()
+    artifact: TestLog_Mac_Meson
