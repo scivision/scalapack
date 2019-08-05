@@ -12,8 +12,6 @@ If `example1` fails to build or run, the Scalapack library is probably not built
 
 ## Build
 
-use the `--prefix` option to install Scalapack under a directory.
-For example: `--prefix ~/mylibs` will install Scalapack under `~/mylibs/scalapack-2.0.2/`
 
 ```sh
 meson setup build
@@ -22,6 +20,24 @@ meson test -C build
 
 meson install -C build
 ```
+
+### options
+
+The default precision is `d` meaning real float64.
+The build-time parameter `-Darith=d` may be optionally specified:
+
+```sh
+-Darith=s  # real32
+-Darith=d  # real64
+-Darith=c  # complex64
+-Darith=z  # complex128
+```
+
+---
+
+use the `--prefix` option to install Scalapack under a directory.
+For example: `--prefix ~/mylibs` will install Scalapack under `~/mylibs/scalapack-2.0.2/`
+
 
 
 ## Notes

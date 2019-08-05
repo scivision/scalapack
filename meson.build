@@ -6,6 +6,7 @@ project('SCALAPACK',
 
 cargs = '-DAdd_'
 install_dir = 'scalapack-'+meson.project_version()
+arith = get_option('arith')
 
 os = host_machine.system()
 cc = meson.get_compiler('c')
@@ -59,15 +60,17 @@ scalapack_lib = library('scalapack',
   sources: [blacsInternal, tools, pblas, redist, src],
   link_with: blacs_lib,
   dependencies: [lapack, blas, mpic, mpif],
-  c_args : [cargs],
+  c_args : cargs,
   fortran_args : cargs,
   install: true,
   install_dir: install_dir)
 
 # --- Scalapack test
-scalapack_test_exe = executable('example1', 'tests/example1.f',
+scalapack_test_exe = executable('example1', 'tests/example1.F',
+  fortran_args : '-Darith='+arith,
   link_with : scalapack_lib,
-  dependencies : [mpif, lapack, blas])
+  dependencies : [mpif, lapack, blas],
+  link_language: 'fortran')
 
 test('scalapack basic', mpiexec,
   args: ['-np', '6', scalapack_test_exe],  # must be at least 6 processes or will fail

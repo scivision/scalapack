@@ -1,15 +1,29 @@
 allaux = files('icopy.f')
-scatgen = files('slatm1.f', 'slaran.f', 'slarnd.f')
-smatgen = files('slatms.f', 'slagge.f', 'slagsy.f', 'slarot.f')
-cmatgen = files('clarnv.f', 'clatm1.f', 'clatms.f', 'clagge.f', 'claghe.f', 'clagsy.f', 'clarot.f', 'clarnd.f')
-dzatgen = files('dlatm1.f', 'dlaran.f', 'dlarnd.f')
-dmatgen = files('dlatms.f', 'dlagge.f', 'dlagsy.f', 'dlarot.f')
-zmatgen = files('zlarnv.f', 'zlatm1.f', 'zlatms.f', 'zlagge.f', 'zlaghe.f', 'zlagsy.f', 'zlarot.f', 'zlarnd.f')
 
-extra_lapack = [allaux, scatgen, smatgen, cmatgen, dzatgen, dmatgen, zmatgen]
+if arith == 's'
+atgen = files('slatm1.f', 'slaran.f', 'slarnd.f')
+matgen = files('slatms.f', 'slagge.f', 'slagsy.f', 'slarot.f')
+endif
 
-lapack_lib = library('lapack', extra_lapack,
-  link_with: blas,
+if arith == 'c'
+atgen = files('clatms.f', 'clarnv.f', 'clarnd.f')
+matgen = files('clatm1.f', 'clagge.f', 'clagsy.f', 'clarot.f', 'claghe.f')
+endif
+
+if arith == 'd'
+atgen = files('dlatm1.f', 'dlaran.f', 'dlarnd.f')
+matgen = files('dlatms.f', 'dlagge.f', 'dlagsy.f', 'dlarot.f',
+  'dlassq.f', 'dlamch.f', 'dlacpy.f')
+endif
+
+if arith == 'z'
+atgen = files('zlatm1.f', 'zlarnd.f', 'zlarnv.f')
+matgen = files('zlatms.f', 'zlagge.f', 'zlagsy.f', 'zlarot.f', 'zlaghe.f')
+endif
+
+lapack_lib = library('lapack',
+  sources: [allaux, atgen, matgen],
+  dependencies: blas,
   install: true,
   install_dir: install_dir)
 lapack = declare_dependency(link_with: lapack_lib)

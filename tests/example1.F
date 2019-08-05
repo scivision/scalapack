@@ -27,13 +27,21 @@
      $                   WORK( MXLOCR )
 *     ..
 *     .. External Functions ..
-      DOUBLE PRECISION   PDLAMCH, PDLANGE
-      EXTERNAL           PDLAMCH, PDLANGE
+#if arith==d
+      DOUBLE PRECISION, external ::   PdLAMCH, PdLANGE
+#elif arith==s
+      real, external ::   PsLAMCH, PsLANGE
+#endif
 *     ..
 *     .. External Subroutines ..
       EXTERNAL           BLACS_EXIT, BLACS_GRIDEXIT, BLACS_GRIDINFO,
-     $                   DESCINIT, MATINIT, PDGEMM, PDGESV, PDLACPY,
-     $                   SL_INIT
+     $                   DESCINIT, MATINIT,
+     $                   SL_INIT,
+#if arith==d
+     $ PdGEMM, PdGESV, PdLACPY
+#elif arith==s
+     $ PsGEMM, PsGESV, PsLACPY
+#endif
 *     ..
 *     .. Intrinsic Functions ..
       INTRINSIC          DBLE
@@ -66,15 +74,27 @@
       CALL MATINIT( A, DESCA, B, DESCB )
 *
 *     Make a copy of A and B for checking purposes
-*
-      CALL PDLACPY( 'All', N, N, A, 1, 1, DESCA, A0, 1, 1, DESCA )
-      CALL PDLACPY( 'All', N, NRHS, B, 1, 1, DESCB, B0, 1, 1, DESCB )
+
+#if arith==d
+      CALL PdLACPY( 'All', N, N, A, 1, 1, DESCA, A0, 1, 1, DESCA )
+      CALL PdLACPY( 'All', N, NRHS, B, 1, 1, DESCB, B0, 1, 1, DESCB )
+#elif arith==s
+      CALL PsLACPY( 'All', N, N, A, 1, 1, DESCA, A0, 1, 1, DESCA )
+      CALL PsLACPY( 'All', N, NRHS, B, 1, 1, DESCB, B0, 1, 1, DESCB )
+#else
+      error stop 'unhandled precision, raise github issue'
+#endif
 *
 *     CALL THE SCALAPACK ROUTINE
 *     Solve the linear system A * X = B
 *
-      CALL PDGESV( N, NRHS, A, IA, JA, DESCA, IPIV, B, IB, JB, DESCB,
+#if arith==d
+      CALL PdGESV( N, NRHS, A, IA, JA, DESCA, IPIV, B, IB, JB, DESCB,
      $             INFO )
+#elif arith==s
+      CALL PsGESV( N, NRHS, A, IA, JA, DESCA, IPIV, B, IB, JB, DESCB,
+     $             INFO )
+#endif
 *
       IF( MYROW.EQ.0 .AND. MYCOL.EQ.0 ) THEN
          WRITE( NOUT, FMT = 9999 )
