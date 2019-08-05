@@ -13,14 +13,14 @@ cc = meson.get_compiler('c')
 fc = meson.get_compiler('fortran')
 ccid = cc.get_id()
 if ccid == 'gcc' or ccid == 'pgi' or ccid == 'flang'
-  add_global_arguments('-w', language : 'c')
-  add_global_arguments('-w', language : 'fortran')
+  add_project_arguments('-w', language : 'c')
+  add_project_arguments('-w', language : 'fortran')
 elif ccid == 'intel'
-  add_global_arguments('-w0', language : 'c')
-  add_global_arguments('-nowarn', language : 'fortran')
+  add_project_arguments('-w0', language : 'c')
+  add_project_arguments('-nowarn', language : 'fortran')
 elif ccid == 'intel-cl'
-  add_global_arguments('/W0', language : 'c')
-  add_global_arguments('/nowarn', language : 'fortran')
+  add_project_arguments('/W0', language : 'c')
+  add_project_arguments('/nowarn', language : 'fortran')
 endif
 
 # == MPI
@@ -49,7 +49,11 @@ subdir('PBLAS/SRC')  # pblas files
 subdir('REDIST/SRC')  # redist files
 subdir('SRC') # src files
 
-blas = dependency('blas')
+blas = dependency('blas', required: false)
+if not blas.found()  # Mac Homebrew
+  blas = fc.find_library('blas')
+endif
+
 lapack = dependency('lapack', required: false)
 if not lapack.found()  # create own Lapack
   subdir('TOOLS/LAPACK')

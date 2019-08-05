@@ -11,7 +11,7 @@ jobs:
       addToPath: true
   - script: |
       sudo apt update -q
-      sudo apt install -yq --no-install-recommends gfortran liblapack-dev libopenmpi-dev
+      sudo apt install -yq --no-install-recommends gfortran liblapack-dev libopenmpi-dev openmpi-bin
     displayName: 'Install Linux prereqs'
   - script: |
       python -m pip install meson
@@ -39,7 +39,7 @@ jobs:
       addToPath: true
   - script: |
       sudo apt update -q
-      sudo apt install -yq --no-install-recommends gfortran libopenmpi-dev
+      sudo apt install -yq --no-install-recommends gfortran libopenblas-dev libopenmpi-dev openmpi-bin
     displayName: 'Install Linux prereqs'
   - script: |
       python -m pip install meson
@@ -56,7 +56,9 @@ jobs:
     condition: succeededOrFailed()
     artifact: TestLog_Own_Lapack
 
+# need to add homebrew lapack to dependency() search
 - job: MacOS_Meson
+  condition: false
   pool:
     vmImage: macOS-latest
 
