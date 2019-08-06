@@ -28,7 +28,7 @@ jobs:
     condition: succeededOrFailed()
     artifact: TestLog_System_Lapack
 
-- job: Own_LAPACK
+- job: Own_LAPACKBLAS
   pool:
     vmImage: ubuntu-latest
 
@@ -39,7 +39,7 @@ jobs:
       addToPath: true
   - script: |
       sudo apt update -q
-      sudo apt install -yq --no-install-recommends gfortran libopenblas-dev libopenmpi-dev openmpi-bin
+      sudo apt install -yq --no-install-recommends gfortran libopenmpi-dev openmpi-bin
     displayName: 'Install Linux prereqs'
   - script: |
       python -m pip install meson
@@ -54,7 +54,7 @@ jobs:
     displayName: 'Meson build and test'
   - publish: build/meson-logs/testlog.txt
     condition: succeededOrFailed()
-    artifact: TestLog_Own_Lapack
+    artifact: TestLog_Own_LapackBLAS
 
 # need to add homebrew lapack to dependency() search
 - job: MacOS_Meson
