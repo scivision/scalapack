@@ -26,7 +26,7 @@ endif
 # == MPI
 
 mpif = dependency('mpi', language: 'fortran')
-if not fc.links('use mpi; end', dependencies: mpif)
+if fc.run('use mpi; end', dependencies: mpif, name: 'MPI').returncode() != 0
   error('MPI is not working correctly')
 endif
 mpic = dependency('mpi', language: 'c')
@@ -51,14 +51,18 @@ subdir('SRC') # src files
 
 blas = dependency('blas', required: false)
 if not blas.found()  # Mac Homebrew
-  blas = fc.find_library('blas')
+  blas = fc.find_library('blas', required: false)
 endif
-
-lapack = dependency('lapack', required: false)
-if not lapack.found()  # create own Lapack
-  subdir('TOOLS/LAPACK')
+if blas.found()
+  lapack = dependency('lapack', required: false)
+  if not lapack.found()  # create own Lapack
+    subdir('TOOLS/LAPACK')
+  endif
+else
+  lapack_proj = subproject('lapack')
+  blas = lapack_proj.get_variable('blas')
+  lapack = lapack_proj.get_variable('lapack')
 endif
-
 # this is the only thing installed, like libscalapack.a or libscalapack.so or similar.
 scalapack_lib = library('scalapack',
   sources: [blacsInternal, tools, pblas, redist, src],
