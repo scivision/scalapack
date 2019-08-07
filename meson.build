@@ -2,7 +2,8 @@ project('SCALAPACK',
   ['c', 'fortran'],
   version: '2.0.2',
   meson_version: '>= 0.50',
-  default_options : ['default_library=static', 'buildtype=release'])
+  default_options : ['default_library=static', 'buildtype=release',
+    'libdir=scalapack-2.0.2', 'includedir=scalapack-2.0.2'])
 
 cargs = '-DAdd_'
 install_dir = 'scalapack-'+meson.project_version()
@@ -72,6 +73,13 @@ scalapack_lib = library('scalapack',
   fortran_args : cargs,
   install: true,
   install_dir: install_dir)
+
+# --- generate pkg-config
+pkg = import('pkgconfig')
+pkg.generate(scalapack_lib,
+  url: 'https://github.com/scivision/scalapack',
+  subdirs: 'scalapack',
+  description: 'Netlib SCALAPACK')
 
 # --- Scalapack test
 scalapack_test_exe = executable('example1', 'tests/example1.F',
