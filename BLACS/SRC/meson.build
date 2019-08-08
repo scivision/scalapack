@@ -57,20 +57,17 @@ blacsC_lib = library('blacsCinit',
   sources: [comm, supp],
   c_args: ['-DCallFromC', cargs],
   dependencies: mpic,
-  install: true,
-  install_dir: install_dir)
+  install: true)
 
 blacsF_lib = library('blacsF77init',
   sources: [comm, supp],
   c_args: [cargs],  # NOT CallFromC!
   dependencies: mpic,
-  install: true,
-  install_dir: install_dir)
+  install: true)
 
 blacs_lib = library('blacs',
   sources: blacsInternal,
   link_with: [blacsC_lib, blacsF_lib],
   dependencies: mpic,
-  install: true,
-  install_dir: install_dir
+  install: true
 )

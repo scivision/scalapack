@@ -24,6 +24,5 @@ endif
 lapack_lib = library('lapack',
   sources: [allaux, atgen, matgen],
   dependencies: blas,
-  install: true,
-  install_dir: install_dir)
+  install: true)
 lapack = declare_dependency(link_with: lapack_lib)

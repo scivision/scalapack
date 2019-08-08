@@ -3,10 +3,9 @@ project('SCALAPACK',
   version: '2.0.2',
   meson_version: '>= 0.50',
   default_options : ['default_library=static', 'buildtype=release',
-    'libdir=scalapack-2.0.2', 'includedir=scalapack-2.0.2'])
+    'libdir=scalapack-2.0.2', 'includedir=scalapack-2.0.2/include'])
 
 cargs = '-DAdd_'
-install_dir = 'scalapack-'+meson.project_version()
 arith = get_option('arith')
 
 os = host_machine.system()
@@ -71,8 +70,7 @@ scalapack_lib = library('scalapack',
   dependencies: [lapack, blas, mpic, mpif],
   c_args : cargs,
   fortran_args : cargs,
-  install: true,
-  install_dir: install_dir)
+  install: true)
 
 # --- generate pkg-config
 pkg = import('pkgconfig')
