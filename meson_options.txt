@@ -1,1 +1,2 @@
 option('arith', type: 'string', value: 'd', description: 'precision (s,d,c,z)')
+option('system_blas', type: 'boolean', value: false, description: 'use system libraries')

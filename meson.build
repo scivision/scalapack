@@ -2,7 +2,7 @@ project('SCALAPACK',
   ['c', 'fortran'],
   version: '2.0.2',
   meson_version: '>= 0.50',
-  default_options : ['default_library=static', 'buildtype=release',
+  default_options : ['default_library=static', 'buildtype=release', 'warning_level=0',
     'libdir=scalapack-2.0.2', 'includedir=scalapack-2.0.2/include'])
 
 cargs = '-DAdd_'
@@ -49,21 +49,31 @@ subdir('PBLAS/SRC')  # pblas files
 subdir('REDIST/SRC')  # redist files
 subdir('SRC') # src files
 
-blas = dependency('blas', required: false)
-if not blas.found()  # Mac Homebrew
-  blas = fc.find_library('blas', required: false)
-endif
-if blas.found()
-  lapack = dependency('lapack', required: false)
-  if not lapack.found()  # create own Lapack
-    subdir('TOOLS/LAPACK')
+system_blas = get_option('system_blas')
+if system_blas
+  blas = dependency('blas', required: false)
+  if not blas.found()  # Mac Homebrew
+    blas = fc.find_library('blas', required: false)
+  endif
+  if blas.found()
+    lapack = dependency('lapack', required: false)
+    if not lapack.found()  # create own Lapack
+      subdir('TOOLS/LAPACK')
+    endif
+  else
+    lapack = disabler()
   endif
 else
+  blas = disabler()
+  lapack = disabler()
+endif
+if not blas.found() or not lapack.found()
   lapack_proj = subproject('lapack')
   blas = lapack_proj.get_variable('blas')
   lapack = lapack_proj.get_variable('lapack')
 endif
-# this is the only thing installed, like libscalapack.a or libscalapack.so or similar.
+
+# this is the only thing installed: libscalapack.{a,so,dylib,lib}
 scalapack_lib = library('scalapack',
   sources: [blacsInternal, tools, pblas, redist, src],
   link_with: blacs_lib,
