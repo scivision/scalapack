@@ -1,2 +1,4 @@
+option('LAPACK_ROOT', type : 'string', description : 'root directory of LAPACK')
+option('MPI_ROOT', type : 'string', description : 'root directory of MPI')
 option('arith', type: 'string', value: 'd', description: 'precision (s,d,c,z)')
 option('system_blas', type: 'boolean', value: false, description: 'use system libraries')

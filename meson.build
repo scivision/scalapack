@@ -24,13 +24,21 @@ elif ccid == 'intel-cl'
 endif
 
 # == MPI
-
-mpif = dependency('mpi', language: 'fortran')
+mpi_root = get_option('MPI_ROOT')
+if mpi_root == ''
+  mpif = dependency('mpi', language: 'fortran')
+  mpic = dependency('mpi', language: 'c')
+  mpiexec = find_program('mpiexec')
+else
+  # instead of dependencies, use compiler wrapper
+  # assumes that environment variables CC=mpicc and FC=mpifc or similar
+  mpiexec = find_program(mpi_root / 'bin/mpiexec' )
+  mpif = []
+  mpic = []
+endif
 if fc.run('use mpi; end', dependencies: mpif, name: 'MPI').returncode() != 0
   error('MPI is not working correctly')
 endif
-mpic = dependency('mpi', language: 'c')
-mpiexec = find_program('mpiexec')
 
 # == BLACS
 

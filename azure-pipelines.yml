@@ -18,7 +18,7 @@ jobs:
       curl -Ls https://github.com/ninja-build/ninja/releases/download/v1.9.0/ninja-linux.zip -o ninja-linux.zip
       sudo unzip ninja-linux.zip -d /usr/local/bin/
     displayName: 'install Meson'
-  - script: meson setup build
+  - script: meson setup build -Dsystem_blas=true
     env:
       FC: gfortran
     displayName: 'Meson Configure and Generate'
@@ -68,7 +68,7 @@ jobs:
       versionSpec: '3.6'
       addToPath: true
   - script: |
-      brew install gcc lapack ninja open-mpi
+      brew install gcc ninja open-mpi
       python -m pip install meson
     displayName: 'Install Prereqs'
   - script: meson setup build
