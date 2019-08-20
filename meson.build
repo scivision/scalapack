@@ -24,20 +24,35 @@ elif ccid == 'intel-cl'
 endif
 
 # == MPI
-mpi_root = get_option('MPI_ROOT')
-if mpi_root == ''
-  mpif = dependency('mpi', language: 'fortran')
-  mpic = dependency('mpi', language: 'c')
-  mpiexec = find_program('mpiexec')
-else
-  # instead of dependencies, use compiler wrapper
-  # assumes that environment variables CC=mpicc and FC=mpifc or similar
-  mpiexec = find_program(mpi_root / 'bin/mpiexec' )
+# check if MPI compiler wrapper is usable
+if fc.run('use mpi; end', name: 'Fortran MPI compiler wrapper').returncode() == 0
   mpif = []
-  mpic = []
+  mpiroot = get_option('MPI_ROOT')
+  if mpiroot == ''
+    error('please specify -DMPI_ROOT= root path of MPI lib e.g. ~/lib/openmpi-3.1.4')
+  endif
+  mpiexec = find_program(mpiroot / 'bin/mpiexec')
+else
+  mpif = dependency('mpi', language : 'fortran')
+  mpiret = fc.run('use mpi; end', dependencies : mpif, name: 'Fortran MPI')
+  if mpiret.returncode() != 0
+    error('MPI does not link properly: ' + mpiret.stderr() + ' ' + mpiret.stdout())
+  endif
+  mpiexec = find_program('mpiexec')
 endif
-if fc.run('use mpi; end', dependencies: mpif, name: 'MPI').returncode() != 0
-  error('MPI is not working correctly')
+
+mpic_code = '''
+#include <mpi.h>
+int main() { MPI_Init(NULL, NULL); MPI_Finalize(); return 0;}
+'''
+if cc.run(mpic_code, name: 'C MPI compiler wrapper').returncode() == 0
+  mpic = []
+else
+  mpic = dependency('mpi', language : 'c')
+  mpiret = cc.run(mpic_code, dependencies : mpic, name: 'C MPI')
+  if mpiret.returncode() != 0
+    error('MPI does not link properly: ' + mpiret.stderr() + ' ' + mpiret.stdout())
+  endif
 endif
 
 # == BLACS

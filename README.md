@@ -38,7 +38,13 @@ The build-time parameter `-Darith=d` may be optionally specified:
 use the `--prefix` option to install Scalapack under a directory.
 For example: `--prefix ~/mylibs` will install Scalapack under `~/mylibs/scalapack-2.0.2/`
 
+---
 
+If you need to specify MPI compiler wrappers, do like:
+
+```sh
+FC=~/lib_gcc/openmpi-3.1.4/bin/mpif90 CC=~/lib_gcc/openmpi-3.1.4/bin/mpicc meson build
+```
 
 ## Notes
 
