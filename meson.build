@@ -7,12 +7,13 @@ project('SCALAPACK',
 
 cargs = '-DAdd_'
 arith = get_option('arith')
+buildtype = get_option('buildtype')
 
 os = host_machine.system()
 cc = meson.get_compiler('c')
 fc = meson.get_compiler('fortran')
 ccid = cc.get_id()
-if ccid == 'gcc' or ccid == 'pgi' or ccid == 'flang'
+if ['gcc', 'pgi', 'flang'].contains(ccid)
   add_project_arguments('-w', language : 'c')
   add_project_arguments('-w', language : 'fortran')
 elif ccid == 'intel'
@@ -58,13 +59,14 @@ endif
 # == BLACS
 
 subdir('BLACS/SRC')
-blacs_test_exe = executable('blacs_test', 'tests/blacs_helloworld.f90',
-  link_with: blacs_lib,
-  link_language: 'fortran')
-test('BLACS basic', mpiexec,
-  args: ['-np', '4', blacs_test_exe],
-  timeout: 15
-)
+if not meson.is_subproject() or buildtype == 'debug'
+  blacs_test_exe = executable('blacs_test', 'tests/blacs_helloworld.f90',
+    link_with: blacs_lib,
+    link_language: 'fortran')
+  test('BLACS basic', mpiexec,
+    args: ['-np', '4', blacs_test_exe],
+    timeout: 15)
+endif
 
 # == SCALAPACK
 subdir('TOOLS')  # tools files
@@ -113,13 +115,13 @@ pkg.generate(scalapack_lib,
   description: 'Netlib SCALAPACK')
 
 # --- Scalapack test
-scalapack_test_exe = executable('example1', 'tests/example1.F',
-  fortran_args : '-Darith='+arith,
-  link_with : scalapack_lib,
-  dependencies : [mpif, lapack, blas],
-  link_language: 'fortran')
-
-test('scalapack basic', mpiexec,
-  args: ['-np', '6', scalapack_test_exe],  # must be at least 6 processes or will fail
-  timeout: 60
-)
+if not meson.is_subproject() or buildtype == 'debug'
+  scalapack_test_exe = executable('example1', 'tests/example1.F',
+    fortran_args : '-Darith='+arith,
+    link_with : scalapack_lib,
+    dependencies : [mpif, lapack, blas],
+    link_language: 'fortran')
+  test('scalapack basic', mpiexec,
+    args: ['-np', '6', scalapack_test_exe],  # must be at least 6 processes or will fail
+    timeout: 60)
+endif
