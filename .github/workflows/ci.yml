@@ -21,8 +21,9 @@ jobs:
       env:
         FC: gfortran
     - name: Meson test
-      run: meson test -C build
+      run: meson test -C build -v
     - uses: actions/upload-artifact@v1
+      if: failure()
       with:
         name: Linux_Meson_Testlog
         path: build/meson-logs/testlog.txt
@@ -44,8 +45,9 @@ jobs:
       env:
         FC: gfortran
     - name: Meson test
-      run: meson test -C build
+      run: meson test -C build -v
     - uses: actions/upload-artifact@v1
+      if: failure()
       with:
         name: MacOS_Meson_Testlog
         path: build/meson-logs/testlog.txt

@@ -62,7 +62,7 @@ if not meson.is_subproject() or buildtype == 'debug'
     link_with: blacs_lib,
     link_language: 'fortran')
   test('BLACS basic', mpiexec,
-    args: ['-np', '4', blacs_test_exe],
+    args: ['-np', '4', '--oversubscribe', blacs_test_exe],
     timeout: 15)
 endif
 
@@ -120,6 +120,6 @@ if not meson.is_subproject() or buildtype == 'debug'
     dependencies : [mpif, lapack, blas],
     link_language: 'fortran')
   test('scalapack basic', mpiexec,
-    args: ['-np', '6', scalapack_test_exe],  # must be at least 6 processes or will fail
+    args: ['-np', '6', '--oversubscribe', scalapack_test_exe],  # must be at least 6 processes or will fail
     timeout: 60)
 endif
