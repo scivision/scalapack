@@ -8,8 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Python
-      uses: actions/setup-python@v1
+    - uses: actions/setup-python@v1
       with:
         python-version: 3.7
     - name: Install Meson
@@ -32,8 +31,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Python
-      uses: actions/setup-python@v1
+    - uses: actions/setup-python@v1
       with:
         python-version: 3.7
     - name: Install dependencies

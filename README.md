@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/scivision/mumps/workflows/ci/badge.svg)](https://github.com/scivision/mumps/actions)
+[![Actions Status](https://github.com/scivision/scalapack/workflows/ci/badge.svg)](https://github.com/scivision/scalapack/actions)
 
 # Netlib Scalapack
 
