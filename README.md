@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/mhirsch0512/scalapack/_apis/build/status/scivision.scalapack?branchName=master)](https://dev.azure.com/mhirsch0512/scalapack/_build/latest?definitionId=9&branchName=master)
+[![Actions Status](https://github.com/scivision/mumps/workflows/ci/badge.svg)](https://github.com/scivision/mumps/actions)
 
 # Netlib Scalapack
 
