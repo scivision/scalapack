@@ -2,18 +2,18 @@ allctools = files('PB_CGatherV.c', 'PB_CInV.c', 'PB_CInV2.c', 'PB_CInOutV.c', 'P
 
 ptools = [allctools]
 
-if arith == 's'
+if arith.contains('s')
   ptools += files('PB_Cstypeset.c')
 endif
 
-if arith == 'd'
+if arith.contains('d')
   ptools += files('PB_Cdtypeset.c')
 endif
 
-if arith == 'c'
+if arith.contains('c')
   ptools += files('PB_Cctypeset.c')
 endif
 
-if arith == 'z'
+if arith.contains('z')
   ptools += files('PB_Cztypeset.c')
 endif

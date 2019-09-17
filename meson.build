@@ -9,20 +9,16 @@ cargs = '-DAdd_'
 arith = get_option('arith')
 buildtype = get_option('buildtype')
 
+message('arith: ' + arith)
+
 os = host_machine.system()
 cc = meson.get_compiler('c')
 fc = meson.get_compiler('fortran')
-ccid = cc.get_id()
-if ['gcc', 'pgi', 'flang'].contains(ccid)
-  add_project_arguments('-w', language : 'c')
-  add_project_arguments('-w', language : 'fortran')
-elif ccid == 'intel'
-  add_project_arguments('-w0', language : 'c')
-  add_project_arguments('-nowarn', language : 'fortran')
-elif ccid == 'intel-cl'
-  add_project_arguments('/W0', language : 'c')
-  add_project_arguments('/nowarn', language : 'fortran')
-endif
+
+quiet_f = fc.first_supported_argument(['-w', '-nowarn', '/nowarn'])
+add_project_arguments(quiet_f, language: 'fortran')
+quiet_c = cc.first_supported_argument(['-w', '-w0', '/W0'])
+add_project_arguments(quiet_c, language: 'fortran')
 
 # == MPI
 # if MPI_ROOT, assume compiler wrapper is usable
