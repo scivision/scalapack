@@ -9,7 +9,7 @@ cargs = '-DAdd_'
 arith = get_option('arith')
 buildtype = get_option('buildtype')
 
-message('arith: ' + arith)
+message('SCALAPACK arith: ' + arith)
 
 os = host_machine.system()
 cc = meson.get_compiler('c')
