@@ -68,29 +68,7 @@ subdir('PBLAS/SRC')  # pblas files
 subdir('REDIST/SRC')  # redist files
 subdir('SRC') # src files
 
-system_blas = get_option('system_blas')
-if system_blas
-  blas = dependency('blas', required: false)
-  if not blas.found()  # Mac Homebrew
-    blas = fc.find_library('blas', required: false)
-  endif
-  if blas.found()
-    lapack = dependency('lapack', required: false)
-    if not lapack.found()  # create own Lapack
-      subdir('TOOLS/LAPACK')
-    endif
-  else
-    lapack = disabler()
-  endif
-else
-  blas = disabler()
-  lapack = disabler()
-endif
-if not blas.found() or not lapack.found()
-  lapack_proj = subproject('lapack')
-  blas = lapack_proj.get_variable('blas')
-  lapack = lapack_proj.get_variable('lapack')
-endif
+subdir('TOOLS/LAPACK')
 
 # this is the only thing installed: libscalapack.{a,so,dylib,lib}
 scalapack_lib = library('scalapack',

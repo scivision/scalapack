@@ -1,7 +1,7 @@
 allaux = files('icopy.f')
 
 atgen = []
-matget = []
+matgen = []
 
 if arith.contains('s')
 atgen += files('slatm1.f', 'slaran.f', 'slarnd.f')
@@ -22,6 +22,18 @@ endif
 if arith.contains('z')
 atgen += files('zlatm1.f', 'zlarnd.f', 'zlarnv.f')
 matgen += files('zlatms.f', 'zlagge.f', 'zlagsy.f', 'zlarot.f', 'zlaghe.f')
+endif
+
+
+blas_only = get_option('blas_only')
+system_blas = get_option('system_blas')
+blas = disabler()
+if system_blas
+  blas = dependency('blas', required: false)
+endif
+if not blas.found()
+  lapack_proj = subproject('lapack')
+  blas = lapack_proj.get_variable('blas')
 endif
 
 lapack_lib = library('lapack',
