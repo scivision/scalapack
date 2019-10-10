@@ -53,7 +53,7 @@ endif
 # == BLACS
 
 subdir('BLACS/SRC')
-if not meson.is_subproject() or buildtype == 'debug'
+if not (meson.is_subproject() or get_option('CI'))
   blacs_test_exe = executable('blacs_test', 'tests/blacs_helloworld.f90',
     link_with: blacs_lib,
     link_language: 'fortran')

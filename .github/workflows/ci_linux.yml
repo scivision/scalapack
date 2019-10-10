@@ -11,9 +11,9 @@ jobs:
     - uses: actions/setup-python@v1
       with:
         python-version: '3.x'
-    - run: python -m pip install meson
-    - run: sudo apt install -yq --no-install-recommends ninja-build gfortran liblapack-dev libopenmpi-dev openmpi-bin
-    - run: meson setup build -Dsystem_blas=true
+    - run: sudo apt install -yq --no-install-recommends ninja-build gfortran libopenmpi-dev openmpi-bin
+    - run: pip install meson
+    - run: meson setup build -DCI=true
       env:
         FC: gfortran
     - run: meson test -C build -v
