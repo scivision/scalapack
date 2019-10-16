@@ -26,9 +26,9 @@ mpiroot = get_option('MPI_ROOT')
 if mpiroot == ''
   mpiexec = find_program('mpiexec')
   mpif = dependency('mpi', language : 'fortran')
-  mpiret = fc.run('use mpi; end', dependencies : mpif, name: 'Fortran MPI')
-  if mpiret.returncode() != 0
-    warning('MPI_Fortran does not link properly: ' + mpiret.stderr() + ' ' + mpiret.stdout())
+  if not fc.links('use mpi; end', name: 'Fortran MPI', dependencies: mpif)
+    mpif = disabler()
+    mpiexec = disabler()
   endif
 else
   fc.run('use mpi; integer :: i; call mpi_init(i); call mpi_finalize(i); end', name: 'Fortran MPI wrapper check')
@@ -42,8 +42,8 @@ int main() { MPI_Init(NULL, NULL); MPI_Finalize(); return 0;}
 '''
 if mpiroot == ''
   mpic = dependency('mpi', language : 'c')
-  if cc.run(mpic_code, dependencies: mpic, name: 'C MPI').returncode() != 0
-    warning('MPI_C does not link properly')
+  if cc.links(mpic_code, dependencies: mpic, name: 'C MPI')
+    mpic = disabler()
   endif
 else
   cc.run(mpic_code, name: 'C MPI compiler wrapper')
@@ -56,7 +56,9 @@ subdir('BLACS/SRC')
 if not (meson.is_subproject() or get_option('CI'))
   blacs_test_exe = executable('blacs_test', 'tests/blacs_helloworld.f90',
     link_with: blacs_lib,
+    dependencies: mpif,
     link_language: 'fortran')
+
   test('BLACS basic', mpiexec,
     args: ['-np', '4', '--oversubscribe', blacs_test_exe],
     timeout: 15)
