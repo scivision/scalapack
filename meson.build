@@ -38,7 +38,7 @@ endif
 
 mpic_code = '''
 #include <mpi.h>
-int main() { MPI_Init(NULL, NULL); MPI_Finalize(); return 0;}
+int main(int argc, char *argv[]) { MPI_Init(&argc, &argv); MPI_Finalize(); return 0;}
 '''
 if mpiroot == ''
   mpic = dependency('mpi', language : 'c')
