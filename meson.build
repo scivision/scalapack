@@ -42,7 +42,7 @@ int main() { MPI_Init(NULL, NULL); MPI_Finalize(); return 0;}
 '''
 if mpiroot == ''
   mpic = dependency('mpi', language : 'c')
-  if cc.links(mpic_code, dependencies: mpic, name: 'C MPI')
+  if not cc.links(mpic_code, dependencies: mpic, name: 'C MPI')
     mpic = disabler()
   endif
 else
