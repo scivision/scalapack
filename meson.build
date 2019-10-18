@@ -50,6 +50,20 @@ if not (meson.is_subproject() or get_option('CI'))
     timeout: 15)
 endif
 
+# == LAPACK
+
+blas = disabler()
+if get_option('system_blas')
+  blas = dependency('blas', required: false)
+endif
+if blas.found() and not fc.links('x=dnrm2(1, [2.], 1); end', dependencies: blas, name: 'BLAS')
+  blas = disabler()
+endif
+if not blas.found()
+  lapack_proj = subproject('lapack')
+  blas = lapack_proj.get_variable('blas')
+endif
+
 # == SCALAPACK
 subdir('TOOLS')  # tools files
 subdir('PBLAS/SRC')  # pblas files
