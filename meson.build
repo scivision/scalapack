@@ -21,9 +21,9 @@ quiet_c = cc.first_supported_argument(['-w', '-w0', '/W0'])
 add_project_arguments(quiet_c, language: 'fortran')
 
 # == MPI
-mpiexec = find_program('mpiexec', required: false)
+mpiexec = find_program('mpiexec', required: false, disabler: true)
 mpif = dependency('mpi', language : 'fortran')
-if not fc.links('use mpi; end', name: 'Fortran MPI', dependencies: mpif)
+if mpif.found() and not fc.links('use mpi; end', name: 'Fortran MPI', dependencies: mpif)
   mpif = disabler()
 endif
 
@@ -32,7 +32,7 @@ mpic_code = '''
 int main(int argc, char *argv[]) { MPI_Init(&argc, &argv); MPI_Finalize(); return 0;}
 '''
 mpic = dependency('mpi', language : 'c')
-if not cc.links(mpic_code, dependencies: mpic, name: 'C MPI')
+if mpic.found() and not cc.links(mpic_code, dependencies: mpic, name: 'C MPI')
   mpic = disabler()
 endif
 
