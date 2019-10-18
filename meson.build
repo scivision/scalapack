@@ -21,33 +21,19 @@ quiet_c = cc.first_supported_argument(['-w', '-w0', '/W0'])
 add_project_arguments(quiet_c, language: 'fortran')
 
 # == MPI
-# if MPI_ROOT, assume compiler wrapper is usable
-mpiroot = get_option('MPI_ROOT')
-if mpiroot == ''
-  mpiexec = find_program('mpiexec')
-  mpif = dependency('mpi', language : 'fortran')
-  if not fc.links('use mpi; end', name: 'Fortran MPI', dependencies: mpif)
-    mpif = disabler()
-    mpiexec = disabler()
-  endif
-else
-  fc.run('use mpi; integer :: i; call mpi_init(i); call mpi_finalize(i); end', name: 'Fortran MPI wrapper check')
-  mpiexec = find_program(mpiroot / 'mpiexec')
-  mpif = []
+mpiexec = find_program('mpiexec', required: false)
+mpif = dependency('mpi', language : 'fortran')
+if not fc.links('use mpi; end', name: 'Fortran MPI', dependencies: mpif)
+  mpif = disabler()
 endif
 
 mpic_code = '''
 #include <mpi.h>
 int main(int argc, char *argv[]) { MPI_Init(&argc, &argv); MPI_Finalize(); return 0;}
 '''
-if mpiroot == ''
-  mpic = dependency('mpi', language : 'c')
-  if not cc.links(mpic_code, dependencies: mpic, name: 'C MPI')
-    mpic = disabler()
-  endif
-else
-  cc.run(mpic_code, name: 'C MPI compiler wrapper')
-  mpic = []
+mpic = dependency('mpi', language : 'c')
+if not cc.links(mpic_code, dependencies: mpic, name: 'C MPI')
+  mpic = disabler()
 endif
 
 # == BLACS
@@ -81,6 +67,10 @@ scalapack_lib = library('scalapack',
   fortran_args : cargs,
   install: true)
 
+if meson.is_subproject()
+  subdir_done()
+endif
+
 # --- generate pkg-config
 pkg = import('pkgconfig')
 pkg.generate(scalapack_lib,
@@ -89,13 +79,11 @@ pkg.generate(scalapack_lib,
   description: 'Netlib SCALAPACK')
 
 # --- Scalapack test
-if not meson.is_subproject() or buildtype == 'debug'
-  scalapack_test_exe = executable('example1', 'tests/example1.F',
-    fortran_args : '-Darith='+arith,
-    link_with : scalapack_lib,
-    dependencies : [mpif, lapack, blas],
-    link_language: 'fortran')
-  test('scalapack basic', mpiexec,
-    args: ['-np', '6', '--oversubscribe', scalapack_test_exe],  # must be at least 6 processes or will fail
-    timeout: 60)
-endif
+scalapack_test_exe = executable('example1', 'tests/example1.F',
+  fortran_args : '-Darith='+arith,
+  link_with : scalapack_lib,
+  dependencies : [mpif, lapack, blas],
+  link_language: 'fortran')
+test('scalapack basic', mpiexec,
+  args: ['-np', '6', '--oversubscribe', scalapack_test_exe],  # must be at least 6 processes or will fail
+  timeout: 60)
