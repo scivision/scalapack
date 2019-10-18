@@ -16,6 +16,7 @@ jobs:
     - run: meson setup build -DCI=true
       env:
         FC: gfortran
+    - run: ninja -C build
     - run: meson test -C build -v
     - uses: actions/upload-artifact@v1
       if: failure()
