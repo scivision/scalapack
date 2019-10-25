@@ -1,5 +1,2 @@
-option('LAPACK_ROOT', type : 'string', description : 'root directory of LAPACK', yield: true)
 option('CI', type: 'boolean', value: false, description : 'running on CI, do not run shaky tests', yield: true)
 option('arith', type: 'string', value: 'sd', description: 'precision (s,d,c,z)', yield: true)
-option('system_blas', type: 'boolean', value: true, description: 'use system libraries', yield: true)
-option('blas_only', type : 'boolean', value: true, yield: true)

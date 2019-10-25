@@ -7,7 +7,6 @@ project('SCALAPACK',
 
 cargs = '-DAdd_'
 arith = get_option('arith')
-buildtype = get_option('buildtype')
 
 message('SCALAPACK arith: ' + arith)
 
@@ -52,10 +51,7 @@ endif
 
 # == LAPACK
 
-blas = disabler()
-if get_option('system_blas')
-  blas = dependency('blas', required: false)
-endif
+blas = dependency('blas', required: false, disabler: true)
 if blas.found() and not fc.links('x=dnrm2(1, [2.], 1); end', dependencies: blas, name: 'BLAS')
   blas = disabler()
 endif
