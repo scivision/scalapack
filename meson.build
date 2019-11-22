@@ -23,7 +23,7 @@ add_project_arguments(quiet_c, language: 'fortran')
 mpiexec = find_program('mpiexec', required: false, disabler: true)
 mpif = dependency('mpi', language : 'fortran')
 if mpif.found() and not fc.links('use mpi; end', name: 'Fortran MPI', dependencies: mpif)
-  mpif = disabler()
+  error('MPI Fortran not found, and Scalapack uses MPI throughout')
 endif
 
 mpic_code = '''
@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) { MPI_Init(&argc, &argv); MPI_Finalize(); retur
 '''
 mpic = dependency('mpi', language : 'c')
 if mpic.found() and not cc.links(mpic_code, dependencies: mpic, name: 'C MPI')
-  mpic = disabler()
+  error('MPI C not found, and Scalapack uses MPI throughout')
 endif
 
 # == BLACS
