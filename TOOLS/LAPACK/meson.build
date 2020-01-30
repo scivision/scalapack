@@ -15,8 +15,7 @@ endif
 
 if arith.contains('d')
 atgen += files('dlatm1.f', 'dlaran.f', 'dlarnd.f')
-matgen += files('dlatms.f', 'dlagge.f', 'dlagsy.f', 'dlarot.f',
-  'dlassq.f', 'dlamch.f', 'dlacpy.f')
+matgen += files('dlatms.f', 'dlagge.f', 'dlagsy.f', 'dlarot.f', 'dlassq.f', 'dlamch.f', 'dlacpy.f')
 endif
 
 if arith.contains('z')

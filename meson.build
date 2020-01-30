@@ -46,7 +46,8 @@ if not (meson.is_subproject() or get_option('CI'))
 
   test('BLACS basic', mpiexec,
     args: ['-np', '4', '--oversubscribe', blacs_test_exe],
-    timeout: 15)
+    timeout: 15,
+    suite: 'blacs')
 endif
 
 # == LAPACK
@@ -89,8 +90,7 @@ pkg.generate(scalapack_lib,
   description: 'Netlib SCALAPACK')
 
 # --- Scalapack test
-scalapack_test_exe = executable('example1', 'tests/example1.F',
-  fortran_args : '-Darith='+arith,
+scalapack_test_exe = executable('example1', 'tests/example1.f',
   link_with : scalapack_lib,
   dependencies : [mpif, lapack, blas],
   link_language: 'fortran')
