@@ -36,6 +36,9 @@ find_package(BLAS REQUIRED)
 # the add_subdirectory() use target_sources() to fill in scalapack.
 add_library(scalapack)
 target_link_libraries(scalapack PRIVATE blacs lapack ${BLAS_LIBRARIES} MPI::MPI_C MPI::MPI_Fortran)
+target_compile_definitions(scalapack PRIVATE ${cargs})
+add_library(scalapack::scalapack ALIAS scalapack)
+
 
 add_subdirectory(TOOLS)  # tools files
 add_subdirectory(PBLAS/SRC)  # pblas files
@@ -43,12 +46,14 @@ add_subdirectory(REDIST/SRC)  # redist files
 add_subdirectory(SRC) # src files
 
 add_subdirectory(TOOLS/LAPACK)
-target_compile_definitions(scalapack PRIVATE ${cargs})
+
+
 
 # --- Scalapack test
+
 if("d" IN_LIST arith)
-add_executable(test_scalapack tests/test_scalapack_d.f90)
-target_link_libraries(test_scalapack PRIVATE scalapack lapack ${BLAS_LIBRARIES} MPI::MPI_Fortran)
-add_test(NAME ScalapackBasic COMMAND $<TARGET_FILE:test_scalapack>)
-set_tests_properties(ScalapackBasic PROPERTIES TIMEOUT 15)
+add_executable(test_scalapack_d tests/test_scalapack_d.f90)
+target_link_libraries(test_scalapack_d PRIVATE scalapack::scalapack ${BLAS_LIBRARIES} MPI::MPI_Fortran)
+add_test(NAME Scalapack_d COMMAND $<TARGET_FILE:test_scalapack_d>)
+set_tests_properties(Scalapack_d PROPERTIES TIMEOUT 15)
 endif()
