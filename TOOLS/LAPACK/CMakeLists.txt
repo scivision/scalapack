@@ -26,3 +26,5 @@ endif()
 if("z" IN_LIST arith)
 target_sources(lapack PRIVATE ${DZATGEN} ${ZMATGEN})
 endif()
+
+add_library(scalapack::lapack ALIAS lapack)

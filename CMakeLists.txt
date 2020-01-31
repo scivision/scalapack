@@ -35,9 +35,13 @@ find_package(BLAS REQUIRED)
 # == SCALAPACK
 # the add_subdirectory() use target_sources() to fill in scalapack.
 add_library(scalapack)
-target_link_libraries(scalapack PRIVATE blacs lapack ${BLAS_LIBRARIES} MPI::MPI_C MPI::MPI_Fortran)
+target_link_libraries(scalapack PRIVATE scalapack::blacs scalapack::lapack ${BLAS_LIBRARIES} MPI::MPI_C MPI::MPI_Fortran)
 target_compile_definitions(scalapack PRIVATE ${cargs})
-add_library(scalapack::scalapack ALIAS scalapack)
+
+# scalapack::scalapack is the target most users will link to.
+add_library(scalapack::scalapack INTERFACE IMPORTED GLOBAL)
+set_property(TARGET scalapack::scalapack PROPERTY
+  INTERFACE_LINK_LIBRARIES scalapack scalapack::blacs scalapack::lapack)
 
 
 add_subdirectory(TOOLS)  # tools files
