@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14.0)
 project(SCALAPACK
   LANGUAGES C Fortran
-  VERSION 2.0.2
+  VERSION 2.1.0
   HOMEPAGE_URL "http://netlib.org/scalapack"
   DESCRIPTION "University of Tennessee, Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd")
 enable_testing()

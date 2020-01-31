@@ -1,9 +1,8 @@
 project('SCALAPACK',
   ['c', 'fortran'],
-  version: '2.0.2',
+  version: '2.1.0',
   meson_version: '>= 0.50',
-  default_options : ['default_library=static', 'buildtype=release', 'warning_level=0',
-    'libdir=scalapack-2.0.2', 'includedir=scalapack-2.0.2/include'])
+  default_options : ['default_library=static', 'buildtype=release', 'warning_level=0'])
 
 cargs = '-DAdd_'
 arith = get_option('arith')
