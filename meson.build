@@ -71,11 +71,10 @@ subdir('TOOLS/LAPACK')
 
 # this is the only thing installed: libscalapack.{a,so,dylib,lib}
 scalapack_lib = library('scalapack',
-  sources: [blacsInternal, tools, pblas, redist, src],
+  sources: [tools, pblas, redist, src],
   link_with: blacs_lib,
   dependencies: [lapack, blas, mpic, mpif],
   c_args : cargs,
-  fortran_args : cargs,
   install: true)
 
 if meson.is_subproject()
