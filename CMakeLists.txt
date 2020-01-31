@@ -25,7 +25,7 @@ add_subdirectory(BLACS/SRC)
 
 add_executable(test_blacs tests/blacs_helloworld.f90)
 target_link_libraries(test_blacs blacs MPI::MPI_Fortran)
-add_test(NAME BLACSbasic COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 1 $<TARGET_FILE:test_blacs>)
+add_test(NAME BLACSbasic COMMAND $<TARGET_FILE:test_blacs>)
 set_tests_properties(BLACSbasic PROPERTIES TIMEOUT 15)
 
 # --- LAPACK
@@ -46,7 +46,9 @@ add_subdirectory(TOOLS/LAPACK)
 target_compile_definitions(scalapack PRIVATE ${cargs})
 
 # --- Scalapack test
-add_executable(test_scalapack tests/example1.f)
+if("d" IN_LIST arith)
+add_executable(test_scalapack tests/test_scalapack_d.f90)
 target_link_libraries(test_scalapack PRIVATE scalapack lapack ${BLAS_LIBRARIES} MPI::MPI_Fortran)
-add_test(NAME ScalapackBasic COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 6 --oversubscript $<TARGET_FILE:test_scalapack>)
-set_tests_properties(ScalapackBasic PROPERTIES TIMEOUT 60)
+add_test(NAME ScalapackBasic COMMAND $<TARGET_FILE:test_scalapack>)
+set_tests_properties(ScalapackBasic PROPERTIES TIMEOUT 15)
+endif()
