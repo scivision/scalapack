@@ -4,6 +4,35 @@ on: [push, pull_request]
 
 jobs:
 
+  cmake:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+    - run: brew install gcc open-mpi openblas cmake
+
+    - run: cmake -B build -Darith=d
+      env:
+        FC: gfortran-9
+        CC: gcc-9
+
+    - run: cmake --build build --parallel
+    - uses: actions/upload-artifact@v1
+      if: failure()
+      with:
+        name: MacOS_Cmake_Buildlog
+        path: build/CMakeFiles/CMakeError.log
+
+    - run: ctest -V
+      working-directory: build
+    - uses: actions/upload-artifact@v1
+      if: failure()
+      with:
+        name: MacOS_CMake_Testlog
+        path: build/Testing/Temporary/LastTest.log
+
   meson:
     runs-on: macos-latest
     steps:
@@ -11,13 +40,21 @@ jobs:
     - uses: actions/setup-python@v1
       with:
         python-version: '3.x'
-    - run: brew install gcc ninja open-mpi
-    - run: pip install meson
-    - run: meson setup build -DCI=true
+    - run: brew install gcc ninja open-mpi openblas
+    - run: pip install -r requirements.txt
+
+    - run: meson setup build -Darith=d
       env:
         FC: gfortran-9
         CC: gcc-9
+
     - run: ninja -C build
+    - uses: actions/upload-artifact@v1
+      if: failure()
+      with:
+        name: Mac_Meson_Configlog
+        path: build/meson-logs/meson-log.txt
+
     - run: meson test -C build -v
     - uses: actions/upload-artifact@v1
       if: failure()
