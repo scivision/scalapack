@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 3.14.0)
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Debug or Release")
+endif()
 project(SCALAPACK
   LANGUAGES C Fortran
   VERSION 2.1.0
@@ -9,10 +12,8 @@ enable_testing()
 set(cargs -DAdd_)
 
 if(NOT arith)
-  set(arith "s;d")
+  set(arith "d")
 endif()
-
-set(quietargs "-w ")
 
 cmake_policy(SET CMP0076 NEW)
 
