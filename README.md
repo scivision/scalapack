@@ -1,19 +1,15 @@
+# Netlib Scalapack
+
 [![Actions Status](https://github.com/scivision/scalapack/workflows/ci_linux/badge.svg)](https://github.com/scivision/scalapack/actions)
 [![Actions Status](https://github.com/scivision/scalapack/workflows/ci_macos/badge.svg)](https://github.com/scivision/scalapack/actions)
 
-
-# Netlib Scalapack
-
-Use the
-[Meson build system](https://mesonbuild.com)
-to build the
-[unmodified Scalapack source code](http://www.netlib.org/scalapack/).
-
-If `example1` fails to build or run, the Scalapack library is probably not built / linked correctly.
-
+Scalapack with CMake and Meson enhancements to make Scalapack easier to use directly in other projects.
+The Scalapack
+[source code](http://www.netlib.org/scalapack/) is unmodified.
+MPI is required for Scalapack.
+Scalapack 2.1 works with OpenMPI 4.x, while Scalapack 2.0 worked with OpenMPI &lt; 4.
 
 ## Build
-
 
 ```sh
 meson setup build
@@ -35,23 +31,10 @@ The build-time parameter `-Darith=d` may be optionally specified:
 -Darith=z  # complex128
 ```
 
----
-
-use the `--prefix` option to install Scalapack under a directory.
-For example: `--prefix ~/mylibs` will install Scalapack under `~/mylibs/scalapack-2.0.2/`
-
----
-
-If you need to specify MPI compiler wrappers, do like:
-
-```sh
-FC=~/lib_gcc/openmpi-3.1.4/bin/mpif90 CC=~/lib_gcc/openmpi-3.1.4/bin/mpicc meson build
-```
-
 ## Notes
 
 Original Scalapack [README](./README)
 
-On Windows, you can alternatively get Scalapack with the
-[Intel compilers](https://software.intel.com/en-us/qualify-for-free-software),
-which already have Scalapack built-in to Intel MKL.
+Scalapack is included with the
+[Intel Parallel Studio](https://software.intel.com/en-us/qualify-for-free-software),
+for Windows as well.
