@@ -14,7 +14,7 @@ jobs:
     - name: Install prereqs
       run: |
         sudo apt update -yq
-        sudo apt install -yq --no-install-recommends gfortran libopenmpi-dev openmpi-bin libblas-dev
+        sudo apt install -yq --no-install-recommends gfortran libopenmpi-dev openmpi-bin liblapack-dev
     - run: pip install cmake
 
     - run: cmake -B build -Darith=d
