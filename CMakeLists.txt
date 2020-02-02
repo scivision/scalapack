@@ -15,9 +15,41 @@ if(NOT arith)
   set(arith "d")
 endif()
 
+cmake_policy(SET CMP0074 NEW)
 cmake_policy(SET CMP0076 NEW)
+cmake_policy(SET CMP0082 NEW)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/Modules)
+
+# --- compiler options
+
+if(CMAKE_Fortran_COMPILER_ID STREQUAL Intel)
+  if(WIN32)
+    set(CMAKE_Fortran_FLAGS "/warn:declarations /heap-arrays ")
+  else()
+    set(CMAKE_Fortran_FLAGS "-warn declarations ")
+  endif()
+elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
+  add_compile_options(-mtune=native)
+  set(CMAKE_Fortran_FLAGS "-fimplicit-none ")
+elseif(CMAKE_Fortran_COMPILER_ID STREQUAL PGI)
+  set(CMAKE_Fortran_FLAGS "-Mdclchk ")
+endif()
+
+if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
+  # problems with MPI can cause tests to hang forever, so set a default timeout [seconds]
+  set(CTEST_TEST_TIMEOUT 15)
+  # --- install defaults
+  if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    if(WIN32)
+      set(HOME $ENV{USERPROFILE})
+    else()
+      set(HOME $ENV{HOME})
+    endif()
+
+    set(CMAKE_INSTALL_PREFIX "${HOME}/.local/scalapack" CACHE PATH "..." FORCE)
+  endif()
+endif()
 
 # --- MPI
 find_package(MPI REQUIRED COMPONENTS C Fortran)
@@ -62,3 +94,12 @@ target_link_libraries(test_scalapack_d PRIVATE scalapack::scalapack ${LAPACK_LIB
 add_test(NAME Scalapack_d COMMAND $<TARGET_FILE:test_scalapack_d>)
 set_tests_properties(Scalapack_d PROPERTIES TIMEOUT 15)
 endif()
+
+# --- install
+
+install(TARGETS scalapack
+EXPORT SCALAPACKTargets
+ARCHIVE DESTINATION lib
+LIBRARY DESTINATION lib
+RUNTIME DESTINATION bin
+INCLUDES DESTINATION include)
