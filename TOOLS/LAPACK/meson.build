@@ -15,7 +15,7 @@ endif
 
 if arith.contains('d')
 atgen += files('dlatm1.f', 'dlaran.f', 'dlarnd.f')
-matgen += files('dlatms.f', 'dlagge.f', 'dlagsy.f', 'dlarot.f', 'dlassq.f', 'dlamch.f', 'dlacpy.f')
+matgen += files('dlatms.f', 'dlagge.f', 'dlagsy.f', 'dlarot.f')
 endif
 
 if arith.contains('z')
@@ -23,9 +23,4 @@ atgen += files('zlatm1.f', 'zlarnd.f', 'zlarnv.f')
 matgen += files('zlatms.f', 'zlagge.f', 'zlagsy.f', 'zlarot.f', 'zlaghe.f')
 endif
 
-
-lapack_lib = library('lapack',
-  sources: [allaux, atgen, matgen],
-  dependencies: blas,
-  install: true)
-lapack = declare_dependency(link_with: lapack_lib)
+extra_lapack = [allaux, atgen, matgen]

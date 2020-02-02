@@ -50,13 +50,13 @@ endif
 
 # == LAPACK
 
-blas = dependency('blas', required: false, disabler: true)
-if blas.found() and not fc.links('x=dnrm2(1, [2.], 1); end', dependencies: blas, name: 'BLAS')
-  blas = disabler()
+lapack = dependency('lapack', required: false, disabler: true)
+if lapack.found() and not fc.links('print *,disnan(0.); end', dependencies: lapack, name: 'LAPACK')
+  lapack = disabler()
 endif
-if not blas.found()
+if not lapack.found()
   lapack_proj = subproject('lapack')
-  blas = lapack_proj.get_variable('blas')
+  lapack = lapack_proj.get_variable('lapack')
 endif
 
 # == SCALAPACK
@@ -69,9 +69,9 @@ subdir('TOOLS/LAPACK')
 
 # this is the only thing installed: libscalapack.{a,so,dylib,lib}
 scalapack_lib = library('scalapack',
-  sources: [tools, pblas, redist, src],
+  sources: [tools, pblas, redist, src, extra_lapack],
   link_with: blacs_lib,
-  dependencies: [lapack, blas, mpic, mpif],
+  dependencies: [lapack, mpic, mpif],
   c_args : cargs,
   install: true)
 
@@ -90,7 +90,7 @@ pkg.generate(scalapack_lib,
 if arith.contains('d')
 scalapack_test_exe = executable('example1', 'tests/test_scalapack_d.f90',
   link_with : scalapack_lib,
-  dependencies : [mpif, lapack, blas],
+  dependencies : [mpif, lapack],
   link_language: 'fortran')
 test('scalapack basic', scalapack_test_exe,
   timeout: 60, suite: 'scalapack')

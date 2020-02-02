@@ -8,23 +8,23 @@ set (CMATGEN clarnv.f clatm1.f clatms.f clagge.f claghe.f clagsy.f clarot.f clar
 
 set (DZATGEN dlatm1.f dlaran.f dlarnd.f)
 
-set (DMATGEN dlatms.f dlagge.f dlagsy.f dlarot.f dlassq.f dlamch.f dlacpy.f)
+set (DMATGEN dlatms.f dlagge.f dlagsy.f dlarot.f)
 
 set (ZMATGEN zlarnv.f zlatm1.f zlatms.f zlagge.f zlaghe.f zlagsy.f zlarot.f zlarnd.f)
 
-add_library(lapack ${ALLAUX})
-target_link_libraries(lapack PRIVATE ${BLAS_LIBRARIES})
+set(extra_lapack ${ALLAUX})
+
 if("s" IN_LIST arith)
-target_sources(lapack PRIVATE ${SCATGEN} ${SMATGEN})
+list(APPEND extra_lapack ${SCATGEN} ${SMATGEN})
 endif()
 if("c" IN_LIST arith)
-target_sources(lapack PRIVATE ${SCATGEN} ${CMATGEN})
+list(APPEND extra_lapack ${SCATGEN} ${CMATGEN})
 endif()
 if("d" IN_LIST arith)
-target_sources(lapack PRIVATE ${DZATGEN} ${DMATGEN})
+list(APPEND extra_lapack ${DZATGEN} ${DMATGEN})
 endif()
 if("z" IN_LIST arith)
-target_sources(lapack PRIVATE ${DZATGEN} ${ZMATGEN})
+list(APPEND extra_lapack ${DZATGEN} ${ZMATGEN})
 endif()
 
-add_library(scalapack::lapack ALIAS lapack)
+target_sources(scalapack PRIVATE ${extra_lapack})
