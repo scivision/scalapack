@@ -7,8 +7,6 @@ project('SCALAPACK',
 cargs = '-DAdd_'
 arith = get_option('arith')
 
-message('SCALAPACK arith: ' + arith)
-
 os = host_machine.system()
 cc = meson.get_compiler('c')
 fc = meson.get_compiler('fortran')
@@ -56,7 +54,7 @@ if lapack.found() and not fc.links('print *,disnan(0.); end', dependencies: lapa
 endif
 if not lapack.found()
   lapack_proj = subproject('lapack')
-  lapack = lapack_proj.get_variable('lapack')
+  lapack = declare_dependency(link_with: lapack_proj.get_variable('lapack'))
 endif
 
 # == SCALAPACK

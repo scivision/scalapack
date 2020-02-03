@@ -11,7 +11,7 @@ jobs:
     - uses: actions/setup-python@v1
       with:
         python-version: '3.x'
-    - run: brew install gcc open-mpi openblas cmake
+    - run: brew install gcc open-mpi cmake
 
     - run: cmake -B build -Darith=d
       env:
@@ -40,7 +40,7 @@ jobs:
     - uses: actions/setup-python@v1
       with:
         python-version: '3.x'
-    - run: brew install gcc ninja open-mpi openblas
+    - run: brew install gcc ninja open-mpi
     - run: pip install -r requirements.txt
 
     - run: meson setup build -Darith=d

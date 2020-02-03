@@ -65,7 +65,10 @@ set_tests_properties(BLACSbasic PROPERTIES TIMEOUT 15)
 
 # --- LAPACK
 
-find_package(LAPACK REQUIRED)
+find_package(LAPACK)
+if(NOT LAPACK_FOUND)
+  include(${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/lapack_external.cmake)
+endif()
 
 # == SCALAPACK
 # the add_subdirectory() use target_sources() to fill in scalapack.
