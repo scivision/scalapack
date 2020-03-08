@@ -9,7 +9,33 @@ The Scalapack
 MPI is required for Scalapack.
 Scalapack 2.1 works with OpenMPI 4.x, while Scalapack 2.0 worked with OpenMPI &lt; 4.
 
+## Prereq
+
+* Linux: `apt install cmake gfortran libopenmpi-dev liblapack-dev`
+* Mac: `brew install gcc cmake open-mpi lapack`
+
+### Windows MSYS2
+
+```sh
+pacman -S mingw-w64-x86_64-gcc-fortran mingw-w64-x86_64-msmpi mingw-w64-x86_64-lapack
+```
+
+and install
+[Microsoft MS-MPI](https://docs.microsoft.com/en-us/message-passing-interface/microsoft-mpi-release-notes)
+to get mpiexec.exe
+
 ## Build
+
+```sh
+cmake -B build
+cmake --build build
+
+# optional
+cd build
+ctest -V
+```
+
+or use Meson
 
 ```sh
 meson setup build
@@ -21,7 +47,15 @@ meson install -C build
 
 ### options
 
-The default precision is `d` meaning real float64.
+The default precision is
+
+```sh
+cmake -Darith="s;d"
+
+# or
+meson "-Darith=[s,d]"
+```
+meaning real 32-bit and 64-bit floating precision.
 The build-time parameter `-Darith=d` may be optionally specified:
 
 ```sh
