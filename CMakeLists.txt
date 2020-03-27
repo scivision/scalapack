@@ -8,6 +8,7 @@ project(SCALAPACK
   HOMEPAGE_URL "http://netlib.org/scalapack"
   DESCRIPTION "University of Tennessee, Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd")
 enable_testing()
+include(CTest)
 
 set(cargs -DAdd_)
 
@@ -28,7 +29,7 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL Intel)
     string(APPEND CMAKE_Fortran_FLAGS " -warn declarations")
   endif()
 elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
-  add_compile_options(-march=native)
+  add_compile_options(-mtune=native)
   string(APPEND CMAKE_Fortran_FLAGS " -fimplicit-none")
 elseif(CMAKE_Fortran_COMPILER_ID STREQUAL PGI)
   string(APPEND CMAKE_Fortran_FLAGS " -Mdclchk")
