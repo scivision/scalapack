@@ -18,21 +18,40 @@ endif()
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/Modules)
 
-# --- compiler options
-
-if(CMAKE_Fortran_COMPILER_ID STREQUAL Intel)
-  if(WIN32)
-  add_compile_options(/arch:native)
-    string(APPEND CMAKE_Fortran_FLAGS " /warn:declarations /heap-arrays")
-  else()
-    add_compile_options(-march=native)
-    string(APPEND CMAKE_Fortran_FLAGS " -warn declarations")
+# typical projects set options too strict for MUMPS code style, so if
+# being used as external project, locally override MUMPS compile options
+if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
+# MUMPS is being compiled by itself or as ExternalProject
+  if(CMAKE_Fortran_COMPILER_ID STREQUAL Intel)
+    if(WIN32)
+    add_compile_options(/arch:native)
+      # /heap-arrays is necessary to avoid runtime errors in programs using this library
+      string(APPEND CMAKE_Fortran_FLAGS " /warn:declarations /heap-arrays")
+    else()
+      add_compile_options(-march=native)
+      string(APPEND CMAKE_Fortran_FLAGS " -warn declarations")
+    endif()
+  elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
+    add_compile_options(-mtune=native)
+    string(APPEND CMAKE_Fortran_FLAGS " -fimplicit-none")
+  elseif(CMAKE_Fortran_COMPILER_ID STREQUAL PGI)
+    string(APPEND CMAKE_Fortran_FLAGS " -Mdclchk")
   endif()
-elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
-  add_compile_options(-mtune=native)
-  string(APPEND CMAKE_Fortran_FLAGS " -fimplicit-none")
-elseif(CMAKE_Fortran_COMPILER_ID STREQUAL PGI)
-  string(APPEND CMAKE_Fortran_FLAGS " -Mdclchk")
+else()
+  # MUMPS is being compiled via FetchContent, override options to avoid tens of megabytes of warnings
+  if(CMAKE_Fortran_COMPILER_ID STREQUAL Intel)
+    if(WIN32)
+      # /heap-arrays is necessary to avoid runtime errors in programs using this library
+      set(CMAKE_Fortran_FLAGS "/nologo /fpp /libs:dll /threads /warn:declarations /heap-arrays")
+    else()
+      set(CMAKE_Fortran_FLAGS "-warn declarations")
+    endif()
+  elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
+    add_compile_options(-mtune=native)
+    set(CMAKE_Fortran_FLAGS "-fimplicit-none")
+  elseif(CMAKE_Fortran_COMPILER_ID STREQUAL PGI)
+    set(CMAKE_Fortran_FLAGS "-Mdclchk")
+  endif()
 endif()
 
 if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
