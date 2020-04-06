@@ -1,11 +1,12 @@
 # Netlib Scalapack
 
-[![Actions Status](https://github.com/scivision/scalapack/workflows/ci_linux/badge.svg)](https://github.com/scivision/scalapack/actions)
-[![Actions Status](https://github.com/scivision/scalapack/workflows/ci_macos/badge.svg)](https://github.com/scivision/scalapack/actions)
+![Actions Status](https://github.com/scivision/scalapack/workflows/ci_linux/badge.svg)
+![Actions Status](https://github.com/scivision/scalapack/workflows/ci_macos/badge.svg)
 
-Scalapack with CMake and Meson enhancements to make Scalapack easier to use directly in other projects.
+Scalapack with CMake enhancements to make Scalapack easier to use directly in other projects.
 The Scalapack
-[source code](http://www.netlib.org/scalapack/) is unmodified.
+[source code](http://www.netlib.org/scalapack/)
+is unmodified.
 MPI is required for Scalapack.
 Scalapack 2.1 works with OpenMPI 4.x, while Scalapack 2.0 worked with OpenMPI &lt; 4.
 

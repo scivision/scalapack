@@ -7,7 +7,6 @@ on:
       - "**.F90"
       - "**.cmake"
       - "**/CMakeLists.txt"
-      - "**.build"
       - ".github/workflows/ci_linux.yml"
   pull_request:
 
@@ -17,9 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
-      with:
-        python-version: '3.x'
 
     - name: Install prereqs
       run: |
@@ -32,6 +28,7 @@ jobs:
         CC: gcc
 
   meson:
+    if: false
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2

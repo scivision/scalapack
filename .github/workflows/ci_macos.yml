@@ -15,9 +15,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
-      with:
-        python-version: '3.x'
+
     - run: brew install ninja open-mpi lapack
 
     - run: ctest -S setup.cmake -VV
@@ -27,6 +25,7 @@ jobs:
 
 
   meson:
+    if: false
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
