@@ -16,6 +16,8 @@ if(NOT arith)
   set(arith "s;d")
 endif()
 
+option(autobuild "auto-build Lapack if missing or broken" ON)
+
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/Modules)
 
 # typical projects set options too strict for MUMPS code style, so if
@@ -36,6 +38,10 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
     string(APPEND CMAKE_Fortran_FLAGS " -fimplicit-none")
   elseif(CMAKE_Fortran_COMPILER_ID STREQUAL PGI)
     string(APPEND CMAKE_Fortran_FLAGS " -Mdclchk")
+    if(NOT (MPI_ROOT OR ENV{MPI_ROOT}))
+      get_filename_component(_pgi_path ${CMAKE_Fortran_COMPILER} DIRECTORY)
+      set(MPI_ROOT ${_pgi_path}/../mpi/openmpi-3.1.3)
+    endif()
   endif()
 else()
   # MUMPS is being compiled via FetchContent, override options to avoid tens of megabytes of warnings
@@ -51,6 +57,10 @@ else()
     set(CMAKE_Fortran_FLAGS "-fimplicit-none")
   elseif(CMAKE_Fortran_COMPILER_ID STREQUAL PGI)
     set(CMAKE_Fortran_FLAGS "-Mdclchk")
+    if(NOT (MPI_ROOT OR ENV{MPI_ROOT}))
+      get_filename_component(_pgi_path ${CMAKE_Fortran_COMPILER} DIRECTORY)
+      set(MPI_ROOT ${_pgi_path}/../mpi/openmpi-3.1.3)
+    endif()
   endif()
 endif()
 
@@ -68,8 +78,9 @@ add_subdirectory(BLACS/SRC)
 
 add_executable(test_blacs tests/blacs_helloworld.f90)
 target_link_libraries(test_blacs blacs MPI::MPI_Fortran)
-add_test(NAME BLACSbasic COMMAND $<TARGET_FILE:test_blacs>)
-set_tests_properties(BLACSbasic PROPERTIES TIMEOUT 15)
+add_test(NAME scalapack:BLACSbasic
+  COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 2 $<TARGET_FILE:test_blacs>)
+set_tests_properties(scalapack:BLACSbasic PROPERTIES TIMEOUT 15)
 
 # --- LAPACK
 
@@ -100,10 +111,11 @@ add_subdirectory(TOOLS/LAPACK)
 # --- Scalapack test
 
 if("d" IN_LIST arith)
-add_executable(test_scalapack_d tests/test_scalapack_d.f90)
-target_link_libraries(test_scalapack_d PRIVATE scalapack::scalapack ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES} MPI::MPI_Fortran)
-add_test(NAME scalapack:unit:real64 COMMAND $<TARGET_FILE:test_scalapack_d>)
-set_tests_properties(scalapack:unit:real64 PROPERTIES TIMEOUT 15)
+  add_executable(test_scalapack_d tests/test_scalapack_d.f90)
+  target_link_libraries(test_scalapack_d PRIVATE scalapack::scalapack ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES} MPI::MPI_Fortran)
+  add_test(NAME scalapack:unit:real64
+    COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 2 $<TARGET_FILE:test_scalapack_d>)
+  set_tests_properties(scalapack:unit:real64 PROPERTIES TIMEOUT 15)
 endif()
 
 # --- install
