@@ -73,14 +73,14 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
 endif()
 
 # --- MPI
-find_package(MPI REQUIRED COMPONENTS C Fortran)
+include(${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/mpi.cmake)
 
 # --- BLACS
 
 add_subdirectory(BLACS/SRC)
 
 add_executable(test_blacs tests/blacs_helloworld.f90)
-target_link_libraries(test_blacs blacs MPI::MPI_Fortran)
+target_link_libraries(test_blacs SCALAPACK::BLACS MPI::MPI_Fortran)
 add_test(NAME scalapack:BLACSbasic
   COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 2 $<TARGET_FILE:test_blacs>)
 set_tests_properties(scalapack:BLACSbasic PROPERTIES TIMEOUT 15)
@@ -95,13 +95,12 @@ endif()
 # == SCALAPACK
 # the add_subdirectory() use target_sources() to fill in scalapack.
 add_library(scalapack)
-target_link_libraries(scalapack PRIVATE scalapack::blacs ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES} MPI::MPI_C MPI::MPI_Fortran)
+target_link_libraries(scalapack PRIVATE SCALAPACK::BLACS LAPACK::LAPACK MPI::MPI_C MPI::MPI_Fortran)
 target_compile_definitions(scalapack PRIVATE ${cargs})
 
 # scalapack::scalapack is the target most users will link to.
-add_library(scalapack::scalapack INTERFACE IMPORTED GLOBAL)
-set_property(TARGET scalapack::scalapack PROPERTY
-  INTERFACE_LINK_LIBRARIES scalapack scalapack::blacs)
+add_library(SCALAPACK::SCALAPACK INTERFACE IMPORTED GLOBAL)
+target_link_libraries(SCALAPACK::SCALAPACK INTERFACE scalapack SCALAPACK::BLACS)
 
 
 add_subdirectory(TOOLS)  # tools files
@@ -115,7 +114,7 @@ add_subdirectory(TOOLS/LAPACK)
 
 if("d" IN_LIST arith)
   add_executable(test_scalapack_d tests/test_scalapack_d.f90)
-  target_link_libraries(test_scalapack_d PRIVATE scalapack::scalapack ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES} MPI::MPI_Fortran)
+  target_link_libraries(test_scalapack_d SCALAPACK::SCALAPACK LAPACK::LAPACK MPI::MPI_Fortran)
   add_test(NAME scalapack:unit:real64
     COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 2 $<TARGET_FILE:test_scalapack_d>)
   set_tests_properties(scalapack:unit:real64 PROPERTIES TIMEOUT 15)
