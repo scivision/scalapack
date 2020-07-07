@@ -8,7 +8,6 @@ on:
       - "**.cmake"
       - "**/CMakeLists.txt"
       - ".github/workflows/ci_linux.yml"
-  pull_request:
 
 jobs:
 
@@ -24,16 +23,13 @@ jobs:
 
     - run: cmake --warn-uninitialized -B build
     - run: ctest -S setup.cmake -VV
-      env:
-        FC: gfortran
-        CC: gcc
 
   meson:
     if: false
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
+    - uses: actions/setup-python@v2
       with:
         python-version: '3.x'
     - name: Install prereqs
@@ -43,9 +39,8 @@ jobs:
     - run: pip install meson
 
     - run: meson setup build
-      env:
-        FC: gfortran
-    - run: ninja -C build
+
+    - run: meson compile -C build
     - uses: actions/upload-artifact@v1
       if: failure()
       with:

@@ -6,8 +6,6 @@ on:
       - "**.cmake"
       - "**/CMakeLists.txt"
       - ".github/workflows/ci_macos.yml"
-  pull_request:
-
 
 jobs:
 
@@ -29,7 +27,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
+    - uses: actions/setup-python@v2
       with:
         python-version: '3.x'
     - run: brew install ninja open-mpi lapack
@@ -40,7 +38,7 @@ jobs:
         FC: gfortran-9
         CC: gcc-9
 
-    - run: ninja -C build
+    - run: meson compile -C build
     - uses: actions/upload-artifact@v1
       if: failure()
       with:
