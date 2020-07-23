@@ -18,7 +18,7 @@ endif()
 
 message(STATUS "Scalapack arith: ${arith}")
 
-option(autobuild "auto-build Lapack if missing or broken" ON)
+option(autobuild "auto-build Lapack if missing or broken" OFF)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/Modules)
 
@@ -87,10 +87,7 @@ set_tests_properties(scalapack:BLACSbasic PROPERTIES TIMEOUT 15)
 
 # --- LAPACK
 
-find_package(LAPACK)
-if(NOT LAPACK_FOUND)
-  include(${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/lapack_external.cmake)
-endif()
+include(${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/lapack.cmake)
 
 # == SCALAPACK
 # the add_subdirectory() use target_sources() to fill in scalapack.
