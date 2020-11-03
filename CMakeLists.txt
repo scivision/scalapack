@@ -1,7 +1,8 @@
-cmake_minimum_required(VERSION 3.14.0)
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Debug or Release")
-endif()
+cmake_minimum_required(VERSION 3.15)
+
+include(CMAKE/policy.cmake)
+include(CMAKE/compiler_find.cmake)
+
 project(SCALAPACK
   LANGUAGES C Fortran
   VERSION 2.1.0
@@ -67,10 +68,6 @@ else()
   endif()
 endif()
 
-if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
-  # problems with MPI can cause tests to hang forever, so set a default timeout [seconds]
-  set(CTEST_TEST_TIMEOUT 15)
-endif()
 
 # --- MPI
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/mpi.cmake)
