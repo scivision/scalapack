@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 include(CMAKE/policy.cmake)
 include(CMAKE/compiler_find.cmake)
+find_c_fortran()
 
 project(SCALAPACK
   LANGUAGES C Fortran
