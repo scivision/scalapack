@@ -20,7 +20,7 @@ endif()
 
 message(STATUS "Scalapack arith: ${arith}")
 
-option(autobuild "auto-build Lapack if missing or broken" OFF)
+option(autobuild "auto-build Lapack if missing or broken" true)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/Modules)
 

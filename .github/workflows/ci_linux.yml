@@ -12,6 +12,7 @@ on:
 jobs:
 
   cmake:
+    # this tests lapack auto-build as well
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -19,10 +20,12 @@ jobs:
     - name: Install prereqs
       run: |
         sudo apt update -yq
-        sudo apt install -yq --no-install-recommends gfortran libopenmpi-dev openmpi-bin liblapack-dev
+        sudo apt install -yq --no-install-recommends gfortran libopenmpi-dev openmpi-bin
 
-    - run: cmake --warn-uninitialized -B build
-    - run: ctest -S setup.cmake -VV
+    - run: cmake -B build
+    - run: cmake --build build
+    - run: ctest -V
+      working-directory: build
 
   meson:
     if: false
