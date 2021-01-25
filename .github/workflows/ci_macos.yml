@@ -1,4 +1,6 @@
 name: ci_macos
+env:
+   HOMEBREW_NO_INSTALL_CLEANUP: 1
 
 on:
   push:
