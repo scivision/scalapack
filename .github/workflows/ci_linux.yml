@@ -23,8 +23,9 @@ jobs:
         sudo apt install -yq --no-install-recommends gfortran libopenmpi-dev openmpi-bin
 
     - run: cmake -B build
-    - run: cmake --build build
-    - run: ctest -V
+    - run: cmake --build build --parallel
+
+    - run: ctest --output-on-failure --parallel 2
       working-directory: build
 
   meson:

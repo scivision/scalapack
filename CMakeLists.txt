@@ -9,69 +9,18 @@ project(SCALAPACK
   VERSION 2.1.0
   HOMEPAGE_URL "http://netlib.org/scalapack"
   DESCRIPTION "University of Tennessee, Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd")
-enable_testing()
+
 include(CTest)
 
-set(cargs -DAdd_)
-
-if(NOT arith)
-  set(arith "s;d")
-endif()
-
-message(STATUS "Scalapack arith: ${arith}")
-
-option(autobuild "auto-build Lapack if missing or broken" true)
+include(CMAKE/options.cmake)
+include(CMAKE/libraries.cmake)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/Modules)
 
-# typical projects set options too strict for MUMPS code style, so if
-# being used as external project, locally override MUMPS compile options
-if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
-# MUMPS is being compiled by itself or as ExternalProject
-  if(CMAKE_Fortran_COMPILER_ID STREQUAL Intel)
-    if(WIN32)
-    add_compile_options(/arch:native)
-      # /heap-arrays is necessary to avoid runtime errors in programs using this library
-      string(APPEND CMAKE_Fortran_FLAGS " /warn:declarations /heap-arrays")
-    else()
-      add_compile_options(-march=native)
-      string(APPEND CMAKE_Fortran_FLAGS " -warn declarations")
-    endif()
-  elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
-    add_compile_options(-mtune=native)
-    # -std=legacy is for "Error: Rank mismatch between actual argument at (1) and actual argument at (2) (scalar and rank-1)"
-    string(APPEND CMAKE_Fortran_FLAGS " -fimplicit-none -std=legacy")
-  elseif(CMAKE_Fortran_COMPILER_ID STREQUAL PGI)
-    string(APPEND CMAKE_Fortran_FLAGS " -Mdclchk")
-    if(NOT (MPI_ROOT OR ENV{MPI_ROOT}))
-      get_filename_component(_pgi_path ${CMAKE_Fortran_COMPILER} DIRECTORY)
-      set(MPI_ROOT ${_pgi_path}/../mpi/openmpi-3.1.3)
-    endif()
-  endif()
-else()
-  # MUMPS is being compiled via FetchContent, override options to avoid tens of megabytes of warnings
-  if(CMAKE_Fortran_COMPILER_ID STREQUAL Intel)
-    if(WIN32)
-      # /heap-arrays is necessary to avoid runtime errors in programs using this library
-      set(CMAKE_Fortran_FLAGS "/nologo /fpp /libs:dll /threads /warn:declarations /heap-arrays")
-    else()
-      set(CMAKE_Fortran_FLAGS "-warn declarations")
-    endif()
-  elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
-    add_compile_options(-mtune=native)
-    set(CMAKE_Fortran_FLAGS "-fimplicit-none -std=legacy")
-  elseif(CMAKE_Fortran_COMPILER_ID STREQUAL PGI)
-    set(CMAKE_Fortran_FLAGS "-Mdclchk")
-    if(NOT (MPI_ROOT OR ENV{MPI_ROOT}))
-      get_filename_component(_pgi_path ${CMAKE_Fortran_COMPILER} DIRECTORY)
-      set(MPI_ROOT ${_pgi_path}/../mpi/openmpi-3.1.3)
-    endif()
-  endif()
-endif()
-
+include(CMAKE/compilers.cmake)
 
 # --- MPI
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/mpi.cmake)
+include(CMAKE/mpi.cmake)
 
 # --- BLACS
 
@@ -85,15 +34,14 @@ set_tests_properties(scalapack:BLACSbasic PROPERTIES TIMEOUT 15)
 
 # --- LAPACK
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/lapack.cmake)
+include(CMAKE/lapack.cmake)
 
 # == SCALAPACK
-# the add_subdirectory() use target_sources() to fill in scalapack.
 add_library(scalapack)
 target_link_libraries(scalapack PRIVATE SCALAPACK::BLACS LAPACK::LAPACK MPI::MPI_C MPI::MPI_Fortran)
 target_compile_definitions(scalapack PRIVATE ${cargs})
 
-# scalapack::scalapack is the target most users will link to.
+# target most users will link to.
 add_library(SCALAPACK::SCALAPACK INTERFACE IMPORTED GLOBAL)
 target_link_libraries(SCALAPACK::SCALAPACK INTERFACE scalapack SCALAPACK::BLACS)
 

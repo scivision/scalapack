@@ -1,25 +1,23 @@
 # Finds Lapack, tests, and if not found or broken, autobuild Lapack
+include(FetchContent)
 
-if(autobuild)
-  find_package(LAPACK)
-else()
-  find_package(LAPACK REQUIRED)
+if(NOT lapack_external)
+  if(autobuild)
+    find_package(LAPACK)
+  else()
+    find_package(LAPACK REQUIRED)
+  endif()
 endif()
 
 if(NOT LAPACK_FOUND)
   set(lapack_external true CACHE BOOL "autobuild Lapack")
 
-  include(FetchContent)
-
-  FetchContent_Declare(lapack_proj
-    GIT_REPOSITORY ${lapack_url}
+  FetchContent_Declare(LAPACK
+    GIT_REPOSITORY ${lapack_git}
     GIT_TAG ${lapack_tag}
-    GIT_SHALLOW true
-    UPDATE_DISCONNECTED true
-    CMAKE_ARGS "-Darith=${arith}"
-  )
+    CMAKE_ARGS "-Darith=${arith}")
 
-  FetchContent_MakeAvailable(lapack_proj)
+  FetchContent_MakeAvailable(LAPACK)
 
   add_library(LAPACK::LAPACK ALIAS lapack)
   add_library(BLAS::BLAS ALIAS blas)
