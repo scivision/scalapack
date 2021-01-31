@@ -16,7 +16,11 @@ if(NOT DEFINED MPI_Fortran_OK)
   )
 endif()
 
-check_fortran_source_compiles("use mpi; end" MPI_Fortran_OK SRC_EXT F90)
+check_fortran_source_compiles("use mpi
+integer :: i
+call mpi_init(i)
+call mpi_finalize(i)
+end" MPI_Fortran_OK SRC_EXT F90)
 
 if(NOT MPI_Fortran_OK)
   message(FATAL_ERROR "MPI_Fortran not working.")
@@ -46,7 +50,7 @@ int main(void) {
 " MPI_C_OK)
 
 if(NOT MPI_C_OK)
-  message(FATAL_ERROR "MPI_C not working. Please use 'cmake -Dmpi=off' option")
+  message(FATAL_ERROR "MPI_C not working.")
 endif()
 
 endfunction(check_mpi)
