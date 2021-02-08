@@ -88,7 +88,7 @@ target_link_libraries(blacsF77init PRIVATE MPI::MPI_C)
 
 # LINK_INTERFACE_MULTIPLICITY did not help
 # there are cyclical references between {blacs,blacsF77init,blacsCinit}, which Meson handles by -Wl,start-group
-# CMake at least through 3.16 does not seem to have a programmatic way to
+# CMake at least through 3.16 does not have a programmatic way to
 # add -Wl,start-group so we opted to use objects instead
 add_library(blacs ${blacsInternal} $<TARGET_OBJECTS:blacsF77init> $<TARGET_OBJECTS:blacsCinit>)
 target_link_libraries(blacs PUBLIC MPI::MPI_C)

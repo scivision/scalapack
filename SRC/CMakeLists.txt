@@ -154,4 +154,7 @@ list(APPEND laux
    zlamsh.f  zlaref.f  zlanv2.f zlahqr2.f pzheevr.f)
 endif()
 
-target_sources(scalapack PRIVATE ${ALLAUX} ${ALLAUX_C} ${laux})
+add_library(scalapack_c OBJECT ${ALLAUX_C})
+
+add_library(scalapack_f OBJECT ${ALLAUX} ${laux})
+target_sources(scalapack PRIVATE $<TARGET_OBJECTS:scalapack_f> $<TARGET_OBJECTS:scalapack_c>)

@@ -4,7 +4,7 @@ npreroc.f numroc.f chk1mat.f pchkxmat.f sltimer.f desc_convert.f descinit.f desc
 set(itools picol2row.f pirow2col.f pilaprnt.f pitreecomb.f pifillpad.f pichekpad.f pielset.f
 pielset2.f pielget.f)
 
-set(toolsC reshape.c SL_gridreshape.c)
+add_library(toolsC OBJECT reshape.c SL_gridreshape.c)
 
 set(tools ${atools} ${itools} ${toolsC})
 
@@ -30,4 +30,4 @@ list(APPEND tools zzdotu.f zzdotc.f zlatcpy.f zmatadd.f pzmatadd.f pzcol2row.f p
 pzlaprnt.f pztreecomb.f pzfillpad.f pzchekpad.f pzelset.f pzelset2.f pzelget.f pzlaread.f pzlawrite.f)
 endif()
 
-target_sources(scalapack PRIVATE ${tools})
+target_sources(scalapack PRIVATE $<TARGET_OBJECTS:toolsC> ${tools})

@@ -1,4 +1,4 @@
-set( ALLCTOOLS
+set(ALLCTOOLS
     PB_CGatherV.c    PB_CInV.c        PB_CInV2.c       PB_CInOutV.c
     PB_CInOutV2.c    PB_COutV.c       PB_CScatterV.c   PB_CVMinit.c
     PB_CVMloc.c      PB_CVMnpq.c      PB_CVMpack.c     PB_CVMswp.c
@@ -42,4 +42,6 @@ if("z" IN_LIST arith)
 list(APPEND pctools PB_Cztypeset.c)
 endif()
 
-target_sources(scalapack PRIVATE ${ALLCTOOLS} ${pctools})
+add_library(scalapack_pctools OBJECT ${ALLCTOOLS} ${pctools})
+
+target_sources(scalapack PRIVATE $<TARGET_OBJECTS:scalapack_pctools>)

@@ -2,7 +2,7 @@ add_subdirectory(PBBLAS)
 add_subdirectory(PTZBLAS)
 add_subdirectory(PTOOLS)
 
-set(appblas pilaenv.f)
+add_library(appblas OBJECT pilaenv.f)
 #---------------------------------------------------------------------------
 #  Level 1 PBLAS.
 #---------------------------------------------------------------------------
@@ -68,4 +68,6 @@ if("z" IN_LIST arith)
 list(APPEND blas3 pzgeadd_.c pzgemm_.c pzhemm_.c pzher2k_.c pzherk_.c pzsymm_.c pzsyr2k_.c pzsyrk_.c pztradd_.c pztranc_.c pztranu_.c pztrmm_.c pztrsm_.c)
 endif()
 
-target_sources(scalapack PRIVATE ${appblas} ${piblas1} ${blas1} ${blas2} ${blas3})
+add_library(scalapack_blas OBJECT ${piblas1} ${blas1} ${blas2} ${blas3})
+
+target_sources(scalapack PRIVATE $<TARGET_OBJECTS:appblas> $<TARGET_OBJECTS:scalapack_blas>)
