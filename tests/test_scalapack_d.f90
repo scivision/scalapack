@@ -1,3 +1,4 @@
+program scalapack_d
 ! minimal Scalapack demo
 use, intrinsic :: iso_fortran_env, only: real64
 implicit none
