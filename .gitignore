@@ -1,3 +1,4 @@
+EXAMPLE/*.dat
 build*/
 lib/
 include/

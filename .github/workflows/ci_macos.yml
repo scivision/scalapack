@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - run: brew install open-mpi
+    - run: brew install open-mpi lapack
 
     - run: cmake -B build
     - run: cmake --build build --parallel
