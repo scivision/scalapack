@@ -46,9 +46,7 @@ target_link_libraries(scalapack PRIVATE SCALAPACK::BLACS LAPACK::LAPACK MPI::MPI
 target_compile_definitions(scalapack PRIVATE ${cargs})
 
 # target most users will link to.
-add_library(SCALAPACK::SCALAPACK INTERFACE IMPORTED GLOBAL)
-target_link_libraries(SCALAPACK::SCALAPACK INTERFACE scalapack SCALAPACK::BLACS)
-
+add_library(SCALAPACK::SCALAPACK ALIAS scalapack)
 
 add_subdirectory(TOOLS)  # tools files
 add_subdirectory(PBLAS/SRC)  # pblas files
