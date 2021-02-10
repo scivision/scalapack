@@ -27,26 +27,26 @@ include(CMAKE/compilers.cmake)
 include(CMAKE/mpi.cmake)
 
 # --- BLACS
-
 add_subdirectory(BLACS/SRC)
 
 add_executable(test_blacs tests/blacs_helloworld.f90)
-target_link_libraries(test_blacs SCALAPACK::BLACS MPI::MPI_Fortran)
+target_link_libraries(test_blacs blacs MPI::MPI_Fortran)
 add_test(NAME scalapack:BLACSbasic
   COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 2 $<TARGET_FILE:test_blacs>)
 set_tests_properties(scalapack:BLACSbasic PROPERTIES TIMEOUT 15)
 
 # --- LAPACK
-
 include(CMAKE/lapack.cmake)
 
 # == SCALAPACK
 add_library(scalapack)
-target_link_libraries(scalapack PRIVATE SCALAPACK::BLACS LAPACK::LAPACK MPI::MPI_C MPI::MPI_Fortran)
+target_link_libraries(scalapack PRIVATE blacs LAPACK::LAPACK MPI::MPI_C MPI::MPI_Fortran)
 target_compile_definitions(scalapack PRIVATE ${cargs})
 
 # target most users will link to.
-add_library(SCALAPACK::SCALAPACK ALIAS scalapack)
+# this must NOT be an ALIAS or linking in other packages breaks.
+add_library(SCALAPACK::SCALAPACK INTERFACE IMPORTED GLOBAL)
+target_link_libraries(SCALAPACK::SCALAPACK INTERFACE scalapack blacs)
 
 add_subdirectory(TOOLS)  # tools files
 add_subdirectory(PBLAS/SRC)  # pblas files
@@ -68,3 +68,6 @@ ARCHIVE DESTINATION lib
 LIBRARY DESTINATION lib)
 
 include(CMAKE/install.cmake)
+
+include(FeatureSummary)
+add_feature_info(BuildLAPACK lapack_external "Build LAPACK")

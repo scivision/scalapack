@@ -13,6 +13,12 @@ if(SCALAPACK_ROOT OR DEFINED ENV{SCALAPACK_ROOT})
 endif()
 
 if(SCALAPACK_FOUND)
+  if(EXISTS ${SCALAPACK_DIR}/../LAPACK/LAPACKTargets.cmake)
+    include(${SCALAPACK_DIR}/../LAPACK/LAPACKTargets.cmake)
+    add_library(LAPACK::LAPACK INTERFACE IMPORTED)
+    target_link_libraries(LAPACK::LAPACK INTERFACE LAPACK::lapack)
+  endif()
+
   include(${SCALAPACK_DIR}/SCALAPACKTargets.cmake)
   # Not ALIAS for CMAKE_REQUIRED_LIBRARIES
   add_library(SCALAPACK::SCALAPACK INTERFACE IMPORTED)
@@ -25,7 +31,10 @@ endif()
 # echo_target_properties(SCALAPACK::SCALAPACK)
 # echo_target_properties(SCALAPACK::scalapack)
 
-find_package(LAPACK REQUIRED)
+if(NOT TARGET LAPACK::LAPACK)
+  find_package(LAPACK REQUIRED)
+endif()
+
 find_package(MPI COMPONENTS C Fortran REQUIRED)
 
 include(CheckFortranFunctionExists)
