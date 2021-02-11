@@ -9,7 +9,7 @@
 *
 *     .. Scalar Arguments ..
       CHARACTER          JOBZ, UPLO
-      INTEGER            IA, INFO, IZ, JA, JZ, LIWORK, LRWORK, LWORK, N
+      INTEGER       IA, ICTXT, INFO, IZ, JA, JZ, LIWORK,LRWORK, LWORK, N
 *     ..
 *     .. Array Arguments ..
       INTEGER            DESCA( * ), DESCZ( * ), IWORK( * )
