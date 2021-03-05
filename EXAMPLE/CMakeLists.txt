@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.13...3.20)
 project(SCALAPACK_Examples
 LANGUAGES C Fortran)
 
@@ -6,40 +6,16 @@ include(CTest)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../CMAKE/Modules)
 
-if(SCALAPACK_ROOT OR DEFINED ENV{SCALAPACK_ROOT})
-  # lots of botched Scalapack config out there, even Scalapack 2.1.0
-  # so we restrict this to what we assume is "our" new CMake approach.
-  find_package(SCALAPACK CONFIG)
-endif()
-
-if(SCALAPACK_FOUND)
-  if(EXISTS ${SCALAPACK_DIR}/../LAPACK/LAPACKTargets.cmake)
-    include(${SCALAPACK_DIR}/../LAPACK/LAPACKTargets.cmake)
-    add_library(LAPACK::LAPACK INTERFACE IMPORTED)
-    target_link_libraries(LAPACK::LAPACK INTERFACE LAPACK::lapack)
-  endif()
-
-  include(${SCALAPACK_DIR}/SCALAPACKTargets.cmake)
-  # Not ALIAS for CMAKE_REQUIRED_LIBRARIES
-  add_library(SCALAPACK::SCALAPACK INTERFACE IMPORTED)
-  target_link_libraries(SCALAPACK::SCALAPACK INTERFACE SCALAPACK::scalapack)
-else()
-  find_package(SCALAPACK REQUIRED)
-endif()
-
-# include(${PROJECT_SOURCE_DIR}/../../cmakeutils/echo_target_properties.cmake)
-# echo_target_properties(SCALAPACK::SCALAPACK)
-# echo_target_properties(SCALAPACK::scalapack)
-
-if(NOT TARGET LAPACK::LAPACK)
-  find_package(LAPACK REQUIRED)
-endif()
-
 find_package(MPI COMPONENTS C Fortran REQUIRED)
+find_package(LAPACK REQUIRED)
+# not PREFER_CONFIG for Lapack because the user might be using system lapack with broken config
+
+set(CMAKE_FIND_PACKAGE_PREFER_CONFIG true)
+find_package(SCALAPACK REQUIRED)
 
 include(CheckFortranFunctionExists)
 set(CMAKE_REQUIRED_INCLUDES)
-set(CMAKE_REQUIRED_LIBRARIES SCALAPACK::SCALAPACK)
+set(CMAKE_REQUIRED_LIBRARIES SCALAPACK::SCALAPACK LAPACK::LAPACK)
 
 foreach(a s d c z)
   check_fortran_function_exists(p${a}lamch has_${a})

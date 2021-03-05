@@ -15,3 +15,11 @@ if(dev)
 else()
   set(FETCHCONTENT_UPDATES_DISCONNECTED_LAPACK true)
 endif()
+
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS on)
+
+# --- auto-ignore build directory
+if(NOT EXISTS ${PROJECT_BINARY_DIR}/.gitignore)
+  file(WRITE ${PROJECT_BINARY_DIR}/.gitignore "*")
+endif()

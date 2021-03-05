@@ -1,8 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
-
-include(CMAKE/policy.cmake)
-include(CMAKE/compiler_find.cmake)
-find_c_fortran()
+cmake_minimum_required(VERSION 3.13...3.20)
 
 project(SCALAPACK
   LANGUAGES C Fortran
@@ -40,6 +36,9 @@ include(CMAKE/lapack.cmake)
 
 # == SCALAPACK
 add_library(scalapack)
+set_target_properties(scalapack PROPERTIES
+  VERSION ${SCALAPACK_VERSION}
+  EXPORT_NAME SCALAPACK)
 target_link_libraries(scalapack PRIVATE blacs LAPACK::LAPACK MPI::MPI_C MPI::MPI_Fortran)
 target_compile_definitions(scalapack PRIVATE ${cargs})
 
@@ -63,7 +62,7 @@ endif()
 # --- install
 
 install(TARGETS scalapack
-EXPORT SCALAPACKTargets
+EXPORT ${PROJECT_NAME}Targets
 ARCHIVE DESTINATION lib
 LIBRARY DESTINATION lib)
 
