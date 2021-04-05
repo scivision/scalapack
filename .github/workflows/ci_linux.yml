@@ -21,13 +21,13 @@ jobs:
         sudo apt update -yq
         sudo apt install -yq --no-install-recommends ninja-build gfortran libopenmpi-dev openmpi-bin
 
-    - run: cmake --preset=build -Darith=d -DCMAKE_INSTALL_PREFIX=build/scalapack
-    - run: cmake --build build --parallel
-    - run: cmake --install build
-    - run: ctest --output-on-failure --parallel 2
-      working-directory: build
+    - run: cmake --preset default -Darith=d
+    - run: cmake --build --preset default
+    - run: ctest --preset default
 
-    - run: cmake -S EXAMPLE -B EXAMPLE/build -DSCALAPACK_ROOT=build/scalapack
+    - run: cmake --install build
+
+    - run: cmake -S EXAMPLE -B EXAMPLE/build -DSCALAPACK_ROOT=~/local
     - run: cmake --build EXAMPLE/build --parallel
     - run: ctest  -parallel 2 --output-on-failure
       working-directory: EXAMPLE/build

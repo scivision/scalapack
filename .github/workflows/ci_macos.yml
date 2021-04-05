@@ -3,7 +3,6 @@ env:
    HOMEBREW_NO_INSTALL_CLEANUP: 1
    CC: gcc-10
    FC: gfortran-10
-   CMAKE_GENERATOR: Ninja
 
 on:
   push:
@@ -21,11 +20,16 @@ jobs:
 
     - run: brew install open-mpi ninja
 
-    - run: cmake --preset=ninja -Darith=d -DCMAKE_INSTALL_PREFIX=build/scalapack
-    - run: cmake --build build --parallel
+    - run: cmake --preset default -Darith=d
+    - run: cmake --build --preset default
+    - run: ctest --preset default
+
     - run: cmake --install build
-    - run: ctest --output-on-failure --parallel 2
-      working-directory: build
+
+    - run: cmake -S EXAMPLE -B EXAMPLE/build -DSCALAPACK_ROOT=~/local
+    - run: cmake --build EXAMPLE/build --parallel
+    - run: ctest  -parallel 2 --output-on-failure
+      working-directory: EXAMPLE/build
 
   meson:
     if: false
