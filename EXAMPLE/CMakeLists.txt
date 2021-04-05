@@ -6,16 +6,11 @@ include(CTest)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../CMAKE/Modules)
 
-find_package(MPI COMPONENTS C Fortran REQUIRED)
-find_package(LAPACK REQUIRED)
-# not PREFER_CONFIG for Lapack because the user might be using system lapack with broken config
-
-set(CMAKE_FIND_PACKAGE_PREFER_CONFIG true)
 find_package(SCALAPACK REQUIRED)
 
 include(CheckFortranFunctionExists)
 set(CMAKE_REQUIRED_INCLUDES)
-set(CMAKE_REQUIRED_LIBRARIES SCALAPACK::SCALAPACK LAPACK::LAPACK)
+set(CMAKE_REQUIRED_LIBRARIES SCALAPACK::SCALAPACK LAPACK::LAPACK MPI::MPI_Fortran MPI::MPI_C)
 
 foreach(a s d c z)
   check_fortran_function_exists(p${a}lamch has_${a})
@@ -24,7 +19,7 @@ foreach(a s d c z)
   endif()
 
   add_executable(p${a}scaex p${a}scaex.f pdscaexinfo.f)
-  target_link_libraries(p${a}scaex PRIVATE SCALAPACK::SCALAPACK MPI::MPI_Fortran MPI::MPI_C)
+  target_link_libraries(p${a}scaex PRIVATE SCALAPACK::SCALAPACK LAPACK::LAPACK MPI::MPI_Fortran MPI::MPI_C)
 
   if(MPIEXEC_MAX_NUMPROCS LESS 4)
     message(STATUS "SKIP: P${a}scaex as at least 4 CPUs are required")

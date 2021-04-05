@@ -1,6 +1,6 @@
 project('SCALAPACK',
   ['c', 'fortran'],
-  version: '2.1.0',
+  version: files('VERSION'),
   meson_version: '>= 0.50',
   default_options : ['default_library=static', 'buildtype=release', 'warning_level=0'])
 

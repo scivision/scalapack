@@ -32,8 +32,7 @@ cmake -B build
 cmake --build build
 
 # optional
-cd build
-ctest -V
+ctest --test-dir build
 ```
 
 or use Meson

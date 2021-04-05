@@ -12,8 +12,7 @@ if(NOT DEFINED MPI_Fortran_OK)
   message(STATUS "Fortran MPI:
   Libs: ${MPI_Fortran_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT}
   Include: ${MPI_Fortran_INCLUDE_DIRS}
-  MPIexec: ${MPIEXEC_EXECUTABLE}"
-  )
+  MPIexec: ${MPIEXEC_EXECUTABLE}")
 endif()
 
 check_fortran_source_compiles("use mpi
@@ -34,8 +33,7 @@ include(CheckCSourceCompiles)
 if(NOT DEFINED MPI_C_OK)
   message(STATUS "C MPI:
   Libs: ${MPI_C_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT}
-  Include: ${MPI_C_INCLUDE_DIRS}"
-  )
+  Include: ${MPI_C_INCLUDE_DIRS}")
 endif()
 
 check_c_source_compiles("

@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.13...3.20)
 
+file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/VERSION PROJECT_VERSION
+  REGEX "^([0-9]+\.[0-9]+\.[0-9]+)" LIMIT_INPUT 16 LENGTH_MAXIMUM 16 LIMIT_COUNT 1)
+
 project(SCALAPACK
   LANGUAGES C Fortran
-  VERSION 2.1.0
+  VERSION ${PROJECT_VERSION}
   HOMEPAGE_URL "http://netlib.org/scalapack"
   DESCRIPTION "University of Tennessee, Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd")
 
@@ -65,6 +68,12 @@ install(TARGETS scalapack
 EXPORT ${PROJECT_NAME}Targets
 ARCHIVE DESTINATION lib
 LIBRARY DESTINATION lib)
+
+install(FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/Modules/FindLAPACK.cmake
+  ${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/Modules/FindSCALAPACK.cmake
+  ${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/Modules/FindBLACS.cmake
+  DESTINATION lib/cmake/${PROJECT_NAME}/Modules)
 
 include(CMAKE/install.cmake)
 

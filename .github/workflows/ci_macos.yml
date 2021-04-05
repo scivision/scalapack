@@ -21,7 +21,7 @@ jobs:
 
     - run: brew install open-mpi ninja
 
-    - run: cmake --preset=build -Darith=d -DCMAKE_INSTALL_PREFIX=~/scalapack
+    - run: cmake --preset=ninja -Darith=d -DCMAKE_INSTALL_PREFIX=build/scalapack
     - run: cmake --build build --parallel
     - run: cmake --install build
     - run: ctest --output-on-failure --parallel 2

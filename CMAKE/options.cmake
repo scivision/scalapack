@@ -13,7 +13,7 @@ endif()
 if(dev)
 
 else()
-  set(FETCHCONTENT_UPDATES_DISCONNECTED_LAPACK true)
+  set(EP_UPDATE_DISCONNECTED true)
 endif()
 
 
