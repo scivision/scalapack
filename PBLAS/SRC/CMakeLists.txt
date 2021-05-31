@@ -14,7 +14,7 @@ list(APPEND blas1 psswap_.c psscal_.c pscopy_.c psaxpy_.c psdot_.c psnrm2_.c psa
 endif()
 
 if("c" IN_LIST arith)
-list(APPEND blas1 pcscal_.c pcsscal_.c pccopy_.c pcaxpy_.c pcdotu_.c pcdotc_.c pscnrm2_.c pscasum_.c pcamax_.c)
+list(APPEND blas1 pcswap_.c pcscal_.c pcsscal_.c pccopy_.c pcaxpy_.c pcdotu_.c pcdotc_.c pscnrm2_.c pscasum_.c pcamax_.c)
 endif()
 
 if("d" IN_LIST arith)
