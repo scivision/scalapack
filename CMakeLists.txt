@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13...3.20)
+cmake_minimum_required(VERSION 3.14...3.20)
 
 file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/VERSION PROJECT_VERSION
   REGEX "^([0-9]+\.[0-9]+\.[0-9]+)" LIMIT_INPUT 16 LENGTH_MAXIMUM 16 LIMIT_COUNT 1)
@@ -64,10 +64,7 @@ endif()
 
 # --- install
 
-install(TARGETS scalapack
-EXPORT ${PROJECT_NAME}Targets
-ARCHIVE DESTINATION lib
-LIBRARY DESTINATION lib)
+install(TARGETS scalapack EXPORT ${PROJECT_NAME}Targets)
 
 install(FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/CMAKE/Modules/FindLAPACK.cmake

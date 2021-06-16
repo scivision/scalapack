@@ -12,8 +12,8 @@
   "binaryDir": "${sourceDir}/build",
   "generator": "Ninja",
   "cacheVariables": {
-    "CMAKE_BUILD_TYPE": "Release",
-    "CMAKE_INSTALL_PREFIX": "$env{HOME}"}
+    "CMAKE_BUILD_TYPE": "Release"
+  }
 },
 {
   "name": "build", "inherits": "default",
@@ -29,13 +29,7 @@
   "generator": "Unix Makefiles"
 },
 {
-  "name": "windows", "inherits": "default",
-  "displayName": "Windows",
-  "cacheVariables": {
-    "CMAKE_INSTALL_PREFIX": "$env{USERPROFILE}"}
-},
-{
-  "name": "makewin", "inherits": "windows",
+  "name": "makewin", "inherits": "default",
   "displayName": "build with GNU Make: Windows",
   "generator": "MinGW Makefiles"
 },

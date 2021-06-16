@@ -27,28 +27,7 @@ jobs:
 
     - run: cmake --install build
 
-    - run: cmake -S EXAMPLE -B EXAMPLE/build -DSCALAPACK_ROOT=~/local
+    - run: cmake -S EXAMPLE -B EXAMPLE/build -DSCALAPACK_ROOT=build
     - run: cmake --build EXAMPLE/build --parallel
     - run: ctest  -parallel 2 --output-on-failure
       working-directory: EXAMPLE/build
-
-
-  meson:
-    if: false
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: Install prereqs
-      run: |
-        sudo apt update -yq
-        sudo apt install -yq --no-install-recommends ninja-build gfortran libopenmpi-dev openmpi-bin liblapack-dev
-    - run: pip install meson
-
-    - run: meson setup build
-
-    - run: meson compile -C build
-
-    - run: meson test -C build -v
