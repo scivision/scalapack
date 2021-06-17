@@ -1,2 +1,0 @@
-lapack_git https://github.com/scivision/lapack.git
-lapack_tag v3.9.1.0

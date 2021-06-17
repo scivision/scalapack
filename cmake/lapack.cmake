@@ -16,7 +16,7 @@ endif()
 
 set(lapack_external true CACHE BOOL "build Lapack")
 
-if(NOT DEFINED LAPACK_ROOT)
+if(NOT LAPACK_ROOT)
   set(LAPACK_ROOT ${CMAKE_INSTALL_PREFIX})
 endif()
 
