@@ -1,0 +1,4 @@
+{
+"lapack": {"git": "https://github.com/scivision/lapack.git",
+           "tag": "v3.9.1.0"}
+}

@@ -1,0 +1,7 @@
+EXAMPLE/*.dat
+build*/
+lib/
+include/
+
+/subprojects/*
+!/subprojects/*.wrap
