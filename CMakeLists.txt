@@ -22,8 +22,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
 
 include(cmake/compilers.cmake)
 
-# --- MPI
-include(cmake/mpi.cmake)
+find_package(MPI COMPONENTS C Fortran REQUIRED)
 
 # --- get Scalapack source
 include(cmake/get_scalapack.cmake)
