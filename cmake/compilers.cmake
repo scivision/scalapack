@@ -35,11 +35,11 @@ elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
     # presumably using MS-MPI, which emits extreme amounts of nuisance warnings
     string(APPEND CMAKE_Fortran_FLAGS " -w")
   endif(MINGW)
+endif()
 
-  # test the non-no form, otherwise always succeeds
-  check_compiler_flag(C -Wimplicit-function-declaration HAS_IMPLICIT_FUNC_FLAG)
-  if(HAS_IMPLICIT_FUNC_FLAG)
-    string(APPEND CMAKE_C_FLAGS " -Wno-implicit-function-declaration")
-  endif()
-
+# Clang errors without this
+# test the non-no form, otherwise always succeeds
+check_compiler_flag(C -Wimplicit-function-declaration HAS_IMPLICIT_FUNC_FLAG)
+if(HAS_IMPLICIT_FUNC_FLAG)
+  string(APPEND CMAKE_C_FLAGS " -Wno-implicit-function-declaration")
 endif()
