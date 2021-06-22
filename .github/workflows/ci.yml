@@ -33,7 +33,6 @@ jobs:
     runs-on: macos-latest
     env:
       HOMEBREW_NO_INSTALL_CLEANUP: 1
-      CC: gcc-11
       FC: gfortran-11
 
     steps:
