@@ -53,20 +53,12 @@ target_compile_definitions(scalapack PRIVATE ${cargs})
 add_library(SCALAPACK::SCALAPACK INTERFACE IMPORTED GLOBAL)
 target_link_libraries(SCALAPACK::SCALAPACK INTERFACE scalapack blacs)
 
-configure_file(tools/CMakeLists.txt ${scalapack_SOURCE_DIR}/TOOLS/ COPYONLY)
-add_subdirectory(${scalapack_SOURCE_DIR}/TOOLS ${scalapack_BINARY_DIR}/TOOLS)
+foreach(d src/ pblas/src/ pblas/src/pbblas/ pblas/src/ptools/ pblas/src/ptzblas/ redist/src/ tools/ tools/lapack/)
+  string(TOUPPER ${d} D)
 
-configure_file(pblas/src/CMakeLists.txt ${scalapack_SOURCE_DIR}/PBLAS/SRC/ COPYONLY)
-add_subdirectory(${scalapack_SOURCE_DIR}/PBLAS/SRC ${scalapack_BINARY_DIR}/PBLAS/SRC)
-
-configure_file(redist/src/CMakeLists.txt ${scalapack_SOURCE_DIR}/REDIST/SRC/ COPYONLY)
-add_subdirectory(${scalapack_SOURCE_DIR}/REDIST/SRC ${scalapack_BINARY_DIR}/REDIST/SRC)
-
-configure_file(src/CMakeLists.txt ${scalapack_SOURCE_DIR}/SRC/ COPYONLY)
-add_subdirectory(${scalapack_SOURCE_DIR}/SRC ${scalapack_BINARY_DIR}/SRC)
-
-configure_file(tools/lapack/CMakeLists.txt ${scalapack_SOURCE_DIR}/TOOLS/LAPACK/ COPYONLY)
-add_subdirectory(${scalapack_SOURCE_DIR}/TOOLS/LAPACK ${scalapack_BINARY_DIR}/TOOLS/LAPACK)
+  configure_file(${d}CMakeLists.txt ${scalapack_SOURCE_DIR}/${D} COPYONLY)
+  add_subdirectory(${scalapack_SOURCE_DIR}/${D} ${scalapack_BINARY_DIR}/${D})
+endforeach()
 
 if(${PROJECT_NAME}_BUILD_TESTING)
   add_subdirectory(tests)

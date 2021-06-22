@@ -1,7 +1,3 @@
-add_subdirectory(PBBLAS)
-add_subdirectory(PTZBLAS)
-add_subdirectory(PTOOLS)
-
 add_library(appblas OBJECT pilaenv.f)
 #---------------------------------------------------------------------------
 #  Level 1 PBLAS.
