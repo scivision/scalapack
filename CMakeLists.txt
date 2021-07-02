@@ -11,10 +11,6 @@ project(SCALAPACK
 
 include(CTest)
 
-if(NOT DEFINED ${PROJECT_NAME}_BUILD_TESTING)
-  set(${PROJECT_NAME}_BUILD_TESTING ${BUILD_TESTING})
-endif()
-
 include(cmake/options.cmake)
 include(cmake/libraries.cmake)
 
@@ -30,12 +26,6 @@ include(cmake/get_scalapack.cmake)
 # --- BLACS
 configure_file(blacs/src/CMakeLists.txt ${scalapack_SOURCE_DIR}/BLACS/SRC/ COPYONLY)
 add_subdirectory(${scalapack_SOURCE_DIR}/BLACS/SRC ${scalapack_BINARY_DIR}/BLACS/SRC)
-
-add_executable(test_blacs tests/blacs_helloworld.f90)
-target_link_libraries(test_blacs blacs MPI::MPI_Fortran)
-add_test(NAME scalapack:BLACSbasic
-  COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 2 $<TARGET_FILE:test_blacs>)
-set_tests_properties(scalapack:BLACSbasic PROPERTIES TIMEOUT 15)
 
 # --- LAPACK
 include(cmake/lapack.cmake)
@@ -60,7 +50,7 @@ foreach(d src/ pblas/src/ pblas/src/pbblas/ pblas/src/ptools/ pblas/src/ptzblas/
   add_subdirectory(${scalapack_SOURCE_DIR}/${D} ${scalapack_BINARY_DIR}/${D})
 endforeach()
 
-if(${PROJECT_NAME}_BUILD_TESTING)
+if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
 

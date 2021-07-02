@@ -298,7 +298,7 @@ foreach(s ${_mkl_libs})
   list(APPEND LAPACK_LIB ${LAPACK_${s}_LIBRARY})
 endforeach()
 
-if(NOT BUILD_SHARED_LIBS AND (UNIX AND NOT APPLE))
+if(NOT BUILD_SHARED_LIBS AND CMAKE_SYSTEM_NAME STREQUAL Linux)
   set(LAPACK_LIB -Wl,--start-group ${LAPACK_LIB} -Wl,--end-group)
 endif()
 
