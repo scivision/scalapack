@@ -36,12 +36,7 @@ ctest --preset default
 
 ### options
 
-The default precision is
-
-```sh
-cmake -Darith="s;d"
-```
-meaning real 32-bit and 64-bit floating precision.
+The default is to build all precisions (real and complex).
 The build-time parameter `-Darith=d` may be optionally specified:
 
 ```sh
