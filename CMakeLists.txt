@@ -62,7 +62,7 @@ install(TARGETS scalapack EXPORT ${PROJECT_NAME}Targets)
 install(FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/FindLAPACK.cmake
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/FindSCALAPACK.cmake
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/FindBLACS.cmake
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/FindMPI.cmake
   DESTINATION lib/cmake/${PROJECT_NAME}/Modules)
 
 include(cmake/install.cmake)
