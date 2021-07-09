@@ -74,7 +74,7 @@ set(CMAKE_REQUIRED_INCLUDES ${SCALAPACK_INCLUDE_DIR})
 set(CMAKE_REQUIRED_LIBRARIES ${SCALAPACK_LIBRARY} LAPACK::LAPACK MPI::MPI_Fortran MPI::MPI_C)
 # MPI needed for ifort
 
-foreach(i s d c z)
+foreach(i s d)
 
   check_source_compiles(Fortran
     "program test
