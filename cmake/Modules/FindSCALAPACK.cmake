@@ -57,14 +57,13 @@ function(scalapack_check)
 
 get_property(enabled_langs GLOBAL PROPERTY ENABLED_LANGUAGES)
 if(NOT Fortran IN_LIST enabled_langs)
-  set(SCALAPACK_links true)
+  set(SCALAPACK_links true PARENT_SCOPE)
   return()
 endif()
 
 find_package(MPI COMPONENTS C Fortran)
 find_package(LAPACK)
 if(NOT (MPI_Fortran_FOUND AND LAPACK_FOUND))
-  set(SCALAPACK_links true)
   return()
 endif()
 
