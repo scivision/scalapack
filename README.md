@@ -36,7 +36,7 @@ ctest --preset default
 
 ### options
 
-The default is to build all precisions (real and complex).
+The default is to build real32, real64.
 The build-time parameter `-Darith=d` may be optionally specified:
 
 ```sh

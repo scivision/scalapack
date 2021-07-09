@@ -7,7 +7,7 @@ option(dev "Scalapack developer mode")
 
 # default build all
 if(NOT DEFINED arith)
-  set(arith "s;d;c;z")
+  set(arith "s;d")
 endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
