@@ -1,14 +1,14 @@
 {
-  "version": 2,
+  "version": 3,
 
 "configurePresets": [
 {
   "name": "default",
   "binaryDir": "${sourceDir}/build",
-  "generator": "Ninja",
   "cacheVariables": {
     "CMAKE_BUILD_TYPE": "Release",
-    "CMAKE_INSTALL_PREFIX": "${sourceDir}/build"}
+    "CMAKE_INSTALL_PREFIX": "${sourceDir}/build"
+  }
 },
 {
   "name": "build", "inherits": "default",
@@ -27,7 +27,6 @@
   },
   "environment": {
     "CC": "icx",
-    "CXX": "icx",
     "FC": "ifx"
   }
 }
