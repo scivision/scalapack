@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19...3.21)
+cmake_minimum_required(VERSION 3.20...3.21)
 
 file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/VERSION PROJECT_VERSION
   REGEX "^([0-9]+\.[0-9]+\.[0-9]+)" LIMIT_INPUT 16 LENGTH_MAXIMUM 16 LIMIT_COUNT 1)
@@ -53,7 +53,6 @@ endforeach()
 if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
-
 
 # --- install
 
