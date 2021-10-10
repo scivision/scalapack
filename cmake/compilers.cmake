@@ -20,26 +20,21 @@ set(cargs "Add_")
 # "Add_" works for all modern compilers we tried.
 
 if(CMAKE_Fortran_COMPILER_ID MATCHES Intel)
-  if(WIN32)
-    add_compile_options(/QxHost)
-    # /heap-arrays is necessary to avoid runtime errors in programs using this library
-    string(APPEND CMAKE_Fortran_FLAGS " /heap-arrays")
-  else()
-    add_compile_options(-xHost)
-  endif()
+  add_compile_options(
+  $<IF:$<BOOL:${WIN32}>,/QxHost,-xHost>
+  "$<$<COMPILE_LANGUAGE:Fortran>:$<IF:$<BOOL:${WIN32}>,/heap-arrays,>>"
+  )
 elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
-  add_compile_options(-mtune=native)
-  # -std=legacy is for "Error: Rank mismatch between actual argument at (1) and actual argument at (2) (scalar and rank-1)"
-  string(APPEND CMAKE_Fortran_FLAGS " -std=legacy")
-  if(MINGW)
-    # presumably using MS-MPI, which emits extreme amounts of nuisance warnings
-    string(APPEND CMAKE_Fortran_FLAGS " -w")
-  endif(MINGW)
+  add_compile_options(-mtune=native
+  "$<$<COMPILE_LANGUAGE:Fortran>:-fimplicit-none;-std=legacy>"
+  $<$<BOOL:${MINGW}>:-w>
+  )
+  # MS-MPI emits extreme amounts of nuisance warnings
 endif()
 
 # Clang errors without this
 # test the non-no form, otherwise always succeeds
 check_compiler_flag(C -Wimplicit-function-declaration HAS_IMPLICIT_FUNC_FLAG)
 if(HAS_IMPLICIT_FUNC_FLAG)
-  string(APPEND CMAKE_C_FLAGS " -Wno-implicit-function-declaration")
+  add_compile_options($<$<COMPILE_LANGUAGE:C>:-Wno-implicit-function-declaration>)
 endif()

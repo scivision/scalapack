@@ -27,11 +27,11 @@ to get mpiexec.exe
 ## Build
 
 ```sh
-cmake --preset default
-cmake --build --preset default
+cmake -B build
+cmake --build build
 
-# optional
-ctest --preset default
+# optional self-tests
+ctest --test-dir build
 ```
 
 ### options
