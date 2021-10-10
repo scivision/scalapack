@@ -25,9 +25,9 @@ jobs:
         sudo apt update -yq
         sudo apt install -yq --no-install-recommends gfortran libopenmpi-dev openmpi-bin
 
-    - run: cmake --preset default -Darith=d --install-prefix=${HOME}
-    - run: cmake --build --preset default
-    - run: ctest --preset default
+    - run: cmake -B build -Darith=d --install-prefix=${HOME}
+    - run: cmake --build build
+    - run: ctest --test-dir build --preset default
 
     - run: cmake --install build
 
@@ -44,8 +44,8 @@ jobs:
 
     - run: brew install open-mpi
 
-    - run: cmake --preset default -Darith=d
-    - run: cmake --build --preset default
-    - run: ctest --preset default
+    - run: cmake -B build -Darith=d
+    - run: cmake --build build
+    - run: ctest --test-dir build --preset default
 
     - run: cmake --install build
