@@ -1,7 +1,7 @@
 option(autobuild "auto-build Lapack if missing or broken" true)
 option(lapack_external "build Lapack instead of finding")
 
-option(dev "Scalapack developer mode")
+option(dev "developer mode")
 
 # --- other options
 
