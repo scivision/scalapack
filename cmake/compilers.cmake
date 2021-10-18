@@ -26,10 +26,11 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES Intel)
   )
 elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
   add_compile_options(-mtune=native
-  "$<$<COMPILE_LANGUAGE:Fortran>:-fimplicit-none;-std=legacy>"
+  $<$<COMPILE_LANGUAGE:Fortran>:-std=legacy>
   $<$<BOOL:${MINGW}>:-w>
   )
   # MS-MPI emits extreme amounts of nuisance warnings
+  # pzheevd.f broken with -fimplicit-none
 endif()
 
 # Clang errors without this
