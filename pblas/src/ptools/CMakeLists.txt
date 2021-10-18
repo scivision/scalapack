@@ -23,24 +23,15 @@ set(ALLCTOOLS
     PB_Ctzsyr2.c     PB_Ctzsyr2k.c    PB_Ctztrmm.c     PB_Ctztrmv.c
     PB_Cwarn.c       PB_freebuf_.c    PB_topget_.c     PB_topset_.c
     PB_Cdescset.c    PB_Cdescribe.c   PB_CargFtoC.c    PB_Cfirstnb.c
-    PB_Clastnb.c     PB_Cspan.c)
+    PB_Clastnb.c     PB_Cspan.c
+)
 
-set(pctools)
-if("s" IN_LIST arith)
-list(APPEND pctools PB_Cstypeset.c)
-endif()
-
-if("d" IN_LIST arith)
-list(APPEND pctools PB_Cdtypeset.c)
-endif()
-
-if("c" IN_LIST arith)
-list(APPEND pctools PB_Cctypeset.c)
-endif()
-
-if("z" IN_LIST arith)
-list(APPEND pctools PB_Cztypeset.c)
-endif()
+set(pctools
+$<$<IN_LIST:s,${arith}>:PB_Cstypeset.c>
+$<$<IN_LIST:d,${arith}>:PB_Cdtypeset.c>
+$<$<IN_LIST:c,${arith}>:PB_Cctypeset.c>
+$<$<IN_LIST:z,${arith}>:PB_Cztypeset.c>
+)
 
 add_library(scalapack_pctools OBJECT ${ALLCTOOLS} ${pctools})
 
