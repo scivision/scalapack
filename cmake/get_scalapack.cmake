@@ -1,8 +1,21 @@
 include(FetchContent)
-set(scalapack_urls
-https://github.com/Reference-ScaLAPACK/scalapack/archive/refs/tags/v2.1.0.tar.gz
-http://www.netlib.org/scalapack/scalapack-2.1.0.tgz)
-set(scalapack_sha256 f03fda720a152030b582a237f8387014da878b84cbd43c568390e9f05d24617f)
+
+file(READ ${CMAKE_CURRENT_LIST_DIR}/libraries.json json)
+
+set(scalapack_urls)
+set(scalapack_sha256)
+
+string(JSON N LENGTH ${json} scalapack urls)
+math(EXPR N "${N}-1")
+foreach(i RANGE ${N})
+  string(JSON _u GET ${json} scalapack urls ${i})
+  list(APPEND scalapack_urls ${_u})
+endforeach()
+
+string(JSON scalapack_sha256 GET ${json} scalapack sha256)
+
+set(FETCHCONTENT_QUIET no)
+
 
 FetchContent_Declare(scalapack
 URL ${scalapack_urls}
