@@ -67,12 +67,13 @@ endif()
 
 # --- install
 
-install(TARGETS scalapack EXPORT ${PROJECT_NAME}Targets)
+install(TARGETS scalapack EXPORT ${PROJECT_NAME}-targets)
 
 install(FILES
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/FindLAPACK.cmake
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/FindSCALAPACK.cmake
-  DESTINATION lib/cmake/${PROJECT_NAME}/Modules)
+${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/FindLAPACK.cmake
+${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/FindSCALAPACK.cmake
+DESTINATION cmake
+)
 
 include(cmake/install.cmake)
 

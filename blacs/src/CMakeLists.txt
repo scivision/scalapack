@@ -51,4 +51,4 @@ set_target_properties(blacs PROPERTIES
   VERSION ${SCALAPACK_VERSION}
   EXPORT_NAME BLACS)
 
-install(TARGETS blacs EXPORT ${PROJECT_NAME}Targets)
+install(TARGETS blacs EXPORT ${PROJECT_NAME}-targets)
