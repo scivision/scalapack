@@ -24,3 +24,7 @@ URL_HASH SHA256=${scalapack_sha256})
 if(NOT scalapack_POPULATED)
   FetchContent_Populate(scalapack)
 endif()
+
+# --- dynamic shared library
+set(CMAKE_INSTALL_NAME_DIR ${CMAKE_INSTALL_PREFIX}/lib)
+set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
