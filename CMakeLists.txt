@@ -6,13 +6,15 @@ if(NOT is_multi_config AND NOT (CMAKE_BUILD_TYPE OR DEFINED ENV{CMAKE_BUILD_TYPE
 endif()
 
 file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/VERSION PROJECT_VERSION
-  REGEX "^([0-9]+\.[0-9]+\.[0-9]+)" LIMIT_INPUT 16 LENGTH_MAXIMUM 16 LIMIT_COUNT 1)
+REGEX "^([0-9]+\.[0-9]+\.[0-9]+)" LIMIT_INPUT 16 LENGTH_MAXIMUM 16 LIMIT_COUNT 1
+)
 
 project(SCALAPACK
-  LANGUAGES C Fortran
-  VERSION ${PROJECT_VERSION}
-  HOMEPAGE_URL "http://netlib.org/scalapack"
-  DESCRIPTION "University of Tennessee, Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd")
+LANGUAGES C Fortran
+VERSION ${PROJECT_VERSION}
+HOMEPAGE_URL "http://netlib.org/scalapack"
+DESCRIPTION "University of Tennessee, Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd"
+)
 
 include(CTest)
 
@@ -44,8 +46,9 @@ include(cmake/lapack.cmake)
 # == SCALAPACK
 add_library(scalapack)
 set_target_properties(scalapack PROPERTIES
-  VERSION ${SCALAPACK_VERSION}
-  EXPORT_NAME SCALAPACK)
+VERSION ${SCALAPACK_VERSION}
+EXPORT_NAME SCALAPACK
+)
 target_link_libraries(scalapack PRIVATE blacs LAPACK::LAPACK MPI::MPI_C MPI::MPI_Fortran)
 target_compile_definitions(scalapack PRIVATE ${cargs})
 
