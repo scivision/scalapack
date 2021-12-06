@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20...3.22)
+cmake_minimum_required(VERSION 3.19...3.22)
 
 get_property(is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(NOT is_multi_config AND NOT (CMAKE_BUILD_TYPE OR DEFINED ENV{CMAKE_BUILD_TYPE}))
@@ -17,12 +17,6 @@ DESCRIPTION "University of Tennessee, Univ. of California Berkeley, Univ. of Col
 )
 
 include(CTest)
-
-if(CMAKE_GENERATOR STREQUAL "Ninja Multi-Config")
-  set(EXTPROJ_GENERATOR "Ninja")
-else()
-  set(EXTPROJ_GENERATOR ${CMAKE_GENERATOR})
-endif()
 
 include(cmake/options.cmake)
 include(cmake/libraries.cmake)
