@@ -14,39 +14,66 @@ on:
       - "**/CMakeLists.txt"
       - ".github/workflows/ci.yml"
 
+
 jobs:
 
-  linux:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
+  static-fortran:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            fc: gfortran
+            cmd: sudo apt update && sudo apt install liblapack-dev libopenmpi-dev openmpi-bin
+          - os: macos-latest
+            fc: gfortran-11
+            cmd: brew install lapack open-mpi
 
-    - name: Install prereqs
-      run: |
-        sudo apt update -yq
-        sudo apt install -yq --no-install-recommends gfortran libopenmpi-dev openmpi-bin
-
-    - run: cmake -B build -Darith=d --install-prefix=${HOME}
-    - run: cmake --build build
-    - run: ctest --test-dir build --preset default
-
-    - run: cmake --install build
-
-
-  mac:
-    needs: linux
-    runs-on: macos-latest
-    env:
-      HOMEBREW_NO_INSTALL_CLEANUP: 1
-      FC: gfortran-11
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 7
 
     steps:
+
     - uses: actions/checkout@v2
 
-    - run: brew install open-mpi
+    - name: install prereqs
+      run: ${{ matrix.cmd }}
 
-    - run: cmake -B build -Darith=d
-    - run: cmake --build build
-    - run: ctest --test-dir build --preset default
+    - name: Config static
+      run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=off
+      env:
+        FC: ${{ matrix.fc }}
 
-    - run: cmake --install build
+    - run: cmake --build build --parallel
+
+    - run: ctest --test-dir build --preset default -V
+
+
+  shared-fortran:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            fc: gfortran
+            cmd: sudo apt update && sudo apt install liblapack-dev libopenmpi-dev openmpi-bin
+          - os: macos-latest
+            fc: gfortran-11
+            cmd: brew install lapack open-mpi
+
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 7
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: install prereqs
+      run: ${{ matrix.cmd }}
+
+    - name: Config shared
+      run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=on
+      env:
+        FC: ${{ matrix.fc }}
+
+    - run: cmake --build build --parallel
+
+    - run: ctest --test-dir build --preset default -V
