@@ -39,3 +39,8 @@ check_compiler_flag(C -Wimplicit-function-declaration HAS_IMPLICIT_FUNC_FLAG)
 if(HAS_IMPLICIT_FUNC_FLAG)
   add_compile_options($<$<COMPILE_LANGUAGE:C>:-Wno-implicit-function-declaration>)
 endif()
+
+# fixes errors about needing -fPIC
+if(CMAKE_SYSTEM_NAME STREQUAL Linux AND BUILD_SHARED_LIBS)
+  set(CMAKE_POSITION_INDEPENDENT_CODE true)
+endif()
