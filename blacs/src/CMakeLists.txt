@@ -1,8 +1,9 @@
 #  The communication routines
 set(comm
 igesd2d_.c itrsd2d_.c igerv2d_.c itrrv2d_.c igebs2d_.c igebr2d_.c itrbs2d_.c itrbr2d_.c igsum2d_.c igamx2d_.c igamn2d_.c
+dgsum2d_.c dgamx2d_.c dgamn2d_.c
 $<$<IN_LIST:s,${arith}>:sgesd2d_.c;strsd2d_.c;sgerv2d_.c;strrv2d_.c;sgebs2d_.c;sgebr2d_.c;strbs2d_.c;strbr2d_.c;sgsum2d_.c;sgamx2d_.c;sgamn2d_.c>
-$<$<IN_LIST:d,${arith}>:dgesd2d_.c;dtrsd2d_.c;dgerv2d_.c;dtrrv2d_.c;dgebs2d_.c;dgebr2d_.c;dtrbs2d_.c;dtrbr2d_.c;dgsum2d_.c;dgamx2d_.c;dgamx2d_.c;dgamn2d_.c>
+$<$<IN_LIST:d,${arith}>:dgesd2d_.c;dtrsd2d_.c;dgerv2d_.c;dtrrv2d_.c;dgebs2d_.c;dgebr2d_.c;dtrbs2d_.c;dtrbr2d_.c;dgamx2d_.c>
 $<$<IN_LIST:c,${arith}>:cgesd2d_.c;ctrsd2d_.c;cgerv2d_.c;ctrrv2d_.c;cgebs2d_.c;cgebr2d_.c;ctrbs2d_.c;ctrbr2d_.c;cgsum2d_.c;cgamx2d_.c;cgamn2d_.c>
 $<$<IN_LIST:z,${arith}>:zgesd2d_.c;ztrsd2d_.c;zgerv2d_.c;ztrrv2d_.c;zgebs2d_.c;zgebr2d_.c;ztrbs2d_.c;ztrbr2d_.c;zgsum2d_.c;zgamx2d_.c;zgamn2d_.c>
 )
