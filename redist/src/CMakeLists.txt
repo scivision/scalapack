@@ -10,5 +10,6 @@ $<$<IN_LIST:z,${arith}>:pzgemr.c pzgemr2.c pztrmr.c pztrmr2.c>
 )
 
 add_library(scalapack_redist OBJECT ${ALLAUX} ${IMRSRC} ${mrsrc})
+target_compile_definitions(scalapack_redist PRIVATE ${cargs})
 
 target_sources(scalapack PRIVATE $<TARGET_OBJECTS:scalapack_redist>)
