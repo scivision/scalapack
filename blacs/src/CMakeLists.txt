@@ -25,12 +25,12 @@ BI_Pack.c BI_Unpack.c BI_GetMpiGeType.c BI_GetMpiTrType.c
 BI_ivvsum.c BI_ivvamx.c BI_ivvamx2.c BI_ivvamn.c BI_ivvamn2.c
 BI_iMPI_amx.c BI_iMPI_amx2.c BI_iMPI_amn.c BI_iMPI_amn2.c
 BI_ContxtNum.c BI_GlobalVars.c BI_TransUserComm.c
+BI_dvvsum.c BI_dvvamx.c BI_dvvamx2.c BI_dvvamn.c BI_dvvamn2.c BI_dMPI_amx.c BI_dMPI_amx2.c BI_dMPI_amn.c BI_dMPI_amn2.c
+BI_dmvcopy.c BI_dvmcopy.c
 $<$<IN_LIST:s,${arith}>:BI_svvsum.c;BI_svvamx.c;BI_svvamx2.c;BI_svvamn.c;BI_svvamn2.c;BI_sMPI_amx.c;BI_sMPI_amx2.c;BI_sMPI_amn.c;BI_sMPI_amn2.c>
-$<$<IN_LIST:d,${arith}>:BI_dvvsum.c;BI_dvvamx.c;BI_dvvamx2.c;BI_dvvamn.c;BI_dvvamn2.c;BI_dMPI_amx.c;BI_dMPI_amx2.c;BI_dMPI_amn.c;BI_dMPI_amn2.c>
 $<$<IN_LIST:c,${arith}>:BI_cvvsum.c;BI_cvvamx.c;BI_cvvamx2.c;BI_cvvamn.c;BI_cvvamn2.c;BI_cMPI_amx.c;BI_cMPI_amx2.c;BI_cMPI_amn.c;BI_cMPI_amn2.c;BI_cMPI_sum.c>
 $<$<IN_LIST:z,${arith}>:BI_zvvsum.c;BI_zvvamx.c;BI_zvvamx2.c;BI_zvvamn.c;BI_zvvamn2.c;BI_zMPI_amx.c;BI_zMPI_amx2.c;BI_zMPI_amn.c;BI_zMPI_amn2.c;BI_zMPI_sum.c>
 $<$<OR:$<IN_LIST:s,${arith}>,$<IN_LIST:c,${arith}>>:BI_smvcopy.c;BI_svmcopy.c>
-$<$<OR:$<IN_LIST:d,${arith}>,$<IN_LIST:z,${arith}>>:BI_dmvcopy.c;BI_dvmcopy.c>
 )
 
 add_library(blacsCinit OBJECT ${comm} ${supp})
