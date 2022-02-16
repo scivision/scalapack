@@ -1,25 +1,17 @@
-option(autobuild "auto-build Lapack if missing or broken" true)
-
-option(dev "developer mode")
-
-# --- other options
+option(autobuild "auto-build Lapack if needed")
 
 # default build all
 if(NOT DEFINED arith)
   set(arith "s;d")
 endif()
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS on)
-
 set(CMAKE_TLS_VERIFY true)
 
 set(FETCHCONTENT_UPDATES_DISCONNECTED_SCALAPACK true)
 
-if(dev)
+set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 
-else()
-  set_directory_properties(PROPERTIES EP_UPDATE_DISCONNECTED true)
-endif()
+set_directory_properties(PROPERTIES EP_UPDATE_DISCONNECTED true)
 
 if(CMAKE_GENERATOR STREQUAL "Ninja Multi-Config")
   set(EXTPROJ_GENERATOR "Ninja")
@@ -33,7 +25,6 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   # CMAKE_BINARY_DIR for use from FetchContent
   set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR} CACHE PATH "Install top-level directory" FORCE)
 endif()
-
 
 # --- auto-ignore build directory
 if(NOT EXISTS ${PROJECT_BINARY_DIR}/.gitignore)
