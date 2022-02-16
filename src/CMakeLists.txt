@@ -1,8 +1,10 @@
 set (ALLAUX  pjlaenv.f  pilaenvx.f piparmq.f pilaver.f pmpim2.f pmpcol.f)
 
-set(ALLAUX_C  pbchkvect.c getpbbuf.c pslaiect.c pdlaiect.c slamov.c clamov.c dlamov.c zlamov.c
-$<$<IN_LIST:c,${arith}>:pcrot.c>
-$<$<IN_LIST:z,${arith}>:pzrot.c>
+set(ALLAUX_C  pbchkvect.c getpbbuf.c
+$<$<IN_LIST:s,${arith}>:pslaiect.c;slamov.c>
+$<$<IN_LIST:d,${arith}>:pdlaiect.c;dlamov.c>
+$<$<IN_LIST:c,${arith}>:clamov.c;pcrot.c>
+$<$<IN_LIST:z,${arith}>:zlamov.c;pzrot.c>
 )
 
 set(laux
