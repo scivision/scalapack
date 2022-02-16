@@ -5,6 +5,14 @@ if(NOT DEFINED arith)
   set(arith "s;d")
 endif()
 
+# complex arith requires corresponding real arith
+if(c IN_LIST arith AND NOT s IN_LIST arith)
+  list(APPEND arith s)
+endif()
+if(z IN_LIST arith AND NOT d IN_LIST arith)
+  list(APPEND arith d)
+endif()
+
 set(CMAKE_TLS_VERIFY true)
 
 set(FETCHCONTENT_UPDATES_DISCONNECTED_SCALAPACK true)

@@ -30,7 +30,7 @@ BI_dmvcopy.c BI_dvmcopy.c
 $<$<IN_LIST:s,${arith}>:BI_svvsum.c;BI_svvamx.c;BI_svvamx2.c;BI_svvamn.c;BI_svvamn2.c;BI_sMPI_amx.c;BI_sMPI_amx2.c;BI_sMPI_amn.c;BI_sMPI_amn2.c>
 $<$<IN_LIST:c,${arith}>:BI_cvvsum.c;BI_cvvamx.c;BI_cvvamx2.c;BI_cvvamn.c;BI_cvvamn2.c;BI_cMPI_amx.c;BI_cMPI_amx2.c;BI_cMPI_amn.c;BI_cMPI_amn2.c;BI_cMPI_sum.c>
 $<$<IN_LIST:z,${arith}>:BI_zvvsum.c;BI_zvvamx.c;BI_zvvamx2.c;BI_zvvamn.c;BI_zvvamn2.c;BI_zMPI_amx.c;BI_zMPI_amx2.c;BI_zMPI_amn.c;BI_zMPI_amn2.c;BI_zMPI_sum.c>
-$<$<OR:$<IN_LIST:s,${arith}>,$<IN_LIST:c,${arith}>>:BI_smvcopy.c;BI_svmcopy.c>
+$<$<IN_LIST:s,${arith}>:BI_smvcopy.c;BI_svmcopy.c>
 )
 
 add_library(blacsCinit OBJECT ${comm} ${supp})
