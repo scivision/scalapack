@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19...3.22)
+cmake_minimum_required(VERSION 3.19...3.23)
 
 get_property(is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(NOT is_multi_config AND NOT (CMAKE_BUILD_TYPE OR DEFINED ENV{CMAKE_BUILD_TYPE}))
@@ -43,13 +43,13 @@ set_target_properties(scalapack PROPERTIES
 VERSION ${SCALAPACK_VERSION}
 EXPORT_NAME SCALAPACK
 )
-target_link_libraries(scalapack PRIVATE blacs LAPACK::LAPACK MPI::MPI_C MPI::MPI_Fortran)
+target_link_libraries(scalapack PUBLIC blacs LAPACK::LAPACK MPI::MPI_Fortran MPI::MPI_C)
 target_compile_definitions(scalapack PRIVATE ${cargs})
 
 # target most users will link to.
 # this must NOT be an ALIAS or linking in other packages breaks.
 add_library(SCALAPACK::SCALAPACK INTERFACE IMPORTED GLOBAL)
-target_link_libraries(SCALAPACK::SCALAPACK INTERFACE scalapack blacs)
+target_link_libraries(SCALAPACK::SCALAPACK INTERFACE scalapack)
 
 foreach(d src/ pblas/src/ pblas/src/pbblas/ pblas/src/ptools/ pblas/src/ptzblas/ redist/src/ tools/ tools/lapack/)
   string(TOUPPER ${d} D)
