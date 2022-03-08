@@ -17,63 +17,31 @@ on:
 
 jobs:
 
-  static-fortran:
+ fortran:
     strategy:
       matrix:
-        include:
-          - os: ubuntu-latest
-            fc: gfortran
-            cmd: sudo apt update && sudo apt install liblapack-dev libopenmpi-dev openmpi-bin
-          - os: macos-latest
-            fc: gfortran-11
-            cmd: brew install lapack open-mpi
+        shared: [true, false]
+        img: [ {os: ubuntu-latest, fc: gfortran, cmd: sudo apt update && sudo apt install liblapack-dev libopenmpi-dev openmpi-bin},
+               {os: macos-latest, fc: gfortran-11, cmd: brew install lapack open-mpi}
+        ]
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.img.os }}
     timeout-minutes: 7
+    env:
+      FC: ${{ matrix.img.fc }}
 
     steps:
 
     - uses: actions/checkout@v2
 
     - name: install prereqs
-      run: ${{ matrix.cmd }}
+      run: ${{ matrix.img.cmd }}
 
-    - name: Config static
-      run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=off
-      env:
-        FC: ${{ matrix.fc }}
+    - name: Config
+      run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }}
 
-    - run: cmake --build build --parallel
+    - name: build
+      run: cmake --build build --parallel
 
-    - run: ctest --test-dir build --preset default -V
-
-
-  shared-fortran:
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            fc: gfortran
-            cmd: sudo apt update && sudo apt install liblapack-dev libopenmpi-dev openmpi-bin
-          - os: macos-latest
-            fc: gfortran-11
-            cmd: brew install lapack open-mpi
-
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 7
-
-    steps:
-
-    - uses: actions/checkout@v2
-
-    - name: install prereqs
-      run: ${{ matrix.cmd }}
-
-    - name: Config shared
-      run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=on
-      env:
-        FC: ${{ matrix.fc }}
-
-    - run: cmake --build build --parallel
-
-    - run: ctest --test-dir build --preset default -V
+    - name: test
+      run: ctest --test-dir build --preset default -V
