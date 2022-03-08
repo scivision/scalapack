@@ -1,5 +1,7 @@
 option(autobuild "auto-build Lapack if needed")
 
+message(STATUS "Scalpaack ${PROJECT_VERSION}  CMake ${CMAKE_VERSION}")
+
 # default build all
 if(NOT DEFINED arith)
   set(arith "s;d")

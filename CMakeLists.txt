@@ -24,7 +24,7 @@ include(cmake/compilers.cmake)
 find_package(MPI COMPONENTS C Fortran REQUIRED)
 
 # --- get Scalapack source
-include(cmake/get_scalapack.cmake)
+include(cmake/scalapack_src.cmake)
 
 # --- BLACS
 configure_file(blacs/src/CMakeLists.txt ${scalapack_SOURCE_DIR}/BLACS/SRC/ COPYONLY)

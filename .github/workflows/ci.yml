@@ -32,10 +32,15 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v2
-
     - name: install prereqs
       run: ${{ matrix.img.cmd }}
+
+    - name: Setup cmake
+      uses: jwlawson/actions-setup-cmake@v1
+      with:
+        cmake-version: '3.19'
+
+    - uses: actions/checkout@v2
 
     - name: Config
       run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }}
@@ -45,3 +50,6 @@ jobs:
 
     - name: test
       run: ctest --test-dir build --preset default -V
+
+    - name: install
+      run: cmake --install build
