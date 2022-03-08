@@ -19,10 +19,6 @@ DESCRIPTION "University of Tennessee, Univ. of California Berkeley, Univ. of Col
 include(CTest)
 
 include(cmake/options.cmake)
-include(cmake/libraries.cmake)
-
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules)
-
 include(cmake/compilers.cmake)
 
 find_package(MPI COMPONENTS C Fortran REQUIRED)
