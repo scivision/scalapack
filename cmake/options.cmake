@@ -37,7 +37,6 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
 # Necessary for shared library with Visual Studio / Windows oneAPI
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS true)
 
-
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   # will not take effect without FORCE
   # CMAKE_BINARY_DIR for use from FetchContent
