@@ -30,8 +30,7 @@ include(cmake/scalapack_src.cmake)
 configure_file(blacs/src/CMakeLists.txt ${scalapack_SOURCE_DIR}/BLACS/SRC/ COPYONLY)
 add_subdirectory(${scalapack_SOURCE_DIR}/BLACS/SRC ${scalapack_BINARY_DIR}/BLACS/SRC)
 
-# --- LAPACK
-include(cmake/lapack.cmake)
+find_package(LAPACK REQUIRED)
 
 # == SCALAPACK
 add_library(scalapack)

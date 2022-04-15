@@ -34,6 +34,16 @@ cmake --build build
 ctest --test-dir build
 ```
 
+If Lapack is needed:
+
+```sh
+cmake -S scripts -B scripts/build -DCMAKE_INSTALL_PREFIX=~/mylibs
+cmake --build scripts/build
+
+cmake -B build -DLAPACK_ROOT=~/mylibs
+cmake --build build
+```
+
 ### options
 
 The default is to build real32, real64.
