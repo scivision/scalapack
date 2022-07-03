@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19...3.23)
+cmake_minimum_required(VERSION 3.19...3.24)
 
 project(BuildLAPACK
 LANGUAGES Fortran
@@ -26,5 +26,6 @@ GIT_REPOSITORY ${lapack_url}
 GIT_TAG ${lapack_tag}
 CMAKE_ARGS ${lapack_cmake_args}
 CMAKE_CACHE_ARGS -Darith:STRING=${arith}
-INACTIVITY_TIMEOUT 15
+INACTIVITY_TIMEOUT 60
+TLS_VERIFY true
 )

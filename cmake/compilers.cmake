@@ -21,16 +21,23 @@ set(cargs "Add_")
 
 if(CMAKE_Fortran_COMPILER_ID MATCHES Intel)
   add_compile_options(
-  $<IF:$<BOOL:${WIN32}>,/QxHost,-xHost>
   "$<$<COMPILE_LANGUAGE:Fortran>:$<IF:$<BOOL:${WIN32}>,/heap-arrays,>>"
   )
+
+  if(NOT CMAKE_CROSSCOMPILING)
+    add_compile_options($<IF:$<BOOL:${WIN32}>,/QxHost,-xHost>)
+  endif()
 elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
-  add_compile_options(-mtune=native
+  add_compile_options(
   $<$<COMPILE_LANGUAGE:Fortran>:-std=legacy>
   $<$<BOOL:${MINGW}>:-w>
   )
   # MS-MPI emits extreme amounts of nuisance warnings
   # pzheevd.f broken with -fimplicit-none
+
+  if(NOT CMAKE_CROSSCOMPILING)
+    add_compile_options(-mtune=native)
+  endif()
 endif()
 
 # Clang errors without this
