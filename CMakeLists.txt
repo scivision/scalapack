@@ -16,7 +16,12 @@ HOMEPAGE_URL "http://netlib.org/scalapack"
 DESCRIPTION "University of Tennessee, Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd"
 )
 
-include(CTest)
+enable_testing()
+if(DEFINED BUILD_TESTING)
+  set(${PROJECT_NAME}_BUILD_TESTING ${BUILD_TESTING})
+else()
+  set(${PROJECT_NAME}_BUILD_TESTING true)
+endif()
 
 include(cmake/options.cmake)
 include(cmake/compilers.cmake)
@@ -53,8 +58,8 @@ foreach(d src/ pblas/src/ pblas/src/pbblas/ pblas/src/ptools/ pblas/src/ptzblas/
   add_subdirectory(${scalapack_SOURCE_DIR}/${D} ${scalapack_BINARY_DIR}/${D})
 endforeach()
 
-if(BUILD_TESTING)
-  add_subdirectory(tests)
+if(${PROJECT_NAME}_BUILD_TESTING)
+  add_subdirectory(test)
 endif()
 
 # --- install
@@ -68,6 +73,3 @@ DESTINATION cmake
 )
 
 include(cmake/install.cmake)
-
-include(FeatureSummary)
-add_feature_info(BuildLAPACK lapack_external "Build LAPACK")

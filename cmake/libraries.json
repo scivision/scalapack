@@ -1,13 +1,10 @@
 {
   "lapack": {
     "git": "https://github.com/scivision/lapack.git",
-    "tag": "v3.10.1.0"
+    "tag": "v3.10.1.1"
   },
   "scalapack": {
-    "urls": [
-      "https://github.com/Reference-ScaLAPACK/scalapack/archive/refs/tags/v2.2.0.tar.gz",
-      "http://www.netlib.org/scalapack/scalapack-2.2.0.tgz"
-    ],
-    "sha256": "8862fc9673acf5f87a474aaa71cd74ae27e9bbeee475dbd7292cec5b8bcbdcf3"
+    "tag": "v2.2.0",
+    "url": "https://github.com/Reference-ScaLAPACK/scalapack.git"
   }
 }

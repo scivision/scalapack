@@ -16,10 +16,10 @@ endif()
 
 # --- compiler check
 
-set(cargs "Add_")
+set(cargs "$<$<COMPILE_LANGUAGE:C>:Add_>")
 # "Add_" works for all modern compilers we tried.
 
-if(CMAKE_Fortran_COMPILER_ID MATCHES Intel)
+if(CMAKE_Fortran_COMPILER_ID MATCHES "^Intel")
   add_compile_options(
   "$<$<COMPILE_LANGUAGE:Fortran>:$<IF:$<BOOL:${WIN32}>,/heap-arrays,>>"
   )
@@ -27,7 +27,7 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES Intel)
   if(NOT CMAKE_CROSSCOMPILING)
     add_compile_options($<IF:$<BOOL:${WIN32}>,/QxHost,-xHost>)
   endif()
-elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
+elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
   add_compile_options(
   $<$<COMPILE_LANGUAGE:Fortran>:-std=legacy>
   $<$<BOOL:${MINGW}>:-w>
@@ -47,7 +47,7 @@ if(HAS_IMPLICIT_FUNC_FLAG)
   add_compile_options($<$<COMPILE_LANGUAGE:C>:-Wno-implicit-function-declaration>)
 endif()
 
-# fixes errors about needing -fPIC
-if(CMAKE_SYSTEM_NAME STREQUAL Linux AND BUILD_SHARED_LIBS)
+# fixes errors about needing -fPIC -- needed by targets linking to this
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND BUILD_SHARED_LIBS)
   set(CMAKE_POSITION_INDEPENDENT_CODE true)
 endif()

@@ -2,24 +2,17 @@ include(FetchContent)
 
 file(READ ${CMAKE_CURRENT_LIST_DIR}/libraries.json json)
 
-set(scalapack_urls)
-set(scalapack_sha256)
-
-string(JSON N LENGTH ${json} scalapack urls)
-math(EXPR N "${N}-1")
-foreach(i RANGE ${N})
-  string(JSON _u GET ${json} scalapack urls ${i})
-  list(APPEND scalapack_urls ${_u})
-endforeach()
-
-string(JSON scalapack_sha256 GET ${json} scalapack sha256)
+string(JSON scalapack_url GET ${json} scalapack url)
+string(JSON scalapack_tag GET ${json} scalapack tag)
 
 set(FETCHCONTENT_QUIET no)
 
-
-FetchContent_Declare(scalapack
-URL ${scalapack_urls}
-URL_HASH SHA256=${scalapack_sha256}
+FetchContent_Declare(SCALAPACK
+GIT_REPOSITORY ${scalapack_url}
+GIT_TAG ${scalapack_tag}
+GIT_SHALLOW true
+INACTIVITY_TIMEOUT 60
+TLS_VERIFY true
 )
 
-FetchContent_Populate(scalapack)
+FetchContent_Populate(SCALAPACK)
