@@ -119,8 +119,6 @@
 *
 *      CALL IEEE_FLAGS( 'clear', 'exception', 'underflow', '')
 *
-*
- 9999 FORMAT( 'W=diag([', 4E16.12, ']);' )
 
       print *, "OK: PDSYEV"
 
