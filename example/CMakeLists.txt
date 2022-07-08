@@ -8,7 +8,7 @@ find_package(SCALAPACK CONFIG REQUIRED)
 
 include(CheckSourceCompiles)
 
-set(CMAKE_REQUIRED_LIBRARIES SCALAPACK::SCALAPACK)
+set(CMAKE_REQUIRED_LIBRARIES SCALAPACK::SCALAPACK LAPACK::LAPACK MPI::MPI_Fortran)
 
 check_source_compiles(Fortran
 "program test

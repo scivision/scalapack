@@ -304,12 +304,6 @@ if(MKL IN_LIST LAPACK_FIND_COMPONENTS)
   # double-quotes are necessary per CMake to_cmake_path docs.
   file(TO_CMAKE_PATH "$ENV{MKLROOT}" MKLROOT)
 
-  if(BUILD_SHARED_LIBS)
-    set(_mkltype dynamic)
-  else()
-    set(_mkltype static)
-  endif()
-
   if(MKL64 IN_LIST LAPACK_FIND_COMPONENTS)
     set(_mkl_bitflag i)
   else()
