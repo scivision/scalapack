@@ -74,9 +74,11 @@ foreach(i s d)
 
   check_source_compiles(Fortran
   "program test
+  use, intrinsic :: iso_fortran_env, only : real64
   implicit none (type, external)
-  external :: p${i}lamch
-  external :: blacs_pinfo, blacs_get, blacs_gridinit, blacs_gridexit, blacs_exit
+  real(real64), external :: p${i}lamch
+  integer :: ictxt
+  print *, p${i}lamch(ictxt, 'E')
   end program"
   SCALAPACK_${i}_links
   )

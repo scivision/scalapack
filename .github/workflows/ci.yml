@@ -2,7 +2,6 @@ name: ci
 
 env:
   CTEST_PARALLEL_LEVEL: 3
-  CMAKE_BUILD_TYPE: Release
   HOMEBREW_NO_INSTALL_CLEANUP: 1
 
 on:
@@ -43,7 +42,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Config
-      run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }}
+      run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }} -DCMAKE_INSTALL_PREFIX:PATH=${{ runner.temp }}
 
     - name: build
       run: cmake --build build --parallel
@@ -53,3 +52,12 @@ jobs:
 
     - name: install
       run: cmake --install build
+
+    - name: example Config
+      run: cmake -S example -B example/build -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }} -DCMAKE_PREFIX_PATH:PATH=${{ runner.temp }}
+
+    - name: build
+      run: cmake --build example/build --parallel
+
+    - name: test
+      run: ctest --test-dir example/build --preset default -V

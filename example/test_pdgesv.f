@@ -1,16 +1,19 @@
 ! http://www.netlib.org/scalapack/examples/
       PROGRAM EXAMPLE1
+
+      use, intrinsic :: iso_fortran_env, only : stderr=>error_unit,
+     &  stdout=>output_unit
 *
 *     Example Program solving Ax=b via ScaLAPACK routine PDGESV
 *
 *     .. Parameters ..
       INTEGER            DLEN_, IA, JA, IB, JB, M, N, MB, NB, RSRC,
-     $                   CSRC, MXLLDA, MXLLDB, NRHS, NBRHS, NOUT,
+     $                   CSRC, MXLLDA, MXLLDB, NRHS, NBRHS,
      $                   MXLOCR, MXLOCC, MXRHSC
       PARAMETER          ( DLEN_ = 9, IA = 1, JA = 1, IB = 1, JB = 1,
      $                   M = 9, N = 9, MB = 2, NB = 2, RSRC = 0,
      $                   CSRC = 0, MXLLDA = 5, MXLLDB = 5, NRHS = 1,
-     $                   NBRHS = 1, NOUT = 6, MXLOCR = 5, MXLOCC = 4,
+     $                   NBRHS = 1, MXLOCR = 5, MXLOCC = 4,
      $                   MXRHSC = 1 )
       DOUBLE PRECISION   ONE
       PARAMETER          ( ONE = 1.0D+0 )
@@ -50,8 +53,7 @@
 *
 *     If I'm not in the process grid, go to the end of the program
 *
-      IF( MYROW.EQ.-1 )
-     $   GO TO 10
+      IF( MYROW == -1 ) CALL BLACS_EXIT( 0 )
 *
 *     DISTRIBUTE THE MATRIX ON THE PROCESS GRID
 *     Initialize the array descriptors for the matrices A and B
@@ -76,11 +78,11 @@
       CALL PdGESV( N, NRHS, A, IA, JA, DESCA, IPIV, B, IB, JB, DESCB,
      $             INFO )
 *
-      IF( MYROW.EQ.0 .AND. MYCOL.EQ.0 ) THEN
-         WRITE( NOUT, FMT = 9999 )
-         WRITE( NOUT, FMT = 9998 )M, N, NB
-         WRITE( NOUT, FMT = 9997 )NPROW*NPCOL, NPROW, NPCOL
-         WRITE( NOUT, FMT = 9996 )INFO
+      IF( MYROW == 0 .AND. MYCOL == 0 ) THEN
+         WRITE( stdout, FMT = 9999 )
+         WRITE( stdout, FMT = 9998 )M, N, NB
+         WRITE( stdout, FMT = 9997 )NPROW*NPCOL, NPROW, NPCOL
+         WRITE( stdout, FMT = 9996 )INFO
       END IF
 *
 *     Compute residual ||A * X  - B|| / ( ||X|| * ||A|| * eps * N )
@@ -93,21 +95,18 @@
       XNORM = PDLANGE( 'I', N, NRHS, B0, 1, 1, DESCB, WORK )
       RESID = XNORM / ( ANORM*BNORM*EPS*DBLE( N ) )
 *
-      IF( MYROW.EQ.0 .AND. MYCOL.EQ.0 ) THEN
-         IF( RESID.LT.10.0D+0 ) THEN
-            WRITE( NOUT, FMT = 9995 )
-            WRITE( NOUT, FMT = 9993 )RESID
-         ELSE
-            WRITE( NOUT, FMT = 9994 )
-            WRITE( NOUT, FMT = 9993 )RESID
-         END IF
+      IF( MYROW == 0 .AND. MYCOL == 0 ) THEN
+         WRITE( stdout, FMT = 9993 )RESID
+         IF( RESID > 10 ) then
+         error stop 'Per normalized residual: solution is incorrect.'
+         endif
+         WRITE( stdout, FMT = 9995 )
       END IF
 *
 *     RELEASE THE PROCESS GRID
 *     Free the BLACS context
 *
       CALL BLACS_GRIDEXIT( ICTXT )
-   10 CONTINUE
 *
 *     Exit the BLACS
 *
@@ -121,9 +120,6 @@
  9996 FORMAT( / 'INFO code returned by PDGESV = ', I3 )
  9995 FORMAT( /
      $   'According to the normalized residual the solution is correct.'
-     $       )
- 9994 FORMAT( /
-     $ 'According to the normalized residual the solution is incorrect.'
      $       )
  9993 FORMAT( / '||A*x - b|| / ( ||x||*||A||*eps*N ) = ', 1P, E16.8 )
 
@@ -164,7 +160,7 @@
 *
       MXLLDA = DESCA( LLD_ )
 *
-      IF( MYROW.EQ.0 .AND. MYCOL.EQ.0 ) THEN
+      IF( MYROW == 0 .AND. MYCOL == 0 ) THEN
          AA( 1 ) = S
          AA( 2 ) = -S
          AA( 3 ) = -S
@@ -185,12 +181,12 @@
          AA( 3+3*MXLLDA ) = C
          AA( 4+3*MXLLDA ) = C
          AA( 5+3*MXLLDA ) = -C
-         B( 1 ) = 0.0D0
-         B( 2 ) = 0.0D0
-         B( 3 ) = 0.0D0
-         B( 4 ) = 0.0D0
-         B( 5 ) = 0.0D0
-      ELSE IF( MYROW.EQ.0 .AND. MYCOL.EQ.1 ) THEN
+         B( 1 ) = 0
+         B( 2 ) = 0
+         B( 3 ) = 0
+         B( 4 ) = 0
+         B( 5 ) = 0
+      ELSE IF( MYROW == 0 .AND. MYCOL == 1 ) THEN
          AA( 1 ) = A
          AA( 2 ) = A
          AA( 3 ) = -A
@@ -206,7 +202,7 @@
          AA( 3+2*MXLLDA ) = K
          AA( 4+2*MXLLDA ) = K
          AA( 5+2*MXLLDA ) = K
-      ELSE IF( MYROW.EQ.0 .AND. MYCOL.EQ.2 ) THEN
+      ELSE IF( MYROW == 0 .AND. MYCOL == 2 ) THEN
          AA( 1 ) = A
          AA( 2 ) = A
          AA( 3 ) = A
@@ -217,7 +213,7 @@
          AA( 3+MXLLDA ) = P
          AA( 4+MXLLDA ) = P
          AA( 5+MXLLDA ) = -P
-      ELSE IF( MYROW.EQ.1 .AND. MYCOL.EQ.0 ) THEN
+      ELSE IF( MYROW == 1 .AND. MYCOL == 0 ) THEN
          AA( 1 ) = -S
          AA( 2 ) = -S
          AA( 3 ) = -S
@@ -234,11 +230,11 @@
          AA( 2+3*MXLLDA ) = C
          AA( 3+3*MXLLDA ) = C
          AA( 4+3*MXLLDA ) = C
-         B( 1 ) = 1.0D0
-         B( 2 ) = 0.0D0
-         B( 3 ) = 0.0D0
-         B( 4 ) = 0.0D0
-      ELSE IF( MYROW.EQ.1 .AND. MYCOL.EQ.1 ) THEN
+         B( 1 ) = 1
+         B( 2 ) = 0
+         B( 3 ) = 0
+         B( 4 ) = 0
+      ELSE IF( MYROW == 1 .AND. MYCOL == 1 ) THEN
          AA( 1 ) = A
          AA( 2 ) = -A
          AA( 3 ) = -A
@@ -251,7 +247,7 @@
          AA( 2+2*MXLLDA ) = K
          AA( 3+2*MXLLDA ) = K
          AA( 4+2*MXLLDA ) = K
-      ELSE IF( MYROW.EQ.1 .AND. MYCOL.EQ.2 ) THEN
+      ELSE IF( MYROW == 1 .AND. MYCOL == 2 ) THEN
          AA( 1 ) = A
          AA( 2 ) = A
          AA( 3 ) = -A
@@ -312,7 +308,7 @@
 *     If machine needs additional set up, do it now
 *
       IF( NPROCS.LT.1 ) THEN
-         IF( IAM.EQ.0 )
+         IF( IAM == 0 )
      $      NPROCS = NPROW*NPCOL
          CALL BLACS_SETUP( IAM, NPROCS )
       END IF

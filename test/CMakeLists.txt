@@ -21,13 +21,4 @@ if("d" IN_LIST arith)
   TIMEOUT 15
   PROCESSORS 2
   )
-
-  # TODO: make this a running test too.
-  add_executable(test_pdgetrf test_pdgetrf.f90)
-  target_link_libraries(test_pdgetrf PRIVATE SCALAPACK::SCALAPACK)
-  # add_test(NAME scalapack:unit:pdgetrf
-  #   COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 2 $<TARGET_FILE:test_pdgetrf>)
-  # set_tests_properties(scalapack:unit:pdgetrf PROPERTIES
-  #   TIMEOUT 15
-  #   PROCESSORS 2)
 endif()
