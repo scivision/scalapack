@@ -1,7 +1,0 @@
-\\.git/
-\\.git*
-\\.vscode/
-\\.mypy_cache/
-
-_CPack_Packages/
-build*/

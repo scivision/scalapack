@@ -1,4 +1,4 @@
-message(STATUS "Scalapack ${PROJECT_VERSION}  CMake ${CMAKE_VERSION}")
+message(STATUS "${PROJECT_NAME} ${PROJECT_VERSION}  CMake ${CMAKE_VERSION}")
 
 # default build all
 if(NOT DEFINED arith)

@@ -1,7 +1,6 @@
 name: ci
 
 env:
-  CTEST_PARALLEL_LEVEL: 3
   HOMEBREW_NO_INSTALL_CLEANUP: 1
 
 on:
