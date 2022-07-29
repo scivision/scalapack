@@ -42,20 +42,14 @@ if(scalapack_d)
   add_test(NAME PDGESV
   COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 6 $<TARGET_FILE:test_pdgesv>
   )
-  set_tests_properties(PDGESV PROPERTIES
-  TIMEOUT 15
-  PROCESSORS 6
-  )
+  set_property(TEST PDGESV PROPERTY PROCESSORS 6)
 
   add_executable(test_pdsyev test_pdsyev.f)
   target_link_libraries(test_pdsyev PRIVATE SCALAPACK::SCALAPACK LAPACK::LAPACK MPI::MPI_Fortran)
   add_test(NAME PDSYEV
   COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 4 $<TARGET_FILE:test_pdsyev>
   )
-  set_tests_properties(PDSYEV PROPERTIES
-  TIMEOUT 15
-  PROCESSORS 4
-  )
+  set_property(TEST PDSYEV PROPERTY PROCESSORS 4)
 endif()
 
 if(scalapack_s)
@@ -64,8 +58,9 @@ if(scalapack_s)
   add_test(NAME PSSYEV
   COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 4 $<TARGET_FILE:test_pssyev>
   )
-  set_tests_properties(PSSYEV PROPERTIES
-  TIMEOUT 15
-  PROCESSORS 4
-  )
+  set_property(TEST PSSYEV PROPERTY PROCESSORS 4)
 endif()
+
+get_property(test_names DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY TESTS)
+
+set_property(TEST ${test_names} PROPERTY TIMEOUT 15)

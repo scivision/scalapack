@@ -46,11 +46,9 @@ target_link_libraries(blacsF77init PRIVATE MPI::MPI_C)
 # we opted to use objects instead
 add_library(blacs ${blacsInternal} $<TARGET_OBJECTS:blacsF77init> $<TARGET_OBJECTS:blacsCinit>)
 target_link_libraries(blacs PRIVATE MPI::MPI_C)
-set_target_properties(blacs PROPERTIES
-ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}
-LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}
-VERSION ${SCALAPACK_VERSION}
-EXPORT_NAME BLACS
-)
+set_property(TARGET blacs PROPERTY ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+set_property(TARGET blacs PROPERTY LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+set_property(TARGET blacs PROPERTY VERSION ${SCALAPACK_VERSION})
+set_property(TARGET blacs PROPERTY EXPORT_NAME BLACS)
 
 install(TARGETS blacs EXPORT ${PROJECT_NAME}-targets)

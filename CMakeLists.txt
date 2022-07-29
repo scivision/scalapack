@@ -39,10 +39,8 @@ find_package(LAPACK REQUIRED)
 
 # == SCALAPACK
 add_library(scalapack)
-set_target_properties(scalapack PROPERTIES
-VERSION ${SCALAPACK_VERSION}
-EXPORT_NAME SCALAPACK
-)
+set_property(TARGET scalapack PROPERTY VERSION ${SCALAPACK_VERSION})
+set_property(TARGET scalapack PROPERTY EXPORT_NAME SCALAPACK)
 target_link_libraries(scalapack PUBLIC blacs LAPACK::LAPACK MPI::MPI_Fortran MPI::MPI_C)
 target_compile_definitions(scalapack PRIVATE ${cargs})
 
