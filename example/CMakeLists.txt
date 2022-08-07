@@ -4,7 +4,7 @@ project(ScalapackExamples LANGUAGES C Fortran)
 
 enable_testing()
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../cmake)
 
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG true)
 find_package(SCALAPACK REQUIRED)
