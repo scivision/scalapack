@@ -19,26 +19,28 @@ jobs:
     strategy:
       matrix:
         shared: [true, false]
-        img: [ {os: ubuntu-latest, fc: gfortran, cmd: sudo apt update && sudo apt install liblapack-dev libopenmpi-dev openmpi-bin},
-               {os: macos-latest, fc: gfortran-11, cmd: brew install lapack open-mpi}
+        img: [ {os: ubuntu-latest, cmd: sudo apt update && sudo apt install liblapack-dev libopenmpi-dev openmpi-bin},
+               {os: macos-latest, cmd: brew install lapack open-mpi}
         ]
 
     runs-on: ${{ matrix.img.os }}
     timeout-minutes: 7
-    env:
-      FC: ${{ matrix.img.fc }}
 
     steps:
 
     - name: install prereqs
       run: ${{ matrix.img.cmd }}
 
+    - name: install gfortran
+      if: runner.os == 'macOS'
+      run: brew reinstall gcc
+
     - name: Setup cmake
       uses: jwlawson/actions-setup-cmake@v1
       with:
         cmake-version: '3.19'
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Config
       run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }} -DCMAKE_INSTALL_PREFIX:PATH=${{ runner.temp }}
