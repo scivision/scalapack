@@ -1,4 +1,4 @@
-include(CheckCompilerFlag)
+include(CheckCCompilerFlag)
 
 # --- abi check
 
@@ -62,7 +62,7 @@ endif()
 
 # Clang errors without this
 # test the non-no form, otherwise always succeeds
-check_compiler_flag(C -Wimplicit-function-declaration HAS_IMPLICIT_FUNC_FLAG)
+check_c_compiler_flag(-Wimplicit-function-declaration HAS_IMPLICIT_FUNC_FLAG)
 if(HAS_IMPLICIT_FUNC_FLAG)
   add_compile_options($<$<COMPILE_LANGUAGE:C>:-Wno-implicit-function-declaration>)
 endif()

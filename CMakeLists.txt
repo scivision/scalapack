@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19...3.25)
+cmake_minimum_required(VERSION 3.13...3.25)
 
 get_property(is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(NOT is_multi_config AND NOT (CMAKE_BUILD_TYPE OR DEFINED ENV{CMAKE_BUILD_TYPE}))
@@ -13,7 +13,6 @@ project(SCALAPACK
 LANGUAGES C Fortran
 VERSION ${PROJECT_VERSION}
 HOMEPAGE_URL "http://netlib.org/scalapack"
-DESCRIPTION "University of Tennessee, Univ. of California Berkeley, Univ. of Colorado Denver and NAG Ltd"
 )
 
 enable_testing()
@@ -62,7 +61,12 @@ endif()
 
 # --- install
 
-install(TARGETS scalapack EXPORT ${PROJECT_NAME}-targets)
+install(TARGETS scalapack EXPORT ${PROJECT_NAME}-targets
+LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
 
 install(FILES
 ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindLAPACK.cmake
