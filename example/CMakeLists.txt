@@ -6,6 +6,11 @@ enable_testing()
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../cmake)
 
+# --- auto-ignore build directory
+if(NOT EXISTS ${PROJECT_BINARY_DIR}/.gitignore)
+  file(WRITE ${PROJECT_BINARY_DIR}/.gitignore "*")
+endif()
+
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG true)
 find_package(SCALAPACK REQUIRED)
 
