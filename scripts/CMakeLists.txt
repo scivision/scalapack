@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19...3.24)
+cmake_minimum_required(VERSION 3.19)
 
 project(BuildLAPACK
 LANGUAGES Fortran
@@ -25,7 +25,11 @@ ExternalProject_Add(LAPACK
 GIT_REPOSITORY ${lapack_url}
 GIT_TAG ${lapack_tag}
 CMAKE_ARGS ${lapack_cmake_args}
-CMAKE_CACHE_ARGS -Darith:STRING=${arith}
+CMAKE_CACHE_ARGS
+"-DBUILD_SINGLE:BOOL=$<IN_LIST:s,${arith}>"
+"-DBUILD_DOUBLE:BOOL=$<IN_LIST:d,${arith}>"
+"-DBUILD_COMPLEX:BOOL=$<IN_LIST:c,${arith}>"
+"-DBUILD_COMPLEX16:BOOL=$<IN_LIST:z,${arith}>"
 INACTIVITY_TIMEOUT 60
 TLS_VERIFY true
 )
