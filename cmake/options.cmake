@@ -12,16 +12,17 @@ endif()
 
 # --- other options
 
-if(NOT arith)
-  set(arith "s;d")
-endif()
+option(BUILD_SINGLE "Build single precision real" ON)
+option(BUILD_DOUBLE "Build double precision real" ON)
+option(BUILD_COMPLEX "Build single precision complex")
+option(BUILD_COMPLEX16 "Build double precision complex")
 
-# complex arith requires corresponding real arith
-if(c IN_LIST arith AND NOT s IN_LIST arith)
-  list(APPEND arith s)
+# complex requires corresponding real
+if(BUILD_COMPLEX)
+  set(BUILD_SINGLE true)
 endif()
-if(z IN_LIST arith AND NOT d IN_LIST arith)
-  list(APPEND arith d)
+if(BUILD_COMPLEX16)
+  set(BUILD_DOUBLE true)
 endif()
 
 set(CMAKE_TLS_VERIFY true)

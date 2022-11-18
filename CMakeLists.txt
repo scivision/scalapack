@@ -8,7 +8,7 @@ endif()
 
 project(SCALAPACK
 LANGUAGES C Fortran
-VERSION 2.2.1.3
+VERSION 2.2.1.4
 HOMEPAGE_URL "http://netlib.org/scalapack"
 )
 
@@ -71,3 +71,12 @@ DESTINATION cmake
 )
 
 include(cmake/install.cmake)
+
+
+include(FeatureSummary)
+
+add_feature_info(real32 ${BUILD_SINGLE} "Build with single precision")
+add_feature_info(real64 ${BUILD_DOUBLE} "Build with double precision")
+add_feature_info(complex32 ${BUILD_COMPLEX} "Build with complex precision")
+add_feature_info(complex64 ${BUILD_COMPLEX16} "Build with complex16 precision")
+feature_summary(WHAT ALL)

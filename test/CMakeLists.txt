@@ -7,7 +7,7 @@ COMMAND ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROC_FLAG} 2 $<TARGET_FILE:test_blacs
 )
 set_property(TEST scalapack_blacs PROPERTY LABELS blacs)
 
-if("d" IN_LIST arith)
+if(BUILD_DOUBLE)
   add_executable(test_scalapack_d test_scalapack_d.f90)
   target_link_libraries(test_scalapack_d PRIVATE SCALAPACK::SCALAPACK)
 

@@ -47,13 +47,13 @@ cmake --build build
 ### options
 
 The default is to build real32, real64.
-The build-time parameter `-Darith=d` may be optionally specified:
+The options for precision are just like LAPACK:
 
-```sh
--Darith=s  # real32
--Darith=d  # real64
--Darith=c  # complex64
--Darith=z  # complex128
+```cmake
+option(BUILD_SINGLE "Build single precision real" ON)
+option(BUILD_DOUBLE "Build double precision real" ON)
+option(BUILD_COMPLEX "Build single precision complex")
+option(BUILD_COMPLEX16 "Build double precision complex")
 ```
 
 ## Notes

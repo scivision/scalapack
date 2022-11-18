@@ -6,7 +6,7 @@ set (IPBTZ
 
 set(pbtz)
 
-if("s" IN_LIST arith)
+if(BUILD_SINGLE)
 list(APPEND pbtz
     svasum.f       sset.f         scshft.f       srshft.f
     svvdot.f       smmadd.f       smmcadd.f      smmtadd.f
@@ -15,11 +15,11 @@ list(APPEND pbtz
     sagemv.f       sasymv.f       satrmv.f)
 endif()
 
-if(("s" IN_LIST arith) OR ("c" IN_LIST arith))
+if(BUILD_SINGLE OR BUILD_COMPLEX)
 list(APPEND pbtz sasqrtb.f      sascal.f)
 endif()
 
-if("c" IN_LIST arith)
+if(BUILD_COMPLEX)
 list(APPEND pbtz
     scvasum.f      cset.f         ccshft.f       crshft.f
     cvvdotu.f      cvvdotc.f      cmmadd.f       cmmcadd.f
@@ -31,7 +31,7 @@ list(APPEND pbtz
 endif()
 
 
-if("d" IN_LIST arith)
+if(BUILD_DOUBLE)
 list(APPEND pbtz
     dvasum.f       dset.f         dcshft.f       drshft.f
     dvvdot.f       dmmadd.f       dmmcadd.f      dmmtadd.f
@@ -40,11 +40,11 @@ list(APPEND pbtz
     dagemv.f       dasymv.f       datrmv.f)
 endif()
 
-if(("d" IN_LIST arith) OR ("z" IN_LIST arith))
+if(BUILD_DOUBLE OR BUILD_COMPLEX16)
 list(APPEND pbtz    dasqrtb.f      dascal.f)
 endif()
 
-if("z" IN_LIST arith)
+if(BUILD_COMPLEX16)
 list(APPEND pbtz
     dzvasum.f      zset.f         zcshft.f       zrshft.f
     zvvdotu.f      zvvdotc.f      zmmadd.f       zmmcadd.f

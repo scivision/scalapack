@@ -14,16 +14,16 @@ set(ZMATGEN zlarnv.f zlatm1.f zlatms.f zlagge.f zlaghe.f zlagsy.f zlarot.f zlarn
 
 set(extra_lapack ${ALLAUX})
 
-if("s" IN_LIST arith)
+if(BUILD_SINGLE)
 list(APPEND extra_lapack ${SCATGEN} ${SMATGEN})
 endif()
-if("c" IN_LIST arith)
+if(BUILD_COMPLEX)
 list(APPEND extra_lapack ${SCATGEN} ${CMATGEN})
 endif()
-if("d" IN_LIST arith)
+if(BUILD_DOUBLE)
 list(APPEND extra_lapack ${DZATGEN} ${DMATGEN})
 endif()
-if("z" IN_LIST arith)
+if(BUILD_COMPLEX16)
 list(APPEND extra_lapack ${DZATGEN} ${ZMATGEN})
 endif()
 

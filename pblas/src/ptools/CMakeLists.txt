@@ -27,10 +27,10 @@ set(ALLCTOOLS
 )
 
 set(pctools
-$<$<IN_LIST:s,${arith}>:PB_Cstypeset.c>
-$<$<IN_LIST:d,${arith}>:PB_Cdtypeset.c>
-$<$<IN_LIST:c,${arith}>:PB_Cctypeset.c>
-$<$<IN_LIST:z,${arith}>:PB_Cztypeset.c>
+$<$<BOOL:${BUILD_SINGLE}>:PB_Cstypeset.c>
+$<$<BOOL:${BUILD_DOUBLE}>:PB_Cdtypeset.c>
+$<$<BOOL:${BUILD_COMPLEX}>:PB_Cctypeset.c>
+$<$<BOOL:${BUILD_COMPLEX16}>:PB_Cztypeset.c>
 )
 
 add_library(scalapack_pctools OBJECT ${ALLCTOOLS} ${pctools})
