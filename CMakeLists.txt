@@ -5,10 +5,14 @@ if(NOT is_multi_config AND NOT (CMAKE_BUILD_TYPE OR DEFINED ENV{CMAKE_BUILD_TYPE
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Release default")
 endif()
 
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+  message(FATAL_ERROR "Please use out of source build like:
+  cmake -Bbuild")
+endif()
 
 project(SCALAPACK
 LANGUAGES C Fortran
-VERSION 2.2.1.4
+VERSION 2.2.1.5
 HOMEPAGE_URL "http://netlib.org/scalapack"
 )
 
@@ -19,7 +23,7 @@ else()
   set(${PROJECT_NAME}_BUILD_TESTING true)
 endif()
 
-include(cmake/options.cmake)
+include(options.cmake)
 include(cmake/compilers.cmake)
 
 find_package(MPI COMPONENTS C Fortran REQUIRED)
