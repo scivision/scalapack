@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13...3.25)
+cmake_minimum_required(VERSION 3.19)
 
 project(ScalapackExamples LANGUAGES C Fortran)
 
@@ -10,11 +10,11 @@ file(GENERATE OUTPUT .gitignore CONTENT "*")
 
 find_package(SCALAPACK CONFIG REQUIRED)
 
-include(CheckFortranSourceCompiles)
+include(CheckSourceCompiles)
 
 set(CMAKE_REQUIRED_LIBRARIES SCALAPACK::SCALAPACK LAPACK::LAPACK MPI::MPI_Fortran)
 
-check_fortran_source_compiles(
+check_source_compiles(Fortran
 "program test
 use, intrinsic :: iso_fortran_env, only : real64
 implicit none (type, external)
@@ -23,10 +23,9 @@ integer :: ictxt
 print *, pdlamch(ictxt, 'E')
 end program"
 scalapack_d
-SRC_EXT f90
 )
 
-check_fortran_source_compiles(
+check_source_compiles(Fortran
 "program test
 use, intrinsic :: iso_fortran_env, only : real32
 implicit none (type, external)
@@ -35,7 +34,6 @@ integer :: ictxt
 print *, pslamch(ictxt, 'E')
 end program"
 scalapack_s
-SRC_EXT f90
 )
 
 

@@ -3,6 +3,7 @@ name: ci
 env:
   HOMEBREW_NO_INSTALL_CLEANUP: 1
   FC: gfortran-12
+  CTEST_NO_TESTS_ACTION: error
 
 on:
   push:
