@@ -16,7 +16,15 @@ if(BUILD_DOUBLE)
   )
 endif()
 
+cmake_host_system_information(RESULT Ncpu QUERY NUMBER_OF_PHYSICAL_CORES)
+if(Ncpu LESS 2)
+  set(less2 true)
+endif()
+message(STATUS "Number of physical cores: ${Ncpu}")
+
+
 get_property(test_names DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY TESTS)
 
 set_property(TEST ${test_names} PROPERTY TIMEOUT 15)
 set_property(TEST ${test_names} PROPERTY PROCESSORS 2)
+set_property(TEST ${test_names} PROPERTY DISABLED $<BOOL:${less2}>)
