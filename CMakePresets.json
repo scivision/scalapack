@@ -3,13 +3,13 @@
 
 "configurePresets": [
 {
-  "name": "phony"
+  "name": "default"
 }
 ],
 "testPresets": [
 {
   "name": "default",
-  "configurePreset": "phony",
+  "configurePreset": "default",
   "output": {
     "outputOnFailure": true,
     "verbosity": "default"

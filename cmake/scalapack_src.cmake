@@ -24,15 +24,8 @@ URL ${${name}_archive}
 
 else()
 
-if(CMAKE_VERSION VERSION_LESS 3.19)
-  include(${CMAKE_CURRENT_LIST_DIR}/Modules/JsonParse.cmake)
-  sbeParseJson(meta json)
-  set(url ${meta.${name}.url})
-  set(tag ${meta.${name}.tag})
-else()
-  string(JSON url GET ${json} ${name} url)
-  string(JSON tag GET ${json} ${name} tag)
-endif()
+string(JSON url GET ${json} ${name} url)
+string(JSON tag GET ${json} ${name} tag)
 
 set(FETCHCONTENT_QUIET no)
 
@@ -40,7 +33,6 @@ FetchContent_Declare(${PROJECT_NAME}
 GIT_REPOSITORY ${url}
 GIT_TAG ${tag}
 GIT_SHALLOW true
-TLS_VERIFY true
 GIT_REMOTE_UPDATE_STRATEGY "CHECKOUT"
 INACTIVITY_TIMEOUT 60
 )

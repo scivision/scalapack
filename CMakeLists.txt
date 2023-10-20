@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13...3.27)
+cmake_minimum_required(VERSION 3.19...3.28)
 
 get_property(is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(NOT is_multi_config AND NOT (CMAKE_BUILD_TYPE OR DEFINED ENV{CMAKE_BUILD_TYPE}))
@@ -12,7 +12,7 @@ endif()
 
 project(SCALAPACK
 LANGUAGES C Fortran
-VERSION 2.2.1.5
+VERSION 2.2.1.6
 HOMEPAGE_URL "http://netlib.org/scalapack"
 )
 
@@ -62,11 +62,7 @@ endif()
 
 # --- install
 
-install(TARGETS scalapack EXPORT ${PROJECT_NAME}-targets
-LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
+install(TARGETS scalapack EXPORT ${PROJECT_NAME}-targets)
 
 install(FILES
 ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindLAPACK.cmake

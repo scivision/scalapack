@@ -1,25 +1,4 @@
-include(CheckCCompilerFlag)
-
-# --- abi check
-
-# check C and Fortran compiler ABI compatibility
-
-if(NOT abi_ok)
-  message(CHECK_START "checking that C and Fortran compilers can link")
-  try_compile(abi_ok
-  ${CMAKE_CURRENT_BINARY_DIR}/abi_check ${CMAKE_CURRENT_LIST_DIR}/abi_check
-  abi_check
-  )
-  if(abi_ok)
-    message(CHECK_PASS "OK")
-  else()
-    message(FATAL_ERROR "ABI-incompatible compilers:
-    C compiler ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION}
-    Fortran compiler ${CMAKE_Fortran_COMPILER_ID} ${CMAKE_Fortran_COMPILER_VERSION}"
-    )
-  endif()
-endif()
-
+include(CheckCompilerFlag)
 # --- compiler check
 
 set(cargs "$<$<COMPILE_LANGUAGE:C>:Add_>")
@@ -59,7 +38,7 @@ endif()
 
 # Clang errors without this
 # test the non-no form, otherwise always succeeds
-check_c_compiler_flag(-Wimplicit-function-declaration HAS_IMPLICIT_FUNC_FLAG)
+check_compiler_flag(C -Wimplicit-function-declaration HAS_IMPLICIT_FUNC_FLAG)
 if(HAS_IMPLICIT_FUNC_FLAG)
   add_compile_options($<$<COMPILE_LANGUAGE:C>:-Wno-implicit-function-declaration>)
 endif()

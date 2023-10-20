@@ -25,7 +25,7 @@ if(BUILD_COMPLEX16)
   set(BUILD_DOUBLE true)
 endif()
 
-set(CMAKE_TLS_VERIFY true)
+option(CMAKE_TLS_VERIFY "Verify TLS certificates" ON)
 
 set(FETCHCONTENT_UPDATES_DISCONNECTED true)
 

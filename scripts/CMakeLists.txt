@@ -31,5 +31,4 @@ GIT_REPOSITORY ${lapack_url}
 GIT_TAG ${lapack_tag}
 CMAKE_ARGS ${lapack_cmake_args}
 INACTIVITY_TIMEOUT 60
-TLS_VERIFY true
 )

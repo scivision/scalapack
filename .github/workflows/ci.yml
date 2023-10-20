@@ -34,7 +34,7 @@ jobs:
     - name: install prereqs
       run: ${{ matrix.img.cmd }}
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Config
       run: cmake -B build -DBUILD_SINGLE:BOOL=off -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }} -DCMAKE_INSTALL_PREFIX:PATH=${{ runner.temp }}
