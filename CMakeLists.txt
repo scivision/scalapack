@@ -26,6 +26,9 @@ endif()
 include(options.cmake)
 include(cmake/compilers.cmake)
 
+message(STATUS "${PROJECT_NAME} ${PROJECT_VERSION}  CMake ${CMAKE_VERSION}  Toolchain ${CMAKE_TOOLCHAIN_FILE}
+install prefix: ${CMAKE_INSTALL_PREFIX}")
+
 find_package(MPI COMPONENTS C Fortran REQUIRED)
 
 # --- get Scalapack source
@@ -35,7 +38,7 @@ include(cmake/scalapack_src.cmake)
 configure_file(blacs/src/CMakeLists.txt ${scalapack_SOURCE_DIR}/BLACS/SRC/ COPYONLY)
 add_subdirectory(${scalapack_SOURCE_DIR}/BLACS/SRC ${scalapack_BINARY_DIR}/BLACS/SRC)
 
-find_package(LAPACK REQUIRED)
+include(cmake/lapack.cmake)
 
 # == SCALAPACK
 add_library(scalapack)
