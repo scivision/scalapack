@@ -31,6 +31,8 @@ install prefix: ${CMAKE_INSTALL_PREFIX}")
 
 find_package(MPI COMPONENTS C Fortran REQUIRED)
 
+include(cmake/lapack.cmake)
+
 # --- get Scalapack source
 include(cmake/scalapack_src.cmake)
 
@@ -38,7 +40,6 @@ include(cmake/scalapack_src.cmake)
 configure_file(blacs/src/CMakeLists.txt ${scalapack_SOURCE_DIR}/BLACS/SRC/ COPYONLY)
 add_subdirectory(${scalapack_SOURCE_DIR}/BLACS/SRC ${scalapack_BINARY_DIR}/BLACS/SRC)
 
-include(cmake/lapack.cmake)
 
 # == SCALAPACK
 add_library(scalapack)

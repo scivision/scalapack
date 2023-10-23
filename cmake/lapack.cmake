@@ -1,6 +1,9 @@
+include(GNUInstallDirs)
 include(ExternalProject)
 
-find_package(LAPACK)
+if(find)
+  find_package(LAPACK)
+endif()
 
 if(LAPACK_FOUND)
   return()

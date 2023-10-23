@@ -1,5 +1,3 @@
-include(GNUInstallDirs)
-
 if(local)
   get_filename_component(local ${local} ABSOLUTE)
 
@@ -24,6 +22,8 @@ if(BUILD_COMPLEX16)
 endif()
 
 option(CMAKE_TLS_VERIFY "Verify TLS certificates" ON)
+
+option(find "find LAPACK" on)
 
 set(FETCHCONTENT_UPDATES_DISCONNECTED true)
 set_property(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED true)
