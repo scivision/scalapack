@@ -22,13 +22,10 @@ set(lapack_cmake_args
 -DBUILD_COMPLEX16:BOOL=${BUILD_COMPLEX16}
 )
 
-file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/libraries.json json)
-string(JSON lapack_url GET ${json} lapack git)
-string(JSON lapack_tag GET ${json} lapack tag)
+include(${PROJECT_SOURCE_DIR}/../cmake/GitSubmodule.cmake)
+git_submodule("${PROJECT_SOURCE_DIR}/../lapack")
 
 ExternalProject_Add(LAPACK
-GIT_REPOSITORY ${lapack_url}
-GIT_TAG ${lapack_tag}
+URL ${PROJECT_SOURCE_DIR}/../lapack
 CMAKE_ARGS ${lapack_cmake_args}
-INACTIVITY_TIMEOUT 60
 )

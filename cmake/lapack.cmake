@@ -1,7 +1,12 @@
 include(GNUInstallDirs)
 include(ExternalProject)
 
-if(find)
+if(NOT PROJECT_IS_TOP_LEVEL)
+  message(STATUS "${PROJECT_NAME} ${PROJECT_VERSION} deferring to ${CMAKE_PROJECT_NAME} for LAPACK")
+  return()
+endif()
+
+if(find_lapack)
   find_package(LAPACK)
 endif()
 
@@ -23,11 +28,6 @@ set(lapack_cmake_args
 -DCMAKE_BUILD_TYPE:STRING=Release
 )
 
-file(READ ${CMAKE_CURRENT_LIST_DIR}/libraries.json json)
-
-string(JSON lapack_url GET ${json} lapack git)
-string(JSON lapack_tag GET ${json} lapack tag)
-
 set(LAPACK_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR})
 file(MAKE_DIRECTORY ${LAPACK_INCLUDE_DIRS})
 if(NOT IS_DIRECTORY ${LAPACK_INCLUDE_DIRS})
@@ -40,10 +40,11 @@ else()
   set(LAPACK_LIBRARIES ${CMAKE_INSTALL_FULL_LIBDIR}/${CMAKE_STATIC_LIBRARY_PREFIX}lapack${CMAKE_STATIC_LIBRARY_SUFFIX})
 endif()
 
+include(${CMAKE_CURRENT_LIST_DIR}/GitSubmodule.cmake)
+git_submodule("${PROJECT_SOURCE_DIR}/lapack")
+
 ExternalProject_Add(lapack
-GIT_REPOSITORY ${lapack_url}
-GIT_TAG ${lapack_tag}
-GIT_SHALLOW true
+SOURCE_DIR ${PROJECT_SOURCE_DIR}/lapack
 CMAKE_ARGS ${lapack_cmake_args}
 TEST_COMMAND ""
 INACTIVITY_TIMEOUT 60

@@ -34,14 +34,10 @@ cmake --build build
 ctest --test-dir build
 ```
 
-If Lapack is needed:
+To avoid searching for Lapack (forcing Lapack to be built) use CMake option:
 
 ```sh
-cmake -S scripts -B scripts/build -DCMAKE_INSTALL_PREFIX=~/mylibs
-cmake --build scripts/build
-
-cmake -B build -DLAPACK_ROOT=~/mylibs
-cmake --build build
+cmake -B build -Dfind_lapack=off
 ```
 
 ### options

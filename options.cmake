@@ -23,8 +23,10 @@ endif()
 
 option(CMAKE_TLS_VERIFY "Verify TLS certificates" ON)
 
-option(find "find LAPACK" on)
+option(find_lapack "find LAPACK" on)
 
+# used with Git submodule to avoid rechecking each build for submodule changes
+# for developers who switch submodule commits, need a fresh build of entire project.
 set(FETCHCONTENT_UPDATES_DISCONNECTED true)
 set_property(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED true)
 
@@ -33,7 +35,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 # Necessary for shared library with Visual Studio / Windows oneAPI
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS true)
 
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT AND PROJECT_IS_TOP_LEVEL)
   set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/local CACHE PATH "Install path" FORCE)
 endif()
 

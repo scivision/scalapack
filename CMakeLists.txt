@@ -12,7 +12,7 @@ endif()
 
 project(SCALAPACK
 LANGUAGES C Fortran
-VERSION 2.2.1.6
+VERSION 2.2.1.7
 HOMEPAGE_URL "http://netlib.org/scalapack"
 )
 
@@ -37,8 +37,8 @@ include(cmake/lapack.cmake)
 include(cmake/scalapack_src.cmake)
 
 # --- BLACS
-configure_file(blacs/src/CMakeLists.txt ${scalapack_SOURCE_DIR}/BLACS/SRC/ COPYONLY)
-add_subdirectory(${scalapack_SOURCE_DIR}/BLACS/SRC ${scalapack_BINARY_DIR}/BLACS/SRC)
+configure_file(blacs/src/CMakeLists.txt ${scalapack_src_SOURCE_DIR}/BLACS/SRC/ COPYONLY)
+add_subdirectory(${scalapack_src_SOURCE_DIR}/BLACS/SRC ${scalapack_src_BINARY_DIR}/BLACS/SRC)
 
 
 # == SCALAPACK
@@ -56,8 +56,8 @@ target_link_libraries(SCALAPACK::SCALAPACK INTERFACE scalapack)
 foreach(d src/ pblas/src/ pblas/src/pbblas/ pblas/src/ptools/ pblas/src/ptzblas/ redist/src/ tools/ tools/lapack/)
   string(TOUPPER ${d} D)
 
-  configure_file(${d}CMakeLists.txt ${scalapack_SOURCE_DIR}/${D} COPYONLY)
-  add_subdirectory(${scalapack_SOURCE_DIR}/${D} ${scalapack_BINARY_DIR}/${D})
+  configure_file(${d}CMakeLists.txt ${scalapack_src_SOURCE_DIR}/${D} COPYONLY)
+  add_subdirectory(${scalapack_src_SOURCE_DIR}/${D} ${scalapack_src_BINARY_DIR}/${D})
 endforeach()
 
 if(${PROJECT_NAME}_BUILD_TESTING)
