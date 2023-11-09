@@ -64,6 +64,8 @@ if(${PROJECT_NAME}_BUILD_TESTING)
   add_subdirectory(test)
 endif()
 
+file(GENERATE OUTPUT .gitignore CONTENT "*")
+
 # --- install
 
 install(TARGETS scalapack EXPORT ${PROJECT_NAME}-targets)

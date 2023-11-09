@@ -21,8 +21,6 @@ if(BUILD_COMPLEX16)
   set(BUILD_DOUBLE true)
 endif()
 
-option(CMAKE_TLS_VERIFY "Verify TLS certificates" ON)
-
 option(find_lapack "find LAPACK" on)
 
 # used with Git submodule to avoid rechecking each build for submodule changes
@@ -38,5 +36,3 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS true)
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT AND PROJECT_IS_TOP_LEVEL)
   set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/local CACHE PATH "Install path" FORCE)
 endif()
-
-file(GENERATE OUTPUT .gitignore CONTENT "*")
