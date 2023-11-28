@@ -1,4 +1,5 @@
 include(CheckCompilerFlag)
+include(CheckPIESupported)
 # --- compiler check
 
 set(cargs "$<$<COMPILE_LANGUAGE:C>:Add_>")
@@ -45,5 +46,6 @@ endif()
 
 # fixes errors about needing -fPIC -- needed by targets linking to this
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND BUILD_SHARED_LIBS)
+  check_pie_supported()
   set(CMAKE_POSITION_INDEPENDENT_CODE true)
 endif()
