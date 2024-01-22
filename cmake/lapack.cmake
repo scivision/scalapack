@@ -1,7 +1,7 @@
 include(GNUInstallDirs)
 include(ExternalProject)
 
-if(NOT SCALAPACK_IS_TOP_LEVEL)
+if(NOT PROJECT_IS_TOP_LEVEL)
   message(STATUS "${PROJECT_NAME} ${PROJECT_VERSION} deferring to ${CMAKE_PROJECT_NAME} for LAPACK")
   return()
 endif()
