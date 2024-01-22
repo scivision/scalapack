@@ -1,10 +1,18 @@
 {
-  "version": 3,
+  "version": 6,
 
 "configurePresets": [
 {
-  "name": "default"
+  "name": "default",
+  "binaryDir": "${sourceDir}/build"
+
 }
+],
+"buildPresets": [
+  {
+    "name": "default",
+    "configurePreset": "default"
+  }
 ],
 "testPresets": [
 {
@@ -18,8 +26,27 @@
     "noTestsAction": "error",
     "scheduleRandom": true,
     "stopOnFailure": false,
-    "timeout": 10
+    "timeout": 60
   }
 }
+],
+"workflowPresets": [
+  {
+    "name": "default",
+    "steps": [
+      {
+        "type": "configure",
+        "name": "default"
+      },
+      {
+        "type": "build",
+        "name": "default"
+      },
+      {
+        "type": "test",
+        "name": "default"
+      }
+    ]
+  }
 ]
 }
