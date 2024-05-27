@@ -16,7 +16,7 @@ endif()
 
 message(STATUS "${name}: using source archive ${${name}_archive}")
 
-FetchContent_Declare(scalapack_src
+FetchContent_Populate(scalapack_src
 URL ${${name}_archive}
 )
 
@@ -26,14 +26,8 @@ include(${CMAKE_CURRENT_LIST_DIR}/GitSubmodule.cmake)
 git_submodule("${PROJECT_SOURCE_DIR}/scalapack")
 
 # needs to be URL as we are patching the source CMakeLists.txt, that way it copies into our build dir.
-FetchContent_Declare(scalapack_src
+FetchContent_Populate(scalapack_src
 URL ${PROJECT_SOURCE_DIR}/scalapack
 )
 
-endif()
-
-FetchContent_GetProperties(scalapack_src)
-
-if(NOT scalapack_src_POPULATED)
-  FetchContent_Populate(scalapack_src)
 endif()
