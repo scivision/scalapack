@@ -2,10 +2,11 @@ name: ci
 
 env:
   HOMEBREW_NO_INSTALL_CLEANUP: 1
-  FC: gfortran-13
   CTEST_NO_TESTS_ACTION: error
   CMAKE_BUILD_PARALLEL_LEVEL: 4
-  CTEST_PARALLEL_LEVEL: 4
+  CTEST_PARALLEL_LEVEL: 0
+  CMAKE_INSTALL_PREFIX: ~/libs
+  CMAKE_PREFIX_PATH: ~/libs
 
 on:
   push:
@@ -20,26 +21,35 @@ on:
 
 jobs:
 
- fortran:
+  fortran:
     strategy:
       matrix:
         shared: [true, false]
-        img: [ {os: ubuntu-latest, cmd: sudo apt update && sudo apt install --no-install-recommends libopenmpi-dev openmpi-bin},
-               {os: macos-latest, cmd: brew install open-mpi}
-        ]
+        os: [ubuntu-24.04, macos-latest]
 
-    runs-on: ${{ matrix.img.os }}
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 7
+
+    env:
+      FC: gfortran-13
 
     steps:
 
-    - name: install prereqs
-      run: ${{ matrix.img.cmd }}
+    - name: install prereqs (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt update
+        sudo apt install --no-install-recommends libopenmpi-dev openmpi-bin liblapack-dev
+
+    - name: install prereqs (macOS)
+      if: runner.os == 'macOS'
+      run: |
+        brew install open-mpi
 
     - uses: actions/checkout@v4
 
     - name: Config
-      run: cmake -B build -DBUILD_SINGLE:BOOL=off -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }} --install-prefix ${{ runner.temp }}
+      run: cmake -B build -DBUILD_SINGLE:BOOL=off -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }}
 
     - name: build / test
       run: cmake --workflow --preset default
@@ -48,10 +58,10 @@ jobs:
       run: cmake --install build
 
     - name: example Config
-      run: cmake -S example -B example/build -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }} -DCMAKE_PREFIX_PATH:PATH=${{ runner.temp }}
+      run: cmake -S example -B example/build -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }}
 
     - name: build
       run: cmake --build example/build
 
     - name: test
-      run: ctest --test-dir example/build --preset default -V
+      run: ctest --test-dir example/build -V
