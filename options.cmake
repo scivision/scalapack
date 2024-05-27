@@ -13,13 +13,6 @@ endif()
 
 option(find_lapack "find LAPACK" on)
 
-if(CMAKE_VERSION VERSION_LESS 3.21)
-  get_property(_not_top DIRECTORY PROPERTY PARENT_DIRECTORY)
-  if(NOT _not_top)
-    set(PROJECT_IS_TOP_LEVEL true)
-  endif()
-endif()
-
 option(${PROJECT_NAME}_BUILD_TESTING "Build tests" ${PROJECT_IS_TOP_LEVEL})
 
 # used with Git submodule to avoid rechecking each build for submodule changes
@@ -29,7 +22,3 @@ set_property(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED true)
 
 # Necessary for shared library with Visual Studio / Windows oneAPI
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS true)
-
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT AND PROJECT_IS_TOP_LEVEL)
-  set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/local CACHE PATH "Install path" FORCE)
-endif()
