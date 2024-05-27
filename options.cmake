@@ -17,7 +17,6 @@ option(${PROJECT_NAME}_BUILD_TESTING "Build tests" ${PROJECT_IS_TOP_LEVEL})
 
 # used with Git submodule to avoid rechecking each build for submodule changes
 # for developers who switch submodule commits, need a fresh build of entire project.
-set(FETCHCONTENT_UPDATES_DISCONNECTED true)
 set_property(DIRECTORY PROPERTY EP_UPDATE_DISCONNECTED true)
 
 # Necessary for shared library with Visual Studio / Windows oneAPI

@@ -12,7 +12,7 @@ endif()
 
 project(SCALAPACK
 LANGUAGES C Fortran
-VERSION 2.2.1.7
+VERSION 2.2.1.8
 HOMEPAGE_URL "http://netlib.org/scalapack"
 )
 
@@ -30,13 +30,11 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 
 include(cmake/lapack.cmake)
 
-# --- get Scalapack source
-include(cmake/scalapack_src.cmake)
+# --- Scalapack source
+include(cmake/GitSubmodule.cmake)
+git_submodule("${PROJECT_SOURCE_DIR}/scalapack")
 
-# --- BLACS
-configure_file(blacs/src/CMakeLists.txt ${scalapack_src_SOURCE_DIR}/BLACS/SRC/ COPYONLY)
-add_subdirectory(${scalapack_src_SOURCE_DIR}/BLACS/SRC ${scalapack_src_BINARY_DIR}/BLACS/SRC)
-
+include(cmake/blacs.cmake)
 
 # == SCALAPACK
 add_library(scalapack)
@@ -50,12 +48,14 @@ target_compile_definitions(scalapack PRIVATE ${cargs})
 add_library(SCALAPACK::SCALAPACK INTERFACE IMPORTED GLOBAL)
 target_link_libraries(SCALAPACK::SCALAPACK INTERFACE scalapack)
 
-foreach(d IN ITEMS src/ pblas/src/ pblas/src/pbblas/ pblas/src/ptools/ pblas/src/ptzblas/ redist/src/ tools/ tools/lapack/)
-  string(TOUPPER ${d} D)
-
-  configure_file(${d}CMakeLists.txt ${scalapack_src_SOURCE_DIR}/${D} COPYONLY)
-  add_subdirectory(${scalapack_src_SOURCE_DIR}/${D} ${scalapack_src_BINARY_DIR}/${D})
-endforeach()
+include(cmake/src.cmake)
+include(cmake/pblas.cmake)
+include(cmake/pbblas.cmake)
+include(cmake/ptools.cmake)
+include(cmake/ptzblas.cmake)
+include(cmake/redist.cmake)
+include(cmake/tools.cmake)
+include(cmake/tools_lapack.cmake)
 
 if(${PROJECT_NAME}_BUILD_TESTING)
   add_subdirectory(test)

@@ -1,4 +1,8 @@
-set(ALLCTOOLS
+set(_p ${PROJECT_SOURCE_DIR}/scalapack/PBLAS/SRC/PTOOLS/)
+
+set(ALLCTOOLS)
+
+foreach(i IN ITEMS
     PB_CGatherV.c    PB_CInV.c        PB_CInV2.c       PB_CInOutV.c
     PB_CInOutV2.c    PB_COutV.c       PB_CScatterV.c   PB_CVMinit.c
     PB_CVMloc.c      PB_CVMnpq.c      PB_CVMpack.c     PB_CVMswp.c
@@ -25,13 +29,26 @@ set(ALLCTOOLS
     PB_Cdescset.c    PB_Cdescribe.c   PB_CargFtoC.c    PB_Cfirstnb.c
     PB_Clastnb.c     PB_Cspan.c
 )
+  list(APPEND ALLCTOOLS ${_p}${i})
+endforeach()
 
-set(pctools
-$<$<BOOL:${BUILD_SINGLE}>:PB_Cstypeset.c>
-$<$<BOOL:${BUILD_DOUBLE}>:PB_Cdtypeset.c>
-$<$<BOOL:${BUILD_COMPLEX}>:PB_Cctypeset.c>
-$<$<BOOL:${BUILD_COMPLEX16}>:PB_Cztypeset.c>
-)
+set(pctools)
+
+if(BUILD_SINGLE)
+  list(APPEND pctools ${_p}PB_Cstypeset.c)
+endif()
+
+if(BUILD_DOUBLE)
+  list(APPEND pctools ${_p}PB_Cdtypeset.c)
+endif()
+
+if(BUILD_COMPLEX)
+  list(APPEND pctools ${_p}PB_Cctypeset.c)
+endif()
+
+if(BUILD_COMPLEX16)
+  list(APPEND pctools ${_p}PB_Cztypeset.c)
+endif()
 
 add_library(scalapack_pctools OBJECT ${ALLCTOOLS} ${pctools})
 
