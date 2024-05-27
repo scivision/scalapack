@@ -78,4 +78,6 @@ add_feature_info(real32 BUILD_SINGLE "Build with single precision")
 add_feature_info(real64 BUILD_DOUBLE "Build with double precision")
 add_feature_info(complex32 BUILD_COMPLEX "Build with complex precision")
 add_feature_info(complex64 BUILD_COMPLEX16 "Build with complex16 precision")
-feature_summary(WHAT ENABLED_FEATURES DISABLED_FEATURES)
+feature_summary(WHAT ENABLED_FEATURES DISABLED_FEATURES
+DESCRIPTION "${PROJECT_NAME} enabled features:"
+)
