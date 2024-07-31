@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19...3.29)
+cmake_minimum_required(VERSION 3.19...3.30)
 
 get_property(is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(NOT is_multi_config AND NOT (CMAKE_BUILD_TYPE OR DEFINED ENV{CMAKE_BUILD_TYPE}))
@@ -57,7 +57,7 @@ include(cmake/redist.cmake)
 include(cmake/tools.cmake)
 include(cmake/tools_lapack.cmake)
 
-if(${PROJECT_NAME}_BUILD_TESTING)
+if(SCALAPACK_BUILD_TESTING)
   add_subdirectory(test)
 endif()
 
@@ -79,5 +79,5 @@ add_feature_info(real64 BUILD_DOUBLE "Build with double precision")
 add_feature_info(complex32 BUILD_COMPLEX "Build with complex precision")
 add_feature_info(complex64 BUILD_COMPLEX16 "Build with complex16 precision")
 feature_summary(WHAT ENABLED_FEATURES DISABLED_FEATURES
-DESCRIPTION "${PROJECT_NAME} enabled features:"
+DESCRIPTION "SCALAPACK enabled features:"
 )
