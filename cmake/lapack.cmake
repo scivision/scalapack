@@ -1,16 +1,11 @@
 include(GNUInstallDirs)
 include(ExternalProject)
 
-if(NOT PROJECT_IS_TOP_LEVEL)
-  message(STATUS "${PROJECT_NAME} ${PROJECT_VERSION} deferring to ${CMAKE_PROJECT_NAME} for LAPACK")
-  return()
-endif()
-
-if(find_lapack)
+if(NOT TARGET LAPACK::LAPACK AND find_lapack)
   find_package(LAPACK)
 endif()
 
-if(LAPACK_FOUND)
+if(LAPACK_FOUND OR TARGET LAPACK::LAPACK)
   return()
 endif()
 
