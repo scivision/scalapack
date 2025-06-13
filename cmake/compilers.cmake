@@ -14,7 +14,12 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
   # pzheevd.f broken with -fimplicit-none
 endif()
 
-# Clang errors without this
+# GCC-15 errors without this due to default -std=gnu23 in GCC-15
+if(NOT CMAKE_C_STANDARD)
+  set(CMAKE_C_STANDARD 90)
+endif()
+
+# Clang / AppleClang errors without this, even with CMAKE_C_STANDARD set
 # test the non-no form, otherwise always succeeds
 check_compiler_flag(C -Wimplicit-function-declaration HAS_IMPLICIT_FUNC_FLAG)
 if(HAS_IMPLICIT_FUNC_FLAG)
