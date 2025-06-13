@@ -22,6 +22,12 @@ if(BUILD_COMPLEX16)
   list(APPEND mrsrc ${_p}pzgemr.c ${_p}pzgemr2.c ${_p}pztrmr.c ${_p}pztrmr2.c)
 endif()
 
+string(REPLACE "-DNDEBUG" "" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
+string(REPLACE "-DNDEBUG" "" CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_C_FLAGS_RELWITHDEBINFO}")
+string(REPLACE "-DNDEBUG" "" CMAKE_C_FLAGS_MINSIZEREL "${CMAKE_C_FLAGS_MINSIZEREL}")
+# remove_definitions(-DNDEBUG) # Did not work because -DNDEBUG is set internal to CMake
+# the files in this directory have unwanted NDEBUG definitions
+
 add_library(scalapack_redist OBJECT ${ALLAUX} ${IMRSRC} ${mrsrc})
 target_compile_definitions(scalapack_redist PRIVATE ${cargs})
 
