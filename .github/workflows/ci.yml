@@ -25,13 +25,10 @@ jobs:
     strategy:
       matrix:
         shared: [true, false]
-        os: [ubuntu-24.04, macos-latest]
+        os: [ubuntu-latest, macos-latest]
 
     runs-on: ${{ matrix.os }}
     timeout-minutes: 7
-
-    env:
-      FC: gfortran-13
 
     steps:
 
@@ -45,6 +42,10 @@ jobs:
       if: runner.os == 'macOS'
       run: |
         brew install open-mpi
+
+    - name: set FC=gfortran-14 (MacOS)
+      if: runner.os == 'macOS'
+      run: echo "FC=gfortran-14" >> $GITHUB_ENV
 
     - uses: actions/checkout@v4
 
