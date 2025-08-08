@@ -38,21 +38,25 @@ jobs:
 
 
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 7
+    timeout-minutes: 15
 
     steps:
 
-    - name: install prereqs (Linux)
+    - &linux-prereq
+      name: install prereqs (Linux)
+      timeout-minutes: 15
       if: runner.os == 'Linux'
       run: |
         sudo apt update
         sudo apt install --no-install-recommends libopenmpi-dev openmpi-bin liblapack-dev
 
     - name: install prereqs (macOS)
+      timeout-minutes: 15
       if: runner.os == 'macOS'
       run: brew install open-mpi gcc
 
-    - uses: actions/checkout@v4
+    - &checkout
+      uses: actions/checkout@v4
 
     - name: Config
       run: cmake -B build -DBUILD_SINGLE:BOOL=off -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }}
@@ -71,3 +75,18 @@ jobs:
 
     - name: test
       run: ctest --test-dir example/build -V
+
+# test this project used as an archive in other projects
+  archive:
+    timeout-minutes: 15
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - *linux-prereq
+    - *checkout
+
+    - name: Test Scalapack as archive
+      run: cmake -S example/other_project -B build
+
+# if broken, the CMake configure step fails
