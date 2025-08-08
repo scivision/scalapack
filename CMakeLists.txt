@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19...4.0)
+cmake_minimum_required(VERSION 3.19...4.1)
 
 get_property(is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(NOT is_multi_config AND NOT (CMAKE_BUILD_TYPE OR DEFINED ENV{CMAKE_BUILD_TYPE}))
@@ -12,11 +12,13 @@ endif()
 
 project(SCALAPACK
 LANGUAGES C Fortran
-VERSION 2.2.2.1
+VERSION 2.2.2.2
 HOMEPAGE_URL "http://netlib.org/scalapack"
 )
 
 enable_testing()
+
+include(GNUInstallDirs)
 
 include(options.cmake)
 include(cmake/compilers.cmake)
