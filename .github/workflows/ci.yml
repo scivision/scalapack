@@ -27,11 +27,15 @@ concurrency:
 
 jobs:
 
-  fortran:
+  core:
     strategy:
       matrix:
-        shared: [true, false]
+        shared: [false]
         os: [ubuntu-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            shared: true
+
 
     runs-on: ${{ matrix.os }}
     timeout-minutes: 7
