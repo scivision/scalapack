@@ -1,6 +1,8 @@
 [submodule "scalapack"]
 	path = scalapack
 	url = https://github.com/Reference-ScaLAPACK/scalapack.git
+	shallow = true
 [submodule "lapack"]
 	path = lapack
 	url = https://github.com/Reference-LAPACK/lapack.git
+	shallow = true
