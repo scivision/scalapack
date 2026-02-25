@@ -5,14 +5,10 @@
 {
   "name": "default",
   "binaryDir": "${sourceDir}/build"
-
 }
 ],
 "buildPresets": [
-  {
-    "name": "default",
-    "configurePreset": "default"
-  }
+  { "name": "default", "configurePreset": "default" }
 ],
 "testPresets": [
 {
@@ -34,18 +30,9 @@
   {
     "name": "default",
     "steps": [
-      {
-        "type": "configure",
-        "name": "default"
-      },
-      {
-        "type": "build",
-        "name": "default"
-      },
-      {
-        "type": "test",
-        "name": "default"
-      }
+      { "type": "configure", "name": "default" },
+      { "type": "build", "name": "default" },
+      { "type": "test", "name": "default" }
     ]
   }
 ]

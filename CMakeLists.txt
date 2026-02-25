@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19...4.1)
+cmake_minimum_required(VERSION 3.19...4.3)
 
 get_property(is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(NOT is_multi_config AND NOT (CMAKE_BUILD_TYPE OR DEFINED ENV{CMAKE_BUILD_TYPE}))
@@ -46,9 +46,7 @@ target_link_libraries(scalapack PUBLIC blacs LAPACK::LAPACK MPI::MPI_Fortran MPI
 target_compile_definitions(scalapack PRIVATE ${cargs})
 
 # target most users will link to.
-# this must NOT be an ALIAS or linking in other packages breaks.
-add_library(SCALAPACK::SCALAPACK INTERFACE IMPORTED GLOBAL)
-target_link_libraries(SCALAPACK::SCALAPACK INTERFACE scalapack)
+add_library(SCALAPACK::SCALAPACK ALIAS scalapack)
 
 include(cmake/src.cmake)
 include(cmake/pblas.cmake)
@@ -74,6 +72,8 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindLAPACK.cmake DESTINATION cma
 include(cmake/install.cmake)
 
 
+if(SCALAPACK_IS_TOP_LEVEL)
+
 include(FeatureSummary)
 
 add_feature_info(real32 BUILD_SINGLE "Build with single precision")
@@ -83,3 +83,5 @@ add_feature_info(complex64 BUILD_COMPLEX16 "Build with complex16 precision")
 feature_summary(WHAT ENABLED_FEATURES DISABLED_FEATURES
 DESCRIPTION "SCALAPACK enabled features:"
 )
+
+endif()
