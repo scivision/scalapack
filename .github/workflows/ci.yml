@@ -53,10 +53,12 @@ jobs:
     - name: install prereqs (macOS)
       timeout-minutes: 15
       if: runner.os == 'macOS'
-      run: brew install open-mpi gcc
+      run: |
+        brew install open-mpi
+        echo "FC=gfortran-15" >> $GITHUB_ENV
 
     - &checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Config
       run: cmake -B build -DBUILD_SINGLE:BOOL=off -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }}
