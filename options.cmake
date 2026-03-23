@@ -21,7 +21,10 @@ option(SCALAPACK_BUILD_TESTING "Build tests" ${SCALAPACK_IS_TOP_LEVEL})
 # for developers who switch submodule commits, need a fresh build of entire project.
 set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
 set(FETCHCONTENT_QUIET OFF)
-if(NOT scalapack_find_lapack)
+if(scalapack_find_lapack)
+  set(FETCHCONTENT_TRY_FIND_PACKAGE_MODE OPT_IN)
+  # be explict in case parent project scope spills NEVER
+else()
   set(FETCHCONTENT_TRY_FIND_PACKAGE_MODE NEVER)
 endif()
 
