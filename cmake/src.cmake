@@ -1,4 +1,4 @@
-set(_p ${PROJECT_SOURCE_DIR}/scalapack/SRC/)
+set(_p ${scalapack_upstream_SOURCE_DIR}/SRC/)
 
 set(ALLAUX)
 foreach(i IN ITEMS pjlaenv.f  pilaenvx.f piparmq.f pilaver.f pmpim2.f pmpcol.f)

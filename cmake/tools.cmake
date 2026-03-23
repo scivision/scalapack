@@ -1,4 +1,4 @@
-set(_p ${PROJECT_SOURCE_DIR}/scalapack/TOOLS/)
+set(_p ${scalapack_upstream_SOURCE_DIR}/TOOLS/)
 
 set(atools)
 

@@ -1,4 +1,4 @@
-set(_p ${PROJECT_SOURCE_DIR}/scalapack/REDIST/SRC/)
+set(_p ${scalapack_upstream_SOURCE_DIR}/REDIST/SRC/)
 
 set(ALLAUX ${_p}pgemraux.c)
 

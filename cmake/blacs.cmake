@@ -1,4 +1,4 @@
-set(_p ${PROJECT_SOURCE_DIR}/scalapack/BLACS/SRC/)
+set(_p ${scalapack_upstream_SOURCE_DIR}/BLACS/SRC/)
 
 #  The communication routines
 set(comm)

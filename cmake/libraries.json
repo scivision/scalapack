@@ -1,3 +1,4 @@
 {
-    "lapack": "https://github.com/Reference-LAPACK/lapack/archive/refs/tags/v3.12.1.tar.gz"
+    "lapack": "https://github.com/Reference-LAPACK/lapack/archive/refs/tags/v3.12.1.tar.gz",
+    "scalapack": "https://github.com/Reference-ScaLAPACK/scalapack/archive/refs/tags/v2.2.2.tar.gz"
 }

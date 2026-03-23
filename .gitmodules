@@ -1,4 +1,0 @@
-[submodule "scalapack"]
-	path = scalapack
-	url = https://github.com/Reference-ScaLAPACK/scalapack.git
-	shallow = true

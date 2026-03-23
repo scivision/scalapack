@@ -12,13 +12,14 @@ endif()
 
 project(SCALAPACK
 LANGUAGES C Fortran
-VERSION 2.2.2.2
+VERSION 2.2.2.3
 HOMEPAGE_URL "http://netlib.org/scalapack"
 )
 
 enable_testing()
 
 include(GNUInstallDirs)
+include(FetchContent)
 
 include(options.cmake)
 include(cmake/compilers.cmake)
@@ -46,8 +47,10 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 include(cmake/lapack.cmake)
 
 # --- Scalapack source
-include(cmake/GitSubmodule.cmake)
-git_submodule("${PROJECT_SOURCE_DIR}/scalapack")
+string(JSON scalapack_url GET "${_json}" "scalapack")
+FetchContent_Populate(SCALAPACK_upstream
+URL ${scalapack_url}
+)
 
 include(cmake/blacs.cmake)
 

@@ -20,6 +20,7 @@ option(SCALAPACK_BUILD_TESTING "Build tests" ${SCALAPACK_IS_TOP_LEVEL})
 # used with Git submodule to avoid rechecking each build for submodule changes
 # for developers who switch submodule commits, need a fresh build of entire project.
 set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
+set(FETCHCONTENT_QUIET OFF)
 if(NOT scalapack_find_lapack)
   set(FETCHCONTENT_TRY_FIND_PACKAGE_MODE NEVER)
 endif()

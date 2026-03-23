@@ -1,4 +1,4 @@
-set(_p ${PROJECT_SOURCE_DIR}/scalapack/TOOLS/LAPACK/)
+set(_p ${scalapack_upstream_SOURCE_DIR}/TOOLS/LAPACK/)
 
 set(ALLAUX ${_p}icopy.f)
 

@@ -1,4 +1,4 @@
-set(_p ${PROJECT_SOURCE_DIR}/scalapack/PBLAS/SRC/PBBLAS/)
+set(_p ${scalapack_upstream_SOURCE_DIR}/PBLAS/SRC/PBBLAS/)
 
 set(pbblas)
 

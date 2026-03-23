@@ -1,4 +1,4 @@
-set(_p ${PROJECT_SOURCE_DIR}/scalapack/PBLAS/SRC/PTZBLAS/)
+set(_p ${scalapack_upstream_SOURCE_DIR}/PBLAS/SRC/PTZBLAS/)
 
 set(APBTZ ${_p}pxerbla.f)
 
