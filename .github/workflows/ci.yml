@@ -2,8 +2,6 @@ name: ci
 
 env:
   HOMEBREW_NO_INSTALL_CLEANUP: 1
-  CTEST_NO_TESTS_ACTION: error
-  CTEST_PARALLEL_LEVEL: 0
   CMAKE_INSTALL_PREFIX: ~/libs
   CMAKE_PREFIX_PATH: ~/libs
   CMAKE_GENERATOR: Ninja
@@ -70,13 +68,8 @@ jobs:
       run: cmake --install build
 
     - name: example Config
-      run: cmake -S example -B example/build -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }}
-
-    - name: build
-      run: cmake --build example/build
-
-    - name: test
-      run: ctest --test-dir example/build -V
+      working-directory: example
+      run: cmake --workflow default
 
 # test this project used as an archive in other projects
   archive:

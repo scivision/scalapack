@@ -37,7 +37,7 @@ ctest --test-dir build
 To avoid searching for Lapack (forcing Lapack to be built) use CMake option:
 
 ```sh
-cmake -B build -Dfind_lapack=off
+cmake -B build -Dscalapack_find_lapack=off
 ```
 
 ### options

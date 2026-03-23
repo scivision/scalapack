@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19...4.3)
+cmake_minimum_required(VERSION 3.21...4.3)
 
 get_property(is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(NOT is_multi_config AND NOT (CMAKE_BUILD_TYPE OR DEFINED ENV{CMAKE_BUILD_TYPE}))
@@ -22,6 +22,19 @@ include(GNUInstallDirs)
 
 include(options.cmake)
 include(cmake/compilers.cmake)
+
+if(DEFINED ENV{CONDA_PREFIX})
+  list(APPEND CMAKE_IGNORE_PREFIX_PATH $ENV{CONDA_PREFIX})
+  list(APPEND CMAKE_IGNORE_PATH $ENV{CONDA_PREFIX}/bin $ENV{CONDA_PREFIX}/lib $ENV{CONDA_PREFIX}/include)
+  # need CMAKE_IGNORE_PATH to ensure env var PATH doesn't interfere
+  # despite CMAKE_IGNORE_PREFIX_PATH
+endif()
+
+# --- RPATH handling for transitive dependencies
+if(scalapack_ENABLE_RPATH AND NOT WIN32)
+  set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_FULL_LIBDIR}")
+  set(CMAKE_BUILD_RPATH "${CMAKE_INSTALL_FULL_LIBDIR}")
+endif()
 
 message(STATUS "${PROJECT_NAME} ${PROJECT_VERSION}  CMake ${CMAKE_VERSION}  Toolchain ${CMAKE_TOOLCHAIN_FILE}
 install prefix: ${CMAKE_INSTALL_PREFIX}")
