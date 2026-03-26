@@ -16,7 +16,7 @@ endif()
 
 # GCC-15 errors without this due to default -std=gnu23 in GCC-15
 if(NOT CMAKE_C_STANDARD)
-  set(CMAKE_C_STANDARD 90)
+  set(CMAKE_C_STANDARD 17)
 endif()
 
 # Clang / AppleClang errors without this, even with CMAKE_C_STANDARD set

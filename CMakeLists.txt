@@ -12,7 +12,7 @@ endif()
 
 project(SCALAPACK
 LANGUAGES C Fortran
-VERSION 2.2.2.3
+VERSION 2.2.3.0
 HOMEPAGE_URL "http://netlib.org/scalapack"
 )
 
