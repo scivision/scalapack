@@ -13,7 +13,7 @@ if(BUILD_SINGLE)
 endif()
 
 if(BUILD_DOUBLE)
-  foreach(i IN ITEMS dgesd2d_.c dtrsd2d_.c dgerv2d_.c dtrrv2d_.c dgebs2d_.c dgebr2d_.c dtrbs2d_.c dtrbr2d_.c dgamx2d_.c)
+  foreach(i IN ITEMS dgesd2d_.c dtrsd2d_.c dgerv2d_.c dtrrv2d_.c dgebs2d_.c dgebr2d_.c dtrbs2d_.c dtrbr2d_.c)
     list(APPEND comm ${_p}${i})
   endforeach()
 endif()
